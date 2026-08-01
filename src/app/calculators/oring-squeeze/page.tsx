@@ -1,0 +1,236 @@
+/**
+ * O-Ring Squeeze Ratio Calculator
+ *
+ * Formula: Squeeze % = ((W − G) / W) × 100
+ *   W = O-ring free cross-section (wire) diameter (mm)
+ *   G = groove depth (mm), measured from groove floor to mating surface face
+ *
+ * The result is color-coded against Parker O-Ring Handbook target ranges:
+ *   Static:  15–30% = green | 10–15% or 30–35% = yellow | outside = red
+ *   Dynamic: 10–20% = green |  7–10% or 20–25% = yellow | outside = red
+ *
+ * The SVG cross-section diagram (imported from src/components/) updates live
+ * as the user types, even before hitting Calculate.
+ */
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import OringCrossSectionDiagram from "@/components/OringCrossSectionDiagram";
+import { AS568_CROSS_SECTIONS, SealType, getSqueezeStatus } from "@/lib/oring-constants";
+
+export default function OringSqueezeCalculatorPage() {
+  // --- State ---
+  const [sealType,    setSealType]    = useState<SealType>("static");
+  const [wSelection,  setWSelection]  = useState("3.53"); // default 3.53 mm (series -200)
+  const [wCustom,     setWCustom]     = useState("");
+  const [G,           setG]           = useState("");
+  const [errors,      setErrors]      = useState<Record<string, string>>({});
+  const [result, setResult] = useState<{
+    squeeze: number;
+    status: "green" | "yellow" | "red";
+    message: string;
+  } | null>(null);
+
+  // Is the user in custom-entry mode?
+  const isCustom = wSelection === "custom";
+
+  // Actual W to use in the formula (number or NaN)
+  const W_num = isCustom ? parseFloat(wCustom) : parseFloat(wSelection);
+  const G_num = parseFloat(G);
+
+  // For the live SVG preview, fall back to sensible defaults when inputs are blank
+  const svgW = (!isNaN(W_num) && W_num > 0) ? W_num : 3.53;
+  const svgG = (!isNaN(G_num) && G_num > 0) ? G_num : svgW * 0.80; // ~20% squeeze default
+
+  // --- Validation ---
+  function validate(): Record<string, string> {
+    const errs: Record<string, string> = {};
+    if (isCustom) {
+      if (!wCustom.trim()) errs.w = "Enter an O-ring cross-section diameter.";
+      else if (isNaN(W_num) || W_num <= 0) errs.w = "Must be a positive number.";
+    }
+    const gVal = parseFloat(G);
+    if (!G.trim()) {
+      errs.g = "Groove depth is required.";
+    } else if (isNaN(gVal) || gVal <= 0) {
+      errs.g = "Must be a positive number.";
+    } else if (!isNaN(W_num) && gVal >= W_num) {
+      errs.g = `Must be less than W (${W_num} mm) — a groove deeper than W produces no squeeze.`;
+    }
+    return errs;
+  }
+
+  function handleCalculate() {
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) { setResult(null); return; }
+
+    const squeeze = ((W_num - G_num) / W_num) * 100;
+    setResult({ squeeze, ...getSqueezeStatus(squeeze, sealType) });
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+        ← Back to all calculators
+      </Link>
+
+      <h1 className="text-2xl font-bold text-gray-800 mb-1">O-Ring Squeeze Calculator</h1>
+      <p className="text-sm text-gray-500 mb-6">
+        Calculates how much an O-ring is compressed when a groove closes.{" "}
+        <span className="font-mono bg-gray-100 px-1 rounded text-xs">
+          Squeeze % = (W − G) / W × 100
+        </span>
+        {" "}— where W is the O-ring wire diameter and G is the groove depth.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        {/* ── LEFT: Inputs ── */}
+        <div className="flex flex-col gap-4">
+
+          {/* Seal type selector */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+            <p className="text-sm font-semibold text-gray-700 mb-3">Seal Type</p>
+            <div className="flex gap-5">
+              {(["static", "dynamic"] as SealType[]).map(t => (
+                <label key={t} className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="radio"
+                    checked={sealType === t}
+                    onChange={() => { setSealType(t); setResult(null); }}
+                    className="accent-blue-600"
+                  />
+                  <span className="text-sm capitalize text-gray-700">{t}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-gray-400">
+              {sealType === "static"
+                ? "No relative motion between surfaces — target 15–30% squeeze."
+                : "Reciprocating or oscillating motion — target 10–20% squeeze."}
+            </p>
+          </div>
+
+          {/* O-ring cross-section W */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
+            <p className="text-sm font-semibold text-gray-700">O-Ring Cross-Section Diameter (W)</p>
+            {/* Dropdown of standard AS568 sizes + Custom option */}
+            <select
+              value={wSelection}
+              onChange={e => { setWSelection(e.target.value); setErrors({}); setResult(null); }}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+            >
+              {AS568_CROSS_SECTIONS.map(s => (
+                <option key={s.w} value={String(s.w)}>{s.label}</option>
+              ))}
+              <option value="custom">Custom…</option>
+            </select>
+            {/* Custom input — only visible when "Custom…" is selected */}
+            {isCustom && (
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  value={wCustom}
+                  onChange={e => { setWCustom(e.target.value); setErrors({}); setResult(null); }}
+                  placeholder="e.g. 4.0"
+                  className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
+                    [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                    ${errors.w ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                />
+                <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">mm</span>
+              </div>
+            )}
+            {errors.w && <p className="text-xs text-red-600">{errors.w}</p>}
+          </div>
+
+          {/* Groove depth G */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+            <p className="text-sm font-semibold text-gray-700 mb-2">Groove Depth (G)</p>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={G}
+                onChange={e => { setG(e.target.value); setResult(null); }}
+                placeholder={`e.g. ${(svgW * 0.80).toFixed(2)}`}
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                  ${errors.g ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+              />
+              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">mm</span>
+            </div>
+            {errors.g && <p className="text-xs text-red-600">{errors.g}</p>}
+            <p className="mt-1 text-xs text-gray-400">
+              Measured from groove floor to the mating surface face (closed groove height)
+            </p>
+          </div>
+
+          <button
+            onClick={handleCalculate}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          >
+            Calculate Squeeze
+          </button>
+
+          {/* Result card */}
+          {result && (
+            <div className={`rounded-xl border p-5 ${
+              result.status === "green"  ? "bg-green-50 border-green-200"  :
+              result.status === "yellow" ? "bg-amber-50 border-amber-200"  :
+                                           "bg-red-50   border-red-200"
+            }`}>
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className={`text-3xl font-bold ${
+                  result.status === "green"  ? "text-green-700"  :
+                  result.status === "yellow" ? "text-amber-700"  :
+                                               "text-red-700"
+                }`}>
+                  {result.squeeze.toFixed(1)}%
+                </span>
+                <span className={`text-sm ${
+                  result.status === "green"  ? "text-green-600"  :
+                  result.status === "yellow" ? "text-amber-600"  :
+                                               "text-red-600"
+                }`}>squeeze</span>
+              </div>
+              <p className={`text-sm font-medium ${
+                result.status === "green"  ? "text-green-700"  :
+                result.status === "yellow" ? "text-amber-700"  :
+                                             "text-red-700"
+              }`}>
+                {result.status === "green" ? "✓" : result.status === "yellow" ? "⚠" : "✗"}{" "}
+                {result.message}
+              </p>
+              <p className="mt-2 text-xs text-gray-400 font-mono">
+                ({W_num} − {G_num.toFixed(2)}) / {W_num} × 100
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ── RIGHT: Live SVG diagram ── */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col">
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">Cross-Section View</h2>
+          {/* The diagram updates live as W/G change — no Calculate needed to see it */}
+          <OringCrossSectionDiagram
+            W={svgW}
+            G={svgG}
+            status={result?.status ?? null}
+          />
+          <p className="mt-2 text-xs text-gray-400 text-center">
+            Dashed circle = free state (diameter W) · Solid ellipse = compressed (height G)
+          </p>
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+        <strong>Starting point estimate.</strong> Final groove dimensions should be verified against
+        the O-ring manufacturer&#39;s groove design charts (e.g.,{" "}
+        <em>Parker O-Ring Handbook ORD 5700</em>) and must account for thermal expansion,
+        O-ring material swell in the process fluid, and compression set over service life.
+      </div>
+    </div>
+  );
+}

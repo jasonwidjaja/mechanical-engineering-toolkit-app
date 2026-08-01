@@ -1,0 +1,583 @@
+/**
+ * CTE Mismatch Calculator
+ *
+ * Formula: ΔL = L0 × α × ΔT × 1e-6
+ *   L0  = reference (nominal) length, mm
+ *   α   = coefficient of thermal expansion, ppm/°C (= 1e-6 /°C)
+ *   ΔT  = temperature change, °C
+ *   ΔL  = free thermal expansion, mm
+ *
+ * The key engineering result is ΔL_diff = |ΔL_A − ΔL_B|.
+ * When two dissimilar materials are bonded, they want to expand by
+ * different amounts — the interface must accommodate that difference
+ * as shear/peel stress. Larger ΔL_diff = higher interface stress.
+ *
+ * Note: ppm/°C × 1e-6 converts to a dimensionless strain per °C,
+ * so ΔL (mm) = L0 (mm) × (α × 1e-6) × ΔT, which simplifies to
+ * ΔL = L0 × α × ΔT × 1e-6.
+ */
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+// ---------------------------------------------------------------------------
+// Material data — CTE values are midpoints of typical published ranges.
+// "Custom" lets the user type any value.
+// ---------------------------------------------------------------------------
+const MATERIALS = [
+  { label: "Aluminum 6061",          cte: 23.6  },
+  { label: "Stainless Steel 304",    cte: 17.3  },
+  { label: "Titanium Grade 5",       cte: 8.6   },
+  { label: "PTFE (rough estimate)",  cte: 125.0 }, // midpoint of 100–150 ppm/°C range
+  { label: "Fiberglass/Epoxy",       cte: 13.0  },
+  { label: "FR4 PCB (in-plane)",     cte: 15.5  },
+  { label: "Quartz / Fused Silica",  cte: 0.55  },
+  { label: "Custom",                 cte: null  }, // null = user must type a value
+] as const;
+
+type MaterialEntry = (typeof MATERIALS)[number];
+
+// Shape of the calculated result — null means "not yet calculated"
+type Result = {
+  dLa: number;   // ΔL for Material A, mm
+  dLb: number;   // ΔL for Material B, mm
+  dLdiff: number; // |ΔL_A − ΔL_B|, mm
+  alphaDiff: number; // |α_A − α_B|, for risk classification
+};
+
+export default function CTEMismatchPage() {
+  // --- Material A state ---
+  const [matAIndex, setMatAIndex] = useState(0);            // index into MATERIALS
+  const [alphaAStr, setAlphaAStr] = useState("23.6");       // editable CTE string
+
+  // --- Material B state ---
+  const [matBIndex, setMatBIndex] = useState(1);
+  const [alphaBStr, setAlphaBStr] = useState("17.3");
+
+  // --- Shared inputs ---
+  const [l0Str, setL0Str]   = useState("");    // reference length, mm
+  const [dtStr, setDtStr]   = useState("125"); // ΔT default = 125°C (−40 to +85)
+
+  // --- UI state ---
+  const [errors, setErrors]   = useState<Record<string, string>>({});
+  const [result, setResult]   = useState<Result | null>(null);
+
+  // When the user picks a material from the dropdown, pre-fill the alpha input
+  // (unless it's Custom, in which case we leave the current value so they can type).
+  function handleMatAChange(idx: number) {
+    setMatAIndex(idx);
+    const entry = MATERIALS[idx] as MaterialEntry;
+    if (entry.cte !== null) setAlphaAStr(String(entry.cte));
+  }
+
+  function handleMatBChange(idx: number) {
+    setMatBIndex(idx);
+    const entry = MATERIALS[idx] as MaterialEntry;
+    if (entry.cte !== null) setAlphaBStr(String(entry.cte));
+  }
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+  function validate(): Record<string, string> {
+    const errs: Record<string, string> = {};
+    const alphaA = parseFloat(alphaAStr);
+    const alphaB = parseFloat(alphaBStr);
+    const l0     = parseFloat(l0Str);
+    const dt     = parseFloat(dtStr);
+
+    if (!alphaAStr.trim() || isNaN(alphaA) || alphaA <= 0)
+      errs.alphaA = "Must be a positive number.";
+    if (!alphaBStr.trim() || isNaN(alphaB) || alphaB <= 0)
+      errs.alphaB = "Must be a positive number.";
+    if (!l0Str.trim() || isNaN(l0) || l0 <= 0)
+      errs.l0 = "Reference length must be > 0.";
+    if (!dtStr.trim() || isNaN(dt) || dt <= 0)
+      errs.dt = "Temperature rise must be > 0.";
+
+    return errs;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Calculate
+  // ---------------------------------------------------------------------------
+  function handleCalculate() {
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) { setResult(null); return; }
+
+    const alphaA = parseFloat(alphaAStr);
+    const alphaB = parseFloat(alphaBStr);
+    const l0     = parseFloat(l0Str);
+    const dt     = parseFloat(dtStr);
+
+    // ΔL (mm) = L0 (mm) × α (ppm/°C = 1e-6/°C) × ΔT (°C)
+    // ppm/°C × 1e-6 → /°C, then × mm = mm of expansion
+    const dLa = l0 * (alphaA / 1e6) * dt;
+    const dLb = l0 * (alphaB / 1e6) * dt;
+
+    setResult({
+      dLa,
+      dLb,
+      dLdiff: Math.abs(dLa - dLb),
+      alphaDiff: Math.abs(alphaA - alphaB),
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Risk level based on |α_A − α_B|
+  // ---------------------------------------------------------------------------
+  function getRisk(alphaDiff: number) {
+    if (alphaDiff >= 20) return {
+      level: "high",
+      color: "red",
+      message:
+        "High CTE mismatch — significant interface stress expected at bonds/seals over thermal cycling. Consider isolation layer or flexible adhesive.",
+    };
+    if (alphaDiff >= 10) return {
+      level: "moderate",
+      color: "yellow",
+      message:
+        "Moderate mismatch — review adhesive/sealant compatibility across temperature range.",
+    };
+    return {
+      level: "low",
+      color: "green",
+      message: "Low mismatch — relatively compatible thermal expansion.",
+    };
+  }
+
+  const risk = result ? getRisk(result.alphaDiff) : null;
+
+  // Color classes for risk badge
+  const riskClasses: Record<string, string> = {
+    red:    "bg-red-50 border-red-300 text-red-800",
+    yellow: "bg-yellow-50 border-yellow-300 text-yellow-800",
+    green:  "bg-green-50 border-green-300 text-green-800",
+  };
+
+  // Material names for labels in the diagram
+  const matAName = MATERIALS[matAIndex].label;
+  const matBName = MATERIALS[matBIndex].label;
+
+  // ---------------------------------------------------------------------------
+  // SVG diagram helpers
+  // ---------------------------------------------------------------------------
+
+  // Base bar width in SVG pixels. The bar representing the larger expansion
+  // gets this full width; the other is scaled proportionally.
+  const SVG_BASE_W = 200;
+
+  // Compute bar widths: normalize so the bigger one = SVG_BASE_W.
+  // Before calculation, both bars are the same width (no result yet).
+  const svgBarWidthA = result
+    ? SVG_BASE_W * (result.dLa / Math.max(result.dLa, result.dLb, 0.001))
+    : SVG_BASE_W;
+  const svgBarWidthB = result
+    ? SVG_BASE_W * (result.dLb / Math.max(result.dLa, result.dLb, 0.001))
+    : SVG_BASE_W;
+
+  // Bar colors: gray before calculation, material colors after
+  const colorA = result ? "#3b82f6" : "#9ca3af"; // blue-500 or gray-400
+  const colorB = result ? "#8b5cf6" : "#9ca3af"; // violet-500 or gray-400
+
+  // SVG geometry constants
+  const ORIGIN_X = 40;  // left edge (bonded interface)
+  const BAR_A_Y1 = 30;  const BAR_A_Y2 = 70;  // top bar y extents
+  const BAR_B_Y1 = 80;  const BAR_B_Y2 = 120; // bottom bar y extents
+
+  // Right edges of each bar
+  const rightA = ORIGIN_X + svgBarWidthA;
+  const rightB = ORIGIN_X + svgBarWidthB;
+
+  // Midpoints for bar labels
+  const midAY = (BAR_A_Y1 + BAR_A_Y2) / 2;
+  const midBY = (BAR_B_Y1 + BAR_B_Y2) / 2;
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+        ← Back to all calculators
+      </Link>
+
+      <h1 className="text-2xl font-bold text-gray-800 mb-1">CTE Mismatch Calculator</h1>
+      <p className="text-gray-500 text-sm mb-6">
+        First-pass estimate — stress calculation requires FEA for complex geometries
+      </p>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Input card                                                          */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5">
+
+        {/* Two-column layout: Material A (left) and Material B (right) */}
+        <div className="grid grid-cols-2 gap-4">
+
+          {/* --- Material A --- */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold text-gray-700 border-b border-gray-100 pb-1">
+              Material A
+            </h3>
+
+            {/* Material A dropdown */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">Material</label>
+              <select
+                value={matAIndex}
+                onChange={(e) => handleMatAChange(Number(e.target.value))}
+                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 transition"
+              >
+                {MATERIALS.map((m, i) => (
+                  <option key={m.label} value={i}>{m.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Alpha A — pre-filled from dropdown, editable for fine-tuning or Custom */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">α (ppm/°C)</label>
+              <input
+                type="number"
+                value={alphaAStr}
+                onChange={(e) => setAlphaAStr(e.target.value)}
+                placeholder="e.g. 23.6"
+                className={`
+                  rounded-lg border px-3 py-2 text-sm outline-none
+                  focus:ring-2 focus:ring-blue-400 transition
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                  ${errors.alphaA ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
+                `}
+              />
+              {errors.alphaA && <p className="text-xs text-red-600">{errors.alphaA}</p>}
+              <p className="text-xs text-gray-400">CTE in ppm/°C (= µm/m·°C)</p>
+            </div>
+          </div>
+
+          {/* --- Material B --- */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold text-gray-700 border-b border-gray-100 pb-1">
+              Material B
+            </h3>
+
+            {/* Material B dropdown */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">Material</label>
+              <select
+                value={matBIndex}
+                onChange={(e) => handleMatBChange(Number(e.target.value))}
+                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 transition"
+              >
+                {MATERIALS.map((m, i) => (
+                  <option key={m.label} value={i}>{m.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Alpha B */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">α (ppm/°C)</label>
+              <input
+                type="number"
+                value={alphaBStr}
+                onChange={(e) => setAlphaBStr(e.target.value)}
+                placeholder="e.g. 17.3"
+                className={`
+                  rounded-lg border px-3 py-2 text-sm outline-none
+                  focus:ring-2 focus:ring-blue-400 transition
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                  ${errors.alphaB ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
+                `}
+              />
+              {errors.alphaB && <p className="text-xs text-red-600">{errors.alphaB}</p>}
+              <p className="text-xs text-gray-400">CTE in ppm/°C (= µm/m·°C)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Shared inputs — reference length and temperature rise */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Reference Length L₀</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={l0Str}
+                onChange={(e) => setL0Str(e.target.value)}
+                placeholder="e.g. 100"
+                className={`
+                  flex-1 rounded-lg border px-3 py-2 text-sm outline-none
+                  focus:ring-2 focus:ring-blue-400 transition
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                  ${errors.l0 ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
+                `}
+              />
+              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+                mm
+              </span>
+            </div>
+            {errors.l0 && <p className="text-xs text-red-600">{errors.l0}</p>}
+            <p className="text-xs text-gray-400">
+              Bond length or dimension of interest
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Temperature Rise ΔT</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={dtStr}
+                onChange={(e) => setDtStr(e.target.value)}
+                placeholder="e.g. 125"
+                className={`
+                  flex-1 rounded-lg border px-3 py-2 text-sm outline-none
+                  focus:ring-2 focus:ring-blue-400 transition
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                  ${errors.dt ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
+                `}
+              />
+              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+                °C
+              </span>
+            </div>
+            {errors.dt && <p className="text-xs text-red-600">{errors.dt}</p>}
+            <p className="text-xs text-gray-400">
+              Default 125°C = −40 to +85°C range
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleCalculate}
+          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+        >
+          Calculate
+        </button>
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* SVG diagram — always visible, updates after calculation             */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <p className="text-xs text-gray-500 mb-2 font-medium">
+          Relative expansion diagram (not to scale)
+        </p>
+        <svg
+          viewBox="0 0 340 160"
+          className="w-full"
+          aria-label="CTE expansion diagram showing two material bars"
+        >
+          {/* ----- Bonded interface: dashed vertical line at x=ORIGIN_X ----- */}
+          <line
+            x1={ORIGIN_X} y1={20}
+            x2={ORIGIN_X} y2={130}
+            stroke="#6b7280"
+            strokeWidth="1.5"
+            strokeDasharray="4 3"
+          />
+          {/* "Interface" label below the dashed line */}
+          <text
+            x={ORIGIN_X} y={145}
+            textAnchor="middle"
+            fontSize="9"
+            fill="#6b7280"
+          >
+            bonded interface
+          </text>
+
+          {/* ----- Material A bar (top) ----- */}
+          <rect
+            x={ORIGIN_X}
+            y={BAR_A_Y1}
+            width={svgBarWidthA}
+            height={BAR_A_Y2 - BAR_A_Y1}
+            fill={colorA}
+            rx="3"
+            opacity="0.85"
+          />
+          {/* Material A label inside bar */}
+          <text
+            x={ORIGIN_X + Math.min(svgBarWidthA / 2, 100)}
+            y={midAY + 4}
+            textAnchor="middle"
+            fontSize="10"
+            fill="white"
+            fontWeight="600"
+          >
+            A: {matAName.length > 14 ? matAName.slice(0, 13) + "…" : matAName}
+          </text>
+
+          {/* Right-pointing arrow at end of bar A */}
+          <line
+            x1={rightA}      y1={midAY}
+            x2={rightA + 12} y2={midAY}
+            stroke={colorA}  strokeWidth="1.5"
+            markerEnd="url(#arrowA)"
+          />
+
+          {/* ΔL_A label above bar A's right end */}
+          <text
+            x={rightA + 6}
+            y={BAR_A_Y1 - 4}
+            textAnchor="middle"
+            fontSize="9"
+            fill="#3b82f6"
+          >
+            {result ? `ΔL_A=${result.dLa.toFixed(4)}mm` : "ΔL_A"}
+          </text>
+
+          {/* ----- Material B bar (bottom) ----- */}
+          <rect
+            x={ORIGIN_X}
+            y={BAR_B_Y1}
+            width={svgBarWidthB}
+            height={BAR_B_Y2 - BAR_B_Y1}
+            fill={colorB}
+            rx="3"
+            opacity="0.85"
+          />
+          {/* Material B label inside bar */}
+          <text
+            x={ORIGIN_X + Math.min(svgBarWidthB / 2, 100)}
+            y={midBY + 4}
+            textAnchor="middle"
+            fontSize="10"
+            fill="white"
+            fontWeight="600"
+          >
+            B: {matBName.length > 14 ? matBName.slice(0, 13) + "…" : matBName}
+          </text>
+
+          {/* Right-pointing arrow at end of bar B */}
+          <line
+            x1={rightB}      y1={midBY}
+            x2={rightB + 12} y2={midBY}
+            stroke={colorB}  strokeWidth="1.5"
+            markerEnd="url(#arrowB)"
+          />
+
+          {/* ΔL_B label below bar B's right end */}
+          <text
+            x={rightB + 6}
+            y={BAR_B_Y2 + 13}
+            textAnchor="middle"
+            fontSize="9"
+            fill="#8b5cf6"
+          >
+            {result ? `ΔL_B=${result.dLb.toFixed(4)}mm` : "ΔL_B"}
+          </text>
+
+          {/* ----- Double-headed arrow for ΔL_diff (only when bars differ) ----- */}
+          {result && result.dLdiff > 0 && (
+            <>
+              {/* Vertical brace between the two right ends */}
+              <line
+                x1={Math.max(rightA, rightB) + 18}
+                y1={BAR_A_Y2}
+                x2={Math.max(rightA, rightB) + 18}
+                y2={BAR_B_Y1}
+                stroke="#ef4444"
+                strokeWidth="1.5"
+                markerEnd="url(#arrowDiff)"
+                markerStart="url(#arrowDiffStart)"
+              />
+              <text
+                x={Math.max(rightA, rightB) + 28}
+                y={(BAR_A_Y2 + BAR_B_Y1) / 2 + 4}
+                fontSize="9"
+                fill="#ef4444"
+              >
+                Δdiff
+              </text>
+            </>
+          )}
+
+          {/* ----- SVG arrow marker definitions ----- */}
+          <defs>
+            <marker id="arrowA" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6" />
+            </marker>
+            <marker id="arrowB" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#8b5cf6" />
+            </marker>
+            {/* Red arrowhead pointing down (for diff arrow end) */}
+            <marker id="arrowDiff" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
+            </marker>
+            {/* Red arrowhead pointing up (for diff arrow start) */}
+            <marker id="arrowDiffStart" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Results card                                                        */}
+      {/* ------------------------------------------------------------------ */}
+      {result && (
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-blue-900 mb-4">Results</h2>
+
+          {/* Side-by-side ΔL_A and ΔL_B */}
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="rounded-lg border bg-white border-blue-100 px-3 py-3 text-center">
+              <p className="text-xs font-semibold mb-1 text-blue-500">ΔL_A (mm)</p>
+              <p className="text-xl font-bold leading-tight text-gray-800">
+                {result.dLa.toFixed(5)}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">{matAName}</p>
+            </div>
+            <div className="rounded-lg border bg-white border-blue-100 px-3 py-3 text-center">
+              <p className="text-xs font-semibold mb-1 text-blue-500">ΔL_B (mm)</p>
+              <p className="text-xl font-bold leading-tight text-gray-800">
+                {result.dLb.toFixed(5)}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">{matBName}</p>
+            </div>
+          </div>
+
+          {/* Differential expansion — the primary result, shown larger */}
+          <div className="rounded-lg border bg-blue-600 border-blue-700 px-4 py-4 text-center mb-4">
+            <p className="text-xs font-semibold mb-1 text-blue-200">
+              Differential Expansion |ΔL_A − ΔL_B|
+            </p>
+            <p className="text-3xl font-bold text-white">
+              {result.dLdiff.toFixed(5)}
+            </p>
+            <p className="text-sm text-blue-200 mt-1">mm</p>
+          </div>
+
+          {/* Risk badge */}
+          {risk && (
+            <div className={`rounded-lg border px-4 py-3 mb-4 text-sm font-medium ${riskClasses[risk.color]}`}>
+              {risk.message}
+            </div>
+          )}
+
+          {/* Formula with substituted values — helps beginners see what was computed */}
+          <p className="text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono leading-5">
+            ΔL_A = {l0Str} × ({alphaAStr} / 1 000 000) × {dtStr} = {result.dLa.toFixed(5)} mm
+            <br />
+            ΔL_B = {l0Str} × ({alphaBStr} / 1 000 000) × {dtStr} = {result.dLb.toFixed(5)} mm
+            <br />
+            ΔL_diff = |{result.dLa.toFixed(5)} − {result.dLb.toFixed(5)}| = {result.dLdiff.toFixed(5)} mm
+          </p>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Disclaimer                                                          */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
+        <p className="text-xs text-amber-800 leading-relaxed">
+          <span className="font-semibold">First-pass estimate.</span> CTE values are typical — verify
+          with material spec sheets, especially for composites and polymers which vary with
+          layup/formulation. Differential expansion causes shear stress at bonded interfaces;
+          structural adequacy requires FEA for complex joints.
+        </p>
+      </div>
+    </div>
+  );
+}

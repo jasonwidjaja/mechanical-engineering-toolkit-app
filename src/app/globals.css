@@ -1,0 +1,4 @@
+/* Tailwind's three base layers — this is all you need to activate Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
