@@ -46,6 +46,30 @@ export default function RootLayout({
             <a href="/" className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
               Engineering Toolkit
             </a>
+
+            {/* Top-level sections. `ml-auto` pushes the nav to the right edge.
+                Plain <a> keeps this a server component — a client-side active-link
+                highlight would require usePathname and therefore "use client". */}
+            <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-sm">
+              <a
+                href="/"
+                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Calculators
+              </a>
+              <a
+                href="/tolerance-stackup"
+                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Tolerance Stackup
+              </a>
+              <a
+                href="/dfm-guide"
+                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                DFM Guide
+              </a>
+            </nav>
           </div>
         </header>
 

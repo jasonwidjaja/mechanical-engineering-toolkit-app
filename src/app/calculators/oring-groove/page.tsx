@@ -20,6 +20,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import OringCrossSectionDiagram from "@/components/OringCrossSectionDiagram";
+import OringGrooveComparisonDiagram from "@/components/OringGrooveComparisonDiagram";
 import { AS568_CROSS_SECTIONS, SealType } from "@/lib/oring-constants";
 
 // Default target squeeze by seal type (per Parker recommendations)
@@ -239,6 +240,28 @@ export default function OringGrooveSizingPage() {
             Updates with current W and target squeeze — calculate to confirm.
           </p>
         </div>
+      </div>
+
+      {/*
+        ── Why groove depth matters ──
+        The preview above shows the groove you're designing. This shows what
+        happens if you get it wrong, next to the correct case — the failure mode
+        is the whole reason the calculation exists. Uses the live W, computed G
+        (falling back to the target-squeeze estimate before Calculate is
+        pressed), and target squeeze so both panels track the current inputs.
+      */}
+      <div className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <h2 className="text-sm font-semibold text-gray-700 mb-1">
+          Why groove depth matters
+        </h2>
+        <p className="text-xs text-gray-500 mb-3">
+          The same O-ring in a groove that&#39;s too deep, and in one sized to your target squeeze.
+        </p>
+        <OringGrooveComparisonDiagram
+          W={svgW}
+          G={svgG}
+          squeezePct={parseFloat(targetSqueeze) || 20}
+        />
       </div>
 
       {/* Disclaimer */}

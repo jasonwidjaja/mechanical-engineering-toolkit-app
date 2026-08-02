@@ -25,6 +25,8 @@
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
+import ExampleChainDiagram from "@/components/ExampleChainDiagram";
+
 // ===========================================================================
 // Types
 // ===========================================================================
@@ -146,6 +148,8 @@ type Example = {
   title: string;
   subtitle: string;
   loopEquation: string;
+  /** Name of the resultant, used to label it in the filled-in chain diagram. */
+  resultLabel: string;
   interpretation: string;
   rows: Array<{
     label: string;
@@ -163,6 +167,7 @@ const EXAMPLES: Example[] = [
     subtitle: "Will the tallest component clear the housing lid?",
     loopEquation:
       "Gap = Housing internal depth − Standoff height − PCB thickness − Tallest component height",
+    resultLabel: "Gap",
     interpretation:
       "Worst-case minimum (0.92 mm) stays positive, so there is no interference risk even in the extreme case.",
     rows: [
@@ -202,6 +207,7 @@ const EXAMPLES: Example[] = [
     subtitle: "How much thread is left to engage after the clamped stack?",
     loopEquation:
       "Thread engagement = Bolt effective length − Mast flange − Housing flange − Compressed gasket",
+    resultLabel: "Remaining thread engagement",
     interpretation:
       "Even worst-case engagement (9.14 mm) clears a typical 1.5×D minimum guideline for an M6 fastener (~9 mm) — always verify against the actual bolt and tapped-material combination for a real design.",
     rows: [
@@ -848,6 +854,27 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
       <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
         <p className="text-xs text-gray-400 mb-1">Loop equation</p>
         <p className="text-sm font-mono text-gray-700 leading-relaxed">{example.loopEquation}</p>
+      </div>
+
+      {/*
+        This example's chain, drawn to scale with its real numbers. Split the
+        rows by direction: exactly one dimension opens the gap (it becomes the
+        full-width span) and the rest close it. `c.nominal` is the resultant
+        straight from the shared engine, so the picture can never drift out of
+        step with the arithmetic shown below it.
+      */}
+      <div className="border border-gray-200 rounded-lg px-4 pt-3 pb-4">
+        <p className="text-xs text-gray-400 mb-2">Dimension chain (to scale)</p>
+        <ExampleChainDiagram
+          opener={(() => {
+            const o = example.rows.find((r) => r.direction === "opens")!;
+            return { label: o.label, value: num(o.nominal) };
+          })()}
+          closers={example.rows
+            .filter((r) => r.direction === "closes")
+            .map((r) => ({ label: r.label, value: num(r.nominal) }))}
+          result={{ label: example.resultLabel, value: c.nominal }}
+        />
       </div>
 
       {/* Why each dimension is + or − */}

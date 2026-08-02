@@ -23,6 +23,8 @@
 import { useState } from "react";
 import Link from "next/link";
 
+import HeatSinkDiagram from "@/components/HeatSinkDiagram";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -239,6 +241,21 @@ export default function HeatsinkSizingPage() {
         >
           Calculate
         </button>
+      </div>
+
+      {/*
+        ── Thermal path diagram ──
+        Fed the live input values so the labelled temperatures track whatever
+        the user has typed. Number.parseFloat gives NaN for an empty or
+        half-typed field, so those fall back to null and the diagram shows the
+        generic symbol rather than "NaN °C".
+      */}
+      <div className="mt-6 bg-white border border-gray-200 rounded-xl p-4">
+        <h2 className="text-sm font-semibold text-gray-700 mb-2">Thermal path</h2>
+        <HeatSinkDiagram
+          tAmb={Number.isFinite(parseFloat(tAmbInput)) ? parseFloat(tAmbInput) : null}
+          tMax={Number.isFinite(parseFloat(tMaxInput)) ? parseFloat(tMaxInput) : null}
+        />
       </div>
 
       {/* ── Results card — only rendered when we have a valid result ── */}
