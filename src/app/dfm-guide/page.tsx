@@ -36,9 +36,13 @@ import {
   type Guideline,
   type ProcessContent,
   type ProcessKey,
-  type Resource,
   type ToleranceCategory,
 } from "@/lib/dfm-data";
+
+import DataTable from "@/components/ui/DataTable";
+import ResourceList from "@/components/ui/ResourceList";
+import SectionHeading from "@/components/ui/SectionHeading";
+import TabButton from "@/components/ui/TabButton";
 
 import CastingSectionDiagram from "@/components/dfm/CastingSectionDiagram";
 import DraftAngleDiagram from "@/components/dfm/DraftAngleDiagram";
@@ -317,131 +321,47 @@ function TolerancePanel() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Shared building blocks
+// Tables — thin wrappers that map this page's data shapes onto the shared
+// DataTable. The markup lives in src/components/ui/DataTable.tsx.
 // ═══════════════════════════════════════════════════════════════════════════
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-base font-semibold text-gray-800 mb-3">{children}</h2>;
-}
 
 /** Two-column guidelines table: topic → rule of thumb. */
 function GuidelinesTable({ rows }: { rows: Guideline[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
-            <th className="px-4 py-3 font-semibold w-48">Topic</th>
-            <th className="px-4 py-3 font-semibold">Guideline</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {rows.map(r => (
-            <tr key={r.topic} className="hover:bg-gray-50 transition-colors align-top">
-              <td className="px-4 py-3 font-medium text-gray-800">{r.topic}</td>
-              <td className="px-4 py-3 text-gray-600 leading-relaxed">{r.guidance}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      columns={[
+        { header: "Topic", className: "font-medium text-gray-800", headerClassName: "w-48" },
+        { header: "Guideline", className: "text-gray-600 leading-relaxed" },
+      ]}
+      rows={rows.map(r => ({ key: r.topic, cells: [r.topic, r.guidance] }))}
+    />
   );
 }
 
 /** N-column comparison table — used by 3D printing (FDM | SLA | SLS/MJF). */
 function ComparisonTable({ comparison }: { comparison: Comparison }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
-            <th className="px-4 py-3 font-semibold w-44">Parameter</th>
-            {comparison.columns.map(c => (
-              <th key={c} className="px-4 py-3 font-semibold">{c}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {comparison.rows.map(r => (
-            <tr key={r.topic} className="hover:bg-gray-50 transition-colors align-top">
-              <td className="px-4 py-3 font-medium text-gray-800">{r.topic}</td>
-              {r.values.map((v, i) => (
-                // Values are positional (they line up with `columns`), so the
-                // column name is the only stable part of the key.
-                <td key={comparison.columns[i]} className="px-4 py-3 text-gray-600">
-                  {v}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      columns={[
+        { header: "Parameter", className: "font-medium text-gray-800", headerClassName: "w-44" },
+        ...comparison.columns.map(c => ({ header: c })),
+      ]}
+      rows={comparison.rows.map(r => ({ key: r.topic, cells: [r.topic, ...r.values] }))}
+    />
   );
 }
 
 /** Three-column defects table: what you see → why → what to change. */
 function DefectsTable({ rows }: { rows: Defect[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
-            <th className="px-4 py-3 font-semibold w-44">Defect</th>
-            <th className="px-4 py-3 font-semibold">Typical Cause</th>
-            <th className="px-4 py-3 font-semibold">Design Fix</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {rows.map(r => (
-            <tr key={r.defect} className="hover:bg-gray-50 transition-colors align-top">
-              <td className="px-4 py-3 font-medium text-red-700">{r.defect}</td>
-              <td className="px-4 py-3 text-gray-600 text-xs leading-relaxed">{r.cause}</td>
-              <td className="px-4 py-3 text-gray-700 text-xs leading-relaxed">{r.fix}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-/**
- * External resource links.
- * target="_blank" opens a new tab as requested; rel="noopener noreferrer" is the
- * required companion — without it the opened page gets a handle back to this one
- * via window.opener, which is both a security and a performance problem.
- */
-function ResourceList({ resources }: { resources: Resource[] }) {
-  return (
-    <ul className="flex flex-col gap-2">
-      {resources.map(r => (
-        <li key={r.url}>
-          <a
-            href={r.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-start gap-2.5 bg-white rounded-lg border border-gray-200 px-4 py-3
-                       hover:border-blue-400 hover:shadow-sm transition-all"
-          >
-            <span className="text-blue-600 mt-0.5 shrink-0">🔗</span>
-            <span className="text-sm text-gray-700 group-hover:text-blue-700 leading-snug">
-              {r.label}
-            </span>
-            {/* External-link glyph, so it's clear this leaves the site */}
-            <svg
-              className="h-3.5 w-3.5 text-gray-300 group-hover:text-blue-500 shrink-0 ml-auto mt-1"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-            <span className="sr-only">(opens in a new tab)</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <DataTable
+      columns={[
+        { header: "Defect", className: "font-medium text-red-700", headerClassName: "w-44" },
+        { header: "Typical Cause", className: "text-gray-600 text-xs leading-relaxed" },
+        { header: "Design Fix", className: "text-gray-700 text-xs leading-relaxed" },
+      ]}
+      rows={rows.map(r => ({ key: r.defect, cells: [r.defect, r.cause, r.fix] }))}
+    />
   );
 }
 
@@ -501,26 +421,5 @@ function CategoryChip({ category }: { category: ToleranceCategory }) {
   );
 }
 
-/** Tab button — same styling as the Tolerance Stackup page's tabs. */
-function TabButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap ${
-        active
-          ? "border-blue-600 text-blue-600"
-          : "border-transparent text-gray-500 hover:text-gray-700"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
+// TabButton, SectionHeading, ResourceList and DataTable now live in
+// src/components/ui/ — shared with the Mechanisms reference page.

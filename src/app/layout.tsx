@@ -69,6 +69,12 @@ export default function RootLayout({
               >
                 DFM Guide
               </a>
+              <a
+                href="/mechanisms-reference"
+                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Mechanisms
+              </a>
             </nav>
           </div>
         </header>
