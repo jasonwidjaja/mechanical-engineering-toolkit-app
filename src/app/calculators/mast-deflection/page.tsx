@@ -176,25 +176,25 @@ export default function MastDeflectionPage() {
   return (
     <div className="max-w-2xl mx-auto">
       {/* Back navigation */}
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
       {/* Page header */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Mast Tip Deflection & Pointing Error</h1>
-      <p className="text-sm text-gray-500 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Mast Tip Deflection & Pointing Error</h1>
+      <p className="text-sm text-graphite/60 mb-1">
         Cantilevered hollow tube — first-pass estimate. Final design needs FEA.
       </p>
       {/* Use-case note */}
-      <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 mb-6">
+      <p className="text-xs text-steel-blue-deep bg-steel-blue-tint border border-steel-blue-line rounded-lg px-3 py-2 mb-6">
         Connects mechanical stiffness directly to radar/antenna pointing accuracy.
       </p>
 
       {/* ------------------------------------------------------------------ */}
       {/* INPUT CARD                                                           */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">Mast Geometry & Loading</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-5 mb-5">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-4">Mast Geometry & Loading</h2>
 
         {/* Mast length */}
         <FormRow label="Mast length L (m)">
@@ -234,7 +234,7 @@ export default function MastDeflectionPage() {
           <select
             value={matIdx}
             onChange={e => handleMaterialChange(Number(e.target.value))}
-            className="w-full border border-gray-200 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-400 outline-none bg-white mb-2"
+            className="w-full border border-panel-gray rounded px-3 py-1.5 text-sm bg-white mb-2"
           >
             {MATERIALS.map((m, i) => (
               <option key={m.label} value={i}>{m.label}</option>
@@ -242,7 +242,7 @@ export default function MastDeflectionPage() {
           </select>
           {/* Editable E field — always shown so user can fine-tune */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 w-36">Young&apos;s modulus E (GPa)</span>
+            <span className="text-xs text-graphite/60 w-36">Young&apos;s modulus E (GPa)</span>
             <input
               type="number"
               value={E}
@@ -289,14 +289,14 @@ export default function MastDeflectionPage() {
         {/* Calculate button */}
         <button
           onClick={calculate}
-          className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="w-full mt-2 bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
         >
           Calculate Deflection
         </button>
 
         {/* Validation error */}
         {calcError && (
-          <p className="mt-2 text-sm text-red-600">{calcError}</p>
+          <p className="mt-2 text-sm text-signal-red">{calcError}</p>
         )}
       </div>
 
@@ -304,8 +304,8 @@ export default function MastDeflectionPage() {
       {/* RESULTS CARD                                                         */}
       {/* ------------------------------------------------------------------ */}
       {result && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-5">
-          <h2 className="text-sm font-semibold text-blue-900 mb-4">Results</h2>
+        <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5 mb-5">
+          <h2 className="text-sm font-semibold text-steel-blue-deep mb-4">Results</h2>
 
           {/* Row 1: δ, θ in mrad, θ in degrees */}
           <div className="grid grid-cols-3 gap-3 mb-3">
@@ -341,7 +341,7 @@ export default function MastDeflectionPage() {
           )}
 
           {/* Section properties summary */}
-          <div className="mt-1 bg-white rounded-lg border border-blue-200 px-4 py-2 text-xs text-blue-800">
+          <div className="mt-1 bg-white rounded-lg border border-steel-blue-line px-4 py-2 text-xs text-steel-blue-deep">
             <span className="font-semibold">Section: </span>
             D_i = {result.D_i_mm.toFixed(2)} mm &nbsp;·&nbsp;
             I = {engNotation(result.I_m4)} m⁴ &nbsp;·&nbsp;
@@ -349,7 +349,7 @@ export default function MastDeflectionPage() {
           </div>
 
           {/* Formula recap */}
-          <p className="mt-2 text-xs font-mono text-blue-800 bg-blue-100 rounded px-3 py-2 leading-relaxed">
+          <p className="mt-2 text-xs font-mono text-steel-blue-deep bg-steel-blue-tint rounded px-3 py-2 leading-relaxed">
             {"δ = F·L³/(3EI) + w·L⁴/(8EI) = "}
             {result.delta_mm.toFixed(2)} mm
             {"  |  θ = "}
@@ -361,15 +361,15 @@ export default function MastDeflectionPage() {
       {/* ------------------------------------------------------------------ */}
       {/* CONCEPTUAL DIAGRAM                                                   */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Physics Diagram</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-4 mb-5">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-3">Physics Diagram</h2>
         <MastDeflectionDiagram />
       </div>
 
       {/* ------------------------------------------------------------------ */}
       {/* DISCLAIMER                                                           */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+      <div className="bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>Disclaimer:</strong> First-pass estimate using Euler-Bernoulli beam theory for a
         uniform cantilever. Mast weight, material nonlinearity, joint flexibility, and base fixity
         compliance are not included. Verify with FEA for flight or safety-critical applications.
@@ -386,24 +386,24 @@ function MastDeflectionDiagram() {
   return (
     <svg
       viewBox="0 0 320 280"
-      className="w-full rounded-lg bg-gray-50 border border-gray-100"
+      className="w-full rounded-lg bg-instrument-white border border-panel-gray"
       aria-label="Cantilever mast deflection diagram showing undeflected and deflected mast positions"
     >
       {/* ── Fixed support base: thick horizontal band ── */}
-      <rect x={100} y={225} width={120} height={14} fill="#cbd5e1" rx={2} />
+      <rect x={100} y={225} width={120} height={14} fill="#CDD2D5" rx={2} />
       {/* Fixed support hatching — diagonal lines below the base */}
       {[0, 1, 2, 3, 4].map(i => (
         <line
           key={i}
           x1={108 + i * 20} y1={239}
           x2={98  + i * 20} y2={255}
-          stroke="#94a3b8" strokeWidth={1.5}
+          stroke="#98999B" strokeWidth={1.5}
         />
       ))}
 
       {/* ── Undeflected mast: solid dark gray rectangle (plumb vertical) ── */}
       {/* x=145 to x=160 (15 px wide), y=40 to y=225 */}
-      <rect x={145} y={40} width={15} height={185} fill="#64748b" rx={2} />
+      <rect x={145} y={40} width={15} height={185} fill="#5F6164" rx={2} />
 
       {/* ── Deflected mast: curved shape (blue, semi-transparent) ──
           The mast is fixed at the bottom (x=152) and deflects ~53px to the right at the tip.
@@ -412,9 +412,9 @@ function MastDeflectionDiagram() {
       {/* Right edge of deflected mast */}
       <path
         d="M 160,225 C 160,150 183,90 213,40 L 206,40 C 178,88 157,148 153,225 Z"
-        fill="#3b82f6"
+        fill="#2B4C7E"
         fillOpacity={0.30}
-        stroke="#3b82f6"
+        stroke="#2B4C7E"
         strokeWidth={1.5}
         strokeOpacity={0.6}
       />
@@ -423,7 +423,7 @@ function MastDeflectionDiagram() {
       <path
         d="M 152,225 C 152,150 175,90 205,40"
         fill="none"
-        stroke="#3b82f6"
+        stroke="#2B4C7E"
         strokeWidth={2}
         strokeDasharray="6 3"
         strokeOpacity={0.8}
@@ -434,38 +434,38 @@ function MastDeflectionDiagram() {
       {[75, 105, 135, 165, 195].map((y, i) => (
         <g key={y}>
           {/* Arrow shaft */}
-          <line x1={160} y1={y} x2={180} y2={y} stroke="#f97316" strokeWidth={1.8} />
+          <line x1={160} y1={y} x2={180} y2={y} stroke="#A17D36" strokeWidth={1.8} />
           {/* Arrowhead */}
           <polygon
             points={`178,${y - 4} 184,${y} 178,${y + 4}`}
-            fill="#f97316"
+            fill="#A17D36"
           />
           {/* Label "w" next to the third arrow */}
           {i === 2 && (
-            <text x={187} y={y + 4} fill="#ea580c" fontSize={10} fontWeight="bold">w</text>
+            <text x={187} y={y + 4} fill="#A17D36" fontSize={10} fontWeight="bold">w</text>
           )}
         </g>
       ))}
 
       {/* ── Tip point load arrow (red, horizontal, at deflected tip) ── */}
       {/* Shaft from x=205 to x=240, at y=40 */}
-      <line x1={205} y1={40} x2={238} y2={40} stroke="#ef4444" strokeWidth={2.5} />
+      <line x1={205} y1={40} x2={238} y2={40} stroke="#9B3B3E" strokeWidth={2.5} />
       {/* Arrowhead */}
-      <polygon points="235,34 245,40 235,46" fill="#ef4444" />
+      <polygon points="235,34 245,40 235,46" fill="#9B3B3E" />
       {/* Label "F" */}
-      <text x={248} y={44} fill="#dc2626" fontSize={12} fontWeight="bold">F</text>
+      <text x={248} y={44} fill="#9B3B3E" fontSize={12} fontWeight="bold">F</text>
 
       {/* ── Tip deflection annotation ──
           Dashed horizontal line from undeflected tip (160,40) to deflected tip (205,40) */}
       <line
         x1={152} y1={34} x2={205} y2={34}
-        stroke="#475569" strokeWidth={1.2} strokeDasharray="4 2"
+        stroke="#5F6164" strokeWidth={1.2} strokeDasharray="4 2"
       />
       {/* Short vertical tick at each end of the dashed line */}
-      <line x1={152} y1={30} x2={152} y2={38} stroke="#475569" strokeWidth={1} />
-      <line x1={205} y1={30} x2={205} y2={38} stroke="#475569" strokeWidth={1} />
+      <line x1={152} y1={30} x2={152} y2={38} stroke="#5F6164" strokeWidth={1} />
+      <line x1={205} y1={30} x2={205} y2={38} stroke="#5F6164" strokeWidth={1} />
       {/* δ label above the dashed line, centered */}
-      <text x={172} y={29} fill="#334155" fontSize={11} fontWeight="bold"
+      <text x={172} y={29} fill="#1A1D21" fontSize={11} fontWeight="bold"
         textAnchor="middle">δ</text>
 
       {/* ── Angle arc annotation at the deflected tip ── */}
@@ -474,15 +474,15 @@ function MastDeflectionDiagram() {
       <path
         d="M 205,55 A 15,15 0 0,0 218,44"
         fill="none"
-        stroke="#7c3aed"
+        stroke="#5F6164"
         strokeWidth={1.5}
       />
       {/* θ label */}
-      <text x={218} y={57} fill="#7c3aed" fontSize={11} fontWeight="bold">θ</text>
+      <text x={218} y={57} fill="#5F6164" fontSize={11} fontWeight="bold">θ</text>
 
       {/* ── Axis labels ── */}
-      <text x={107} y={270} fill="#94a3b8" fontSize={8}>Fixed base</text>
-      <text x={107} y={15}  fill="#94a3b8" fontSize={8}>Free tip (deflected)</text>
+      <text x={107} y={270} fill="#98999B" fontSize={8}>Fixed base</text>
+      <text x={107} y={15}  fill="#98999B" fontSize={8}>Free tip (deflected)</text>
     </svg>
   );
 }
@@ -499,10 +499,10 @@ function FormRow({
 }) {
   return (
     <div className="mb-4">
-      <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-graphite/80 mb-1">{label}</label>
       {children}
       {hint && (
-        <p className="mt-1 text-xs text-gray-400">{hint}</p>
+        <p className="mt-1 text-xs text-graphite/50">{hint}</p>
       )}
     </div>
   );
@@ -520,17 +520,17 @@ function ResultTile({
   primary?: boolean;
 }) {
   return (
-    <div className="bg-white rounded-lg border border-blue-200 px-3 py-3 text-center">
-      <p className={`font-bold text-blue-700 ${primary ? "text-2xl" : "text-lg"}`}>
+    <div className="bg-white rounded-lg border border-steel-blue-line px-3 py-3 text-center">
+      <p className={`font-bold text-steel-blue-deep ${primary ? "text-2xl" : "text-lg"}`}>
         {value}
-        {unit && <span className="text-sm font-normal ml-1 text-blue-500">{unit}</span>}
+        {unit && <span className="text-sm font-normal ml-1 text-steel-blue">{unit}</span>}
       </p>
-      <p className="text-xs text-gray-500 mt-0.5 leading-tight">{label}</p>
+      <p className="text-xs text-graphite/60 mt-0.5 leading-tight">{label}</p>
     </div>
   );
 }
 
 // Shared Tailwind classes for all number inputs — eliminates browser spinners
 const inputCls =
-  "w-full border border-gray-200 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-400 outline-none " +
+  "w-full border border-panel-gray rounded px-3 py-1.5 text-sm   " +
   "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";

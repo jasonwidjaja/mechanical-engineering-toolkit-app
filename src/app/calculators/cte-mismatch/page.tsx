@@ -152,9 +152,9 @@ export default function CTEMismatchPage() {
 
   // Color classes for risk badge
   const riskClasses: Record<string, string> = {
-    red:    "bg-red-50 border-red-300 text-red-800",
-    yellow: "bg-yellow-50 border-yellow-300 text-yellow-800",
-    green:  "bg-green-50 border-green-300 text-green-800",
+    red:    "bg-signal-red-tint border-signal-red-line text-signal-red-deep",
+    yellow: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep",
+    green:  "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",
   };
 
   // Material names for labels in the diagram
@@ -179,8 +179,8 @@ export default function CTEMismatchPage() {
     : SVG_BASE_W;
 
   // Bar colors: gray before calculation, material colors after
-  const colorA = result ? "#3b82f6" : "#9ca3af"; // blue-500 or gray-400
-  const colorB = result ? "#8b5cf6" : "#9ca3af"; // violet-500 or gray-400
+  const colorA = result ? "#2B4C7E" : "#98999B"; // blue-500 or gray-400
+  const colorB = result ? "#5F6164" : "#98999B"; // violet-500 or gray-400
 
   // SVG geometry constants
   const ORIGIN_X = 40;  // left edge (bonded interface)
@@ -197,36 +197,36 @@ export default function CTEMismatchPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">CTE Mismatch Calculator</h1>
-      <p className="text-gray-500 text-sm mb-6">
+      <h1 className="text-2xl font-bold text-graphite mb-1">CTE Mismatch Calculator</h1>
+      <p className="text-graphite/60 text-sm mb-6">
         First-pass estimate — stress calculation requires FEA for complex geometries
       </p>
 
       {/* ------------------------------------------------------------------ */}
       {/* Input card                                                          */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5">
+      <div className="bg-white rounded-lg border border-panel-gray p-6 flex flex-col gap-5">
 
         {/* Two-column layout: Material A (left) and Material B (right) */}
         <div className="grid grid-cols-2 gap-4">
 
           {/* --- Material A --- */}
           <div className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold text-gray-700 border-b border-gray-100 pb-1">
+            <h3 className="text-sm font-semibold text-graphite/80 border-b border-panel-gray pb-1">
               Material A
             </h3>
 
             {/* Material A dropdown */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Material</label>
+              <label className="text-sm font-medium text-graphite/80">Material</label>
               <select
                 value={matAIndex}
                 onChange={(e) => handleMatAChange(Number(e.target.value))}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="rounded-lg border border-graphite/20 bg-white px-3 py-2 text-sm transition"
               >
                 {MATERIALS.map((m, i) => (
                   <option key={m.label} value={i}>{m.label}</option>
@@ -236,37 +236,37 @@ export default function CTEMismatchPage() {
 
             {/* Alpha A — pre-filled from dropdown, editable for fine-tuning or Custom */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">α (ppm/°C)</label>
+              <label className="text-sm font-medium text-graphite/80">α (ppm/°C)</label>
               <input
                 type="number"
                 value={alphaAStr}
                 onChange={(e) => setAlphaAStr(e.target.value)}
                 placeholder="e.g. 23.6"
                 className={`
-                  rounded-lg border px-3 py-2 text-sm outline-none
-                  focus:ring-2 focus:ring-blue-400 transition
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.alphaA ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-                `}
+ rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.alphaA ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
               />
-              {errors.alphaA && <p className="text-xs text-red-600">{errors.alphaA}</p>}
-              <p className="text-xs text-gray-400">CTE in ppm/°C (= µm/m·°C)</p>
+              {errors.alphaA && <p className="text-xs text-signal-red">{errors.alphaA}</p>}
+              <p className="text-xs text-graphite/50">CTE in ppm/°C (= µm/m·°C)</p>
             </div>
           </div>
 
           {/* --- Material B --- */}
           <div className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold text-gray-700 border-b border-gray-100 pb-1">
+            <h3 className="text-sm font-semibold text-graphite/80 border-b border-panel-gray pb-1">
               Material B
             </h3>
 
             {/* Material B dropdown */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Material</label>
+              <label className="text-sm font-medium text-graphite/80">Material</label>
               <select
                 value={matBIndex}
                 onChange={(e) => handleMatBChange(Number(e.target.value))}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="rounded-lg border border-graphite/20 bg-white px-3 py-2 text-sm transition"
               >
                 {MATERIALS.map((m, i) => (
                   <option key={m.label} value={i}>{m.label}</option>
@@ -276,21 +276,21 @@ export default function CTEMismatchPage() {
 
             {/* Alpha B */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">α (ppm/°C)</label>
+              <label className="text-sm font-medium text-graphite/80">α (ppm/°C)</label>
               <input
                 type="number"
                 value={alphaBStr}
                 onChange={(e) => setAlphaBStr(e.target.value)}
                 placeholder="e.g. 17.3"
                 className={`
-                  rounded-lg border px-3 py-2 text-sm outline-none
-                  focus:ring-2 focus:ring-blue-400 transition
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.alphaB ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-                `}
+ rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.alphaB ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
               />
-              {errors.alphaB && <p className="text-xs text-red-600">{errors.alphaB}</p>}
-              <p className="text-xs text-gray-400">CTE in ppm/°C (= µm/m·°C)</p>
+              {errors.alphaB && <p className="text-xs text-signal-red">{errors.alphaB}</p>}
+              <p className="text-xs text-graphite/50">CTE in ppm/°C (= µm/m·°C)</p>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function CTEMismatchPage() {
         {/* Shared inputs — reference length and temperature rise */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Reference Length L₀</label>
+            <label className="text-sm font-medium text-graphite/80">Reference Length L₀</label>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -306,24 +306,24 @@ export default function CTEMismatchPage() {
                 onChange={(e) => setL0Str(e.target.value)}
                 placeholder="e.g. 100"
                 className={`
-                  flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-                  focus:ring-2 focus:ring-blue-400 transition
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.l0 ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-                `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.l0 ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
               />
-              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
                 mm
               </span>
             </div>
-            {errors.l0 && <p className="text-xs text-red-600">{errors.l0}</p>}
-            <p className="text-xs text-gray-400">
+            {errors.l0 && <p className="text-xs text-signal-red">{errors.l0}</p>}
+            <p className="text-xs text-graphite/50">
               Bond length or dimension of interest
             </p>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Temperature Rise ΔT</label>
+            <label className="text-sm font-medium text-graphite/80">Temperature Rise ΔT</label>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -331,18 +331,18 @@ export default function CTEMismatchPage() {
                 onChange={(e) => setDtStr(e.target.value)}
                 placeholder="e.g. 125"
                 className={`
-                  flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-                  focus:ring-2 focus:ring-blue-400 transition
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.dt ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-                `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.dt ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
               />
-              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
                 °C
               </span>
             </div>
-            {errors.dt && <p className="text-xs text-red-600">{errors.dt}</p>}
-            <p className="text-xs text-gray-400">
+            {errors.dt && <p className="text-xs text-signal-red">{errors.dt}</p>}
+            <p className="text-xs text-graphite/50">
               Default 125°C = −40 to +85°C range
             </p>
           </div>
@@ -350,7 +350,7 @@ export default function CTEMismatchPage() {
 
         <button
           onClick={handleCalculate}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
         >
           Calculate
         </button>
@@ -359,8 +359,8 @@ export default function CTEMismatchPage() {
       {/* ------------------------------------------------------------------ */}
       {/* SVG diagram — always visible, updates after calculation             */}
       {/* ------------------------------------------------------------------ */}
-      <div className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-        <p className="text-xs text-gray-500 mb-2 font-medium">
+      <div className="mt-6 bg-white rounded-lg border border-panel-gray p-4">
+        <p className="text-xs text-graphite/60 mb-2 font-medium">
           Relative expansion diagram (not to scale)
         </p>
         <svg
@@ -372,7 +372,7 @@ export default function CTEMismatchPage() {
           <line
             x1={ORIGIN_X} y1={20}
             x2={ORIGIN_X} y2={130}
-            stroke="#6b7280"
+            stroke="#5F6164"
             strokeWidth="1.5"
             strokeDasharray="4 3"
           />
@@ -381,7 +381,7 @@ export default function CTEMismatchPage() {
             x={ORIGIN_X} y={145}
             textAnchor="middle"
             fontSize="9"
-            fill="#6b7280"
+            fill="#5F6164"
           >
             bonded interface
           </text>
@@ -422,7 +422,7 @@ export default function CTEMismatchPage() {
             y={BAR_A_Y1 - 4}
             textAnchor="middle"
             fontSize="9"
-            fill="#3b82f6"
+            fill="#2B4C7E"
           >
             {result ? `ΔL_A=${result.dLa.toFixed(4)}mm` : "ΔL_A"}
           </text>
@@ -463,7 +463,7 @@ export default function CTEMismatchPage() {
             y={BAR_B_Y2 + 13}
             textAnchor="middle"
             fontSize="9"
-            fill="#8b5cf6"
+            fill="#5F6164"
           >
             {result ? `ΔL_B=${result.dLb.toFixed(4)}mm` : "ΔL_B"}
           </text>
@@ -477,7 +477,7 @@ export default function CTEMismatchPage() {
                 y1={BAR_A_Y2}
                 x2={Math.max(rightA, rightB) + 18}
                 y2={BAR_B_Y1}
-                stroke="#ef4444"
+                stroke="#9B3B3E"
                 strokeWidth="1.5"
                 markerEnd="url(#arrowDiff)"
                 markerStart="url(#arrowDiffStart)"
@@ -486,7 +486,7 @@ export default function CTEMismatchPage() {
                 x={Math.max(rightA, rightB) + 28}
                 y={(BAR_A_Y2 + BAR_B_Y1) / 2 + 4}
                 fontSize="9"
-                fill="#ef4444"
+                fill="#9B3B3E"
               >
                 Δdiff
               </text>
@@ -496,18 +496,18 @@ export default function CTEMismatchPage() {
           {/* ----- SVG arrow marker definitions ----- */}
           <defs>
             <marker id="arrowA" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6" />
+              <path d="M0,0 L6,3 L0,6 Z" fill="#2B4C7E" />
             </marker>
             <marker id="arrowB" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#8b5cf6" />
+              <path d="M0,0 L6,3 L0,6 Z" fill="#5F6164" />
             </marker>
             {/* Red arrowhead pointing down (for diff arrow end) */}
             <marker id="arrowDiff" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
+              <path d="M0,0 L6,3 L0,6 Z" fill="#9B3B3E" />
             </marker>
             {/* Red arrowhead pointing up (for diff arrow start) */}
             <marker id="arrowDiffStart" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
-              <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
+              <path d="M0,0 L6,3 L0,6 Z" fill="#9B3B3E" />
             </marker>
           </defs>
         </svg>
@@ -517,36 +517,36 @@ export default function CTEMismatchPage() {
       {/* Results card                                                        */}
       {/* ------------------------------------------------------------------ */}
       {result && (
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-blue-900 mb-4">Results</h2>
+        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Results</h2>
 
           {/* Side-by-side ΔL_A and ΔL_B */}
           <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="rounded-lg border bg-white border-blue-100 px-3 py-3 text-center">
-              <p className="text-xs font-semibold mb-1 text-blue-500">ΔL_A (mm)</p>
-              <p className="text-xl font-bold leading-tight text-gray-800">
+            <div className="rounded-lg border bg-white border-steel-blue-line px-3 py-3 text-center">
+              <p className="text-xs font-semibold mb-1 text-steel-blue">ΔL_A (mm)</p>
+              <p className="text-xl font-bold leading-tight text-graphite">
                 {result.dLa.toFixed(5)}
               </p>
-              <p className="text-xs text-gray-400 mt-1">{matAName}</p>
+              <p className="text-xs text-graphite/50 mt-1">{matAName}</p>
             </div>
-            <div className="rounded-lg border bg-white border-blue-100 px-3 py-3 text-center">
-              <p className="text-xs font-semibold mb-1 text-blue-500">ΔL_B (mm)</p>
-              <p className="text-xl font-bold leading-tight text-gray-800">
+            <div className="rounded-lg border bg-white border-steel-blue-line px-3 py-3 text-center">
+              <p className="text-xs font-semibold mb-1 text-steel-blue">ΔL_B (mm)</p>
+              <p className="text-xl font-bold leading-tight text-graphite">
                 {result.dLb.toFixed(5)}
               </p>
-              <p className="text-xs text-gray-400 mt-1">{matBName}</p>
+              <p className="text-xs text-graphite/50 mt-1">{matBName}</p>
             </div>
           </div>
 
           {/* Differential expansion — the primary result, shown larger */}
-          <div className="rounded-lg border bg-blue-600 border-blue-700 px-4 py-4 text-center mb-4">
-            <p className="text-xs font-semibold mb-1 text-blue-200">
+          <div className="rounded-lg border bg-steel-blue border-steel-blue-deep px-4 py-4 text-center mb-4">
+            <p className="text-xs font-semibold mb-1 text-steel-blue-tint">
               Differential Expansion |ΔL_A − ΔL_B|
             </p>
             <p className="text-3xl font-bold text-white">
               {result.dLdiff.toFixed(5)}
             </p>
-            <p className="text-sm text-blue-200 mt-1">mm</p>
+            <p className="text-sm text-steel-blue-tint mt-1">mm</p>
           </div>
 
           {/* Risk badge */}
@@ -557,7 +557,7 @@ export default function CTEMismatchPage() {
           )}
 
           {/* Formula with substituted values — helps beginners see what was computed */}
-          <p className="text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono leading-5">
+          <p className="text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono leading-5">
             ΔL_A = {l0Str} × ({alphaAStr} / 1 000 000) × {dtStr} = {result.dLa.toFixed(5)} mm
             <br />
             ΔL_B = {l0Str} × ({alphaBStr} / 1 000 000) × {dtStr} = {result.dLb.toFixed(5)} mm
@@ -570,8 +570,8 @@ export default function CTEMismatchPage() {
       {/* ------------------------------------------------------------------ */}
       {/* Disclaimer                                                          */}
       {/* ------------------------------------------------------------------ */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
-        <p className="text-xs text-amber-800 leading-relaxed">
+      <div className="mt-6 bg-signal-amber-tint border border-signal-amber-line rounded-lg p-5">
+        <p className="text-xs text-signal-amber-deep leading-relaxed">
           <span className="font-semibold">First-pass estimate.</span> CTE values are typical — verify
           with material spec sheets, especially for composites and polymers which vary with
           layup/formulation. Differential expansion causes shear stress at bonded interfaces;

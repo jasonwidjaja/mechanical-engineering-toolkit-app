@@ -79,26 +79,26 @@ export default function DfmGuidePage() {
     <div className="max-w-4xl mx-auto">
       <Link
         href="/"
-        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6"
+        className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6"
       >
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">DFM Reference Hub</h1>
-      <p className="text-sm text-gray-500 mb-5">
+      <h1 className="text-2xl font-bold text-graphite mb-1">DFM Reference Hub</h1>
+      <p className="text-sm text-graphite/60 mb-5">
         Design for Manufacturability guidelines across four common processes — what each
         one can hold, how parts typically fail, and the geometry that drives both.
       </p>
 
       {/* ── Module-wide disclaimer. Shown above the tabs so it applies to
              everything, not just whichever tab happens to be open. ── */}
-      <div className="flex gap-2.5 items-start bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-6">
+      <div className="flex gap-2.5 items-start bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 mb-6">
         <span className="text-base leading-none mt-0.5">⚠️</span>
-        <p className="text-xs text-amber-900 leading-relaxed">{DISCLAIMER}</p>
+        <p className="text-xs text-signal-amber-deep leading-relaxed">{DISCLAIMER}</p>
       </div>
 
       {/* ── Tab switcher ── */}
-      <div className="flex gap-1 mb-6 border-b border-gray-200 overflow-x-auto">
+      <div className="flex gap-1 mb-6 border-b border-panel-gray overflow-x-auto">
         {PROCESSES.map(p => (
           <TabButton key={p.key} active={tab === p.key} onClick={() => setTab(p.key)}>
             <span className="mr-1.5">{p.icon}</span>
@@ -127,12 +127,12 @@ function ProcessPanel({ process }: { process: ProcessContent }) {
     <div className="flex flex-col gap-8">
       {/* ── 1. Overview ── */}
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">{process.icon}</span>
-            <h2 className="text-lg font-semibold text-gray-800">{process.label}</h2>
+            <h2 className="text-lg font-semibold text-graphite">{process.label}</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">{process.overview}</p>
+          <p className="text-sm text-graphite/70 leading-relaxed">{process.overview}</p>
         </div>
       </section>
 
@@ -149,7 +149,7 @@ function ProcessPanel({ process }: { process: ProcessContent }) {
             "Min wall thickness" row it visualizes. Bar length answers "which
             process goes thinnest?" faster than three strings of text do. */}
         {process.key === "3d-printing" && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mt-4">
+          <div className="bg-white rounded-lg border border-panel-gray p-5 mt-4">
             <MinWallChart />
           </div>
         )}
@@ -164,9 +164,9 @@ function ProcessPanel({ process }: { process: ProcessContent }) {
       {/* ── 4. Diagram ── */}
       <section>
         <SectionHeading>Key Concept</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           <Diagram />
-          <p className="text-xs text-gray-500 leading-relaxed mt-3 pt-3 border-t border-gray-100">
+          <p className="text-xs text-graphite/60 leading-relaxed mt-3 pt-3 border-t border-panel-gray">
             {process.diagramCaption}
           </p>
         </div>
@@ -199,12 +199,12 @@ function TolerancePanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">📏</span>
-            <h2 className="text-lg font-semibold text-gray-800">Process Tolerance Chart</h2>
+            <h2 className="text-lg font-semibold text-graphite">Process Tolerance Chart</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             What each process holds by default, and what it can hold when you explicitly
             call the tolerance out on the print. The gap between those two columns is
             usually the gap between a normal quote and an expensive one — every tightened
@@ -218,7 +218,7 @@ function TolerancePanel() {
              in range?" and the table then answers "what exactly, and in what
              material?" for the handful that survive. */}
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <PrecisionSpectrumChart />
         </div>
       </section>
@@ -226,7 +226,7 @@ function TolerancePanel() {
       {/* ── Category filter ── */}
       <section>
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mr-1">
+          <span className="text-xs font-semibold text-graphite/60 uppercase tracking-wide mr-1">
             Show by category
           </span>
           <FilterChip active={filter === "All"} onClick={() => setFilter("All")}>
@@ -240,13 +240,13 @@ function TolerancePanel() {
         </div>
 
         {/* Representative-values caveat, immediately above the numbers it qualifies */}
-        <p className="text-xs text-gray-500 italic mb-2">{TOLERANCE_DISCLAIMER}</p>
+        <p className="text-xs text-graphite/60 italic mb-2">{TOLERANCE_DISCLAIMER}</p>
 
         {/* ── The table ── */}
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-lg border border-panel-gray bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
+              <tr className="bg-instrument-white border-b border-panel-gray text-left text-xs text-graphite/60">
                 <th className="px-4 py-3 font-semibold">Process</th>
                 <th className="px-4 py-3 font-semibold">Category</th>
                 <th className="px-4 py-3 font-semibold">Common Materials</th>
@@ -255,32 +255,32 @@ function TolerancePanel() {
                 <th className="px-4 py-3 font-semibold">Notes</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-panel-gray">
               {rows.map(r => (
-                <tr key={r.process} className="hover:bg-gray-50 transition-colors align-top">
-                  <td className="px-4 py-3 font-medium text-gray-800 whitespace-nowrap">
+                <tr key={r.process} className="hover:bg-instrument-white transition-colors align-top">
+                  <td className="px-4 py-3 font-medium text-graphite whitespace-nowrap">
                     {r.process}
                   </td>
                   <td className="px-4 py-3">
                     <CategoryChip category={r.category} />
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-xs leading-relaxed">
+                  <td className="px-4 py-3 text-graphite/70 text-xs leading-relaxed">
                     {r.materials}
                   </td>
                   {/* Tolerances are monospaced so the ± figures line up column-wise */}
-                  <td className="px-4 py-3 text-gray-700 text-xs font-mono leading-relaxed">
+                  <td className="px-4 py-3 text-graphite/80 text-xs font-mono leading-relaxed">
                     {r.standard}
                   </td>
                   <td className="px-4 py-3 text-xs font-mono leading-relaxed">
                     {r.precision ? (
-                      <span className="text-blue-700">{r.precision}</span>
+                      <span className="text-steel-blue-deep">{r.precision}</span>
                     ) : (
                       // An em dash, not an empty cell — "no tighter grade published"
                       // should look deliberate rather than like missing data.
-                      <span className="text-gray-300">—</span>
+                      <span className="text-graphite/30">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs leading-relaxed">
+                  <td className="px-4 py-3 text-graphite/60 text-xs leading-relaxed">
                     {r.notes}
                   </td>
                 </tr>
@@ -290,7 +290,7 @@ function TolerancePanel() {
         </div>
 
         {/* Material caveat */}
-        <p className="text-xs text-gray-500 mt-3 leading-relaxed">
+        <p className="text-xs text-graphite/60 mt-3 leading-relaxed">
           {TOLERANCE_MATERIAL_NOTE}
         </p>
       </section>
@@ -298,19 +298,19 @@ function TolerancePanel() {
       {/* ── Quick Decision Guide ── */}
       <section>
         <SectionHeading>Quick Decision Guide</SectionHeading>
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
-          <p className="text-xs text-blue-900/70 mb-4">
+        <div className="rounded-lg border border-steel-blue-line bg-steel-blue-tint p-5">
+          <p className="text-xs text-steel-blue-deep/70 mb-4">
             Work backwards — start from the tolerance the design actually needs, then
             pick the loosest (cheapest) process that holds it.
           </p>
           <ul className="flex flex-col gap-3">
             {DECISION_GUIDE.map(entry => (
               <li key={entry.band} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                <span className="font-mono text-sm font-semibold text-blue-800 sm:w-44 shrink-0">
+                <span className="font-mono text-sm font-semibold text-steel-blue-deep sm:w-44 shrink-0">
                   {entry.band}
                 </span>
-                <span className="text-blue-400 hidden sm:inline">→</span>
-                <span className="text-sm text-blue-900 leading-relaxed">{entry.answer}</span>
+                <span className="text-steel-blue hidden sm:inline">→</span>
+                <span className="text-sm text-steel-blue-deep leading-relaxed">{entry.answer}</span>
               </li>
             ))}
           </ul>
@@ -330,8 +330,8 @@ function GuidelinesTable({ rows }: { rows: Guideline[] }) {
   return (
     <DataTable
       columns={[
-        { header: "Topic", className: "font-medium text-gray-800", headerClassName: "w-48" },
-        { header: "Guideline", className: "text-gray-600 leading-relaxed" },
+        { header: "Topic", className: "font-medium text-graphite", headerClassName: "w-48" },
+        { header: "Guideline", className: "text-graphite/70 leading-relaxed" },
       ]}
       rows={rows.map(r => ({ key: r.topic, cells: [r.topic, r.guidance] }))}
     />
@@ -343,7 +343,7 @@ function ComparisonTable({ comparison }: { comparison: Comparison }) {
   return (
     <DataTable
       columns={[
-        { header: "Parameter", className: "font-medium text-gray-800", headerClassName: "w-44" },
+        { header: "Parameter", className: "font-medium text-graphite", headerClassName: "w-44" },
         ...comparison.columns.map(c => ({ header: c })),
       ]}
       rows={comparison.rows.map(r => ({ key: r.topic, cells: [r.topic, ...r.values] }))}
@@ -356,9 +356,9 @@ function DefectsTable({ rows }: { rows: Defect[] }) {
   return (
     <DataTable
       columns={[
-        { header: "Defect", className: "font-medium text-red-700", headerClassName: "w-44" },
-        { header: "Typical Cause", className: "text-gray-600 text-xs leading-relaxed" },
-        { header: "Design Fix", className: "text-gray-700 text-xs leading-relaxed" },
+        { header: "Defect", className: "font-medium text-signal-red-deep", headerClassName: "w-44" },
+        { header: "Typical Cause", className: "text-graphite/70 text-xs leading-relaxed" },
+        { header: "Design Fix", className: "text-graphite/80 text-xs leading-relaxed" },
       ]}
       rows={rows.map(r => ({ key: r.defect, cells: [r.defect, r.cause, r.fix] }))}
     />
@@ -386,10 +386,10 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
-        active
-          ? "bg-blue-600 text-white border-blue-600"
-          : "bg-white text-gray-600 border-gray-200 hover:border-blue-400 hover:text-blue-700"
-      }`}
+ active
+ ? "bg-steel-blue text-white border-steel-blue-deep"
+ : "bg-white text-graphite/70 border-panel-gray hover:border-steel-blue-line hover:text-steel-blue-deep"
+ }`}
     >
       {children}
     </button>
@@ -405,11 +405,11 @@ function FilterChip({
  */
 function CategoryChip({ category }: { category: ToleranceCategory }) {
   const styles: Record<ToleranceCategory, string> = {
-    Machining: "bg-blue-50 text-blue-700 border-blue-200",
+    Machining: "bg-steel-blue-tint text-steel-blue-deep border-steel-blue-line",
     Cutting: "bg-cyan-50 text-cyan-700 border-cyan-200",
-    Casting: "bg-amber-50 text-amber-700 border-amber-200",
-    Molding: "bg-violet-50 text-violet-700 border-violet-200",
-    Additive: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    Casting: "bg-signal-amber-tint text-signal-amber-deep border-signal-amber-line",
+    Molding: "bg-panel-gray text-graphite/70 border-panel-gray",
+    Additive: "bg-phosphor-green-tint text-phosphor-green-deep border-phosphor-green-line",
   };
 
   return (

@@ -186,17 +186,17 @@ export default function BoltPatternPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Bolt Pattern Load Distribution</h1>
-      <p className="text-sm text-gray-500 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Bolt Pattern Load Distribution</h1>
+      <p className="text-sm text-graphite/60 mb-1">
         Distributes an in-plane force and moment across a bolt group using the{" "}
         <strong>elastic method</strong>. Bolts far from the centroid carry more of the applied
         moment; the critical (most loaded) bolt is highlighted in the results.
       </p>
-      <p className="text-xs text-gray-400 mb-5">
+      <p className="text-xs text-graphite/50 mb-5">
         Loads (Fx, Fy, Mz) must be referenced to the bolt group centroid. The moment Mz is positive
         CCW when viewed from the front (+z out of the page).
       </p>
@@ -208,10 +208,10 @@ export default function BoltPatternPage() {
             key={u}
             onClick={() => { setUnits(u); setResults(null); }}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-              units === u
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"
-            }`}
+ units === u
+ ? "bg-steel-blue text-white border-steel-blue-deep"
+ : "bg-white text-graphite/70 border-graphite/20 hover:border-steel-blue-line"
+ }`}
           >
             {u === "metric" ? "Metric (mm / N)" : "Imperial (in / lbf)"}
           </button>
@@ -225,14 +225,14 @@ export default function BoltPatternPage() {
         <div className="flex flex-col gap-4">
 
           {/* Preset pattern loader */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">Load a Preset Pattern</h2>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <h2 className="text-sm font-semibold text-graphite/80 mb-3">Load a Preset Pattern</h2>
             <div className="flex flex-wrap gap-2">
               {Object.keys(PRESETS).map(key => (
                 <button
                   key={key}
                   onClick={() => loadPreset(key)}
-                  className="text-xs bg-gray-50 border border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-gray-600 hover:text-blue-700 px-3 py-1.5 rounded-lg transition-colors"
+                  className="text-xs bg-instrument-white border border-panel-gray hover:border-steel-blue-line hover:bg-steel-blue-tint text-graphite/70 hover:text-steel-blue-deep px-3 py-1.5 rounded-lg transition-colors"
                 >
                   {key}
                 </button>
@@ -241,30 +241,30 @@ export default function BoltPatternPage() {
           </div>
 
           {/* Bolt positions table */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <h2 className="text-sm font-semibold text-graphite/80 mb-3">
               Bolt Positions ({posUnit}) —{" "}
-              <span className="font-normal text-gray-500">{bolts.length} bolt{bolts.length !== 1 ? "s" : ""}</span>
+              <span className="font-normal text-graphite/60">{bolts.length} bolt{bolts.length !== 1 ? "s" : ""}</span>
             </h2>
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-xs text-gray-400 border-b border-gray-100">
+                <tr className="text-xs text-graphite/50 border-b border-panel-gray">
                   <th className="text-left pb-2 w-8">#</th>
                   <th className="text-left pb-2 pr-2">X ({posUnit})</th>
                   <th className="text-left pb-2 pr-2">Y ({posUnit})</th>
                   <th className="w-8 pb-2"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-panel-gray">
                 {bolts.map((b, i) => (
                   <tr key={b.id}>
-                    <td className="py-1.5 pr-2 text-gray-400 text-xs">{i + 1}</td>
+                    <td className="py-1.5 pr-2 text-graphite/50 text-xs">{i + 1}</td>
                     <td className="py-1.5 pr-2">
                       <input
                         type="number"
                         value={b.x}
                         onChange={e => updateBolt(b.id, "x", e.target.value)}
-                        className="w-full border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="w-full border border-panel-gray rounded px-2 py-1 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       />
                     </td>
                     <td className="py-1.5 pr-2">
@@ -272,14 +272,14 @@ export default function BoltPatternPage() {
                         type="number"
                         value={b.y}
                         onChange={e => updateBolt(b.id, "y", e.target.value)}
-                        className="w-full border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="w-full border border-panel-gray rounded px-2 py-1 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       />
                     </td>
                     <td className="py-1.5 text-center">
                       <button
                         onClick={() => removeBolt(b.id)}
                         disabled={bolts.length <= 2}
-                        className="text-gray-300 hover:text-red-400 disabled:opacity-20 text-lg leading-none px-1 transition-colors"
+                        className="text-graphite/30 hover:text-signal-red disabled:opacity-20 text-lg leading-none px-1 transition-colors"
                         title="Remove bolt"
                       >
                         ×
@@ -291,15 +291,15 @@ export default function BoltPatternPage() {
             </table>
             <button
               onClick={addBolt}
-              className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+              className="mt-3 text-sm text-steel-blue hover:text-steel-blue-deep font-medium transition-colors"
             >
               + Add bolt
             </button>
           </div>
 
           {/* Applied loads */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">Applied Loads at Centroid</h2>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <h2 className="text-sm font-semibold text-graphite/80 mb-3">Applied Loads at Centroid</h2>
             <div className="flex flex-col gap-3">
               <LoadInput
                 label={`Fx — Horizontal shear (${forceUnit})`}
@@ -321,17 +321,17 @@ export default function BoltPatternPage() {
 
           <button
             onClick={calculate}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
           >
             Calculate Load Distribution
           </button>
 
-          {calcError && <p className="text-sm text-red-600">{calcError}</p>}
+          {calcError && <p className="text-sm text-signal-red">{calcError}</p>}
         </div>
 
         {/* RIGHT: bolt pattern diagram */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Pattern Diagram</h2>
+        <div className="bg-white rounded-lg border border-panel-gray p-4 flex flex-col">
+          <h2 className="text-sm font-semibold text-graphite/80 mb-3">Pattern Diagram</h2>
           <BoltPatternDiagram
             bolts={parsedBolts}
             centroid={centroid}
@@ -340,7 +340,7 @@ export default function BoltPatternPage() {
           />
           {/* Color legend — only shown after a calculation */}
           {results && (
-            <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+            <div className="mt-3 flex items-center gap-4 text-xs text-graphite/60">
               <span className="flex items-center gap-1.5">
                 <span className="inline-block w-3 h-3 rounded-full" style={{ background: "hsl(120,60%,40%)" }} />
                 Low load
@@ -360,43 +360,43 @@ export default function BoltPatternPage() {
 
       {/* Results table — shown after calculation */}
       {results && (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h2 className="text-base font-semibold text-gray-800 mb-1">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
+          <h2 className="text-base font-semibold text-graphite mb-1">
             Per-Bolt Shear Forces ({forceUnit})
           </h2>
-          <p className="text-xs text-gray-400 mb-4">
+          <p className="text-xs text-graphite/50 mb-4">
             J = {J_display.toFixed(0)} {posUnit}² · Direct shear per bolt:{" "}
             Vdx = {(parseFloat(Fx) / results.length).toFixed(1)}, Vdy = {(parseFloat(Fy) / results.length).toFixed(1)} {forceUnit}
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-xs text-gray-400 border-b border-gray-200">
+                <tr className="text-xs text-graphite/50 border-b border-panel-gray">
                   <th className="text-left pb-2 pr-4">Bolt</th>
                   <th className="text-right pb-2 pr-4">x</th>
                   <th className="text-right pb-2 pr-4">y</th>
                   <th className="text-right pb-2 pr-4">Vx</th>
                   <th className="text-right pb-2 pr-4">Vy</th>
-                  <th className="text-right pb-2 pr-4 font-semibold text-gray-600">|V|</th>
+                  <th className="text-right pb-2 pr-4 font-semibold text-graphite/70">|V|</th>
                   <th className="text-right pb-2">% of max</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-panel-gray">
                 {results.map((r, i) => {
                   const isMax = Math.abs(r.V - maxV) < 0.001;
                   const pct = maxV > 0 ? (r.V / maxV) * 100 : 0;
                   return (
-                    <tr key={r.id} className={isMax ? "bg-red-50" : ""}>
-                      <td className="py-2 pr-4 font-medium text-gray-700">
+                    <tr key={r.id} className={isMax ? "bg-signal-red-tint" : ""}>
+                      <td className="py-2 pr-4 font-medium text-graphite/80">
                         {i + 1}
                         {isMax && (
-                          <span className="ml-1.5 text-xs text-red-600 font-semibold">CRITICAL</span>
+                          <span className="ml-1.5 text-xs text-signal-red font-semibold">CRITICAL</span>
                         )}
                       </td>
-                      <td className="py-2 pr-4 text-right font-mono text-xs text-gray-500">
+                      <td className="py-2 pr-4 text-right font-mono text-xs text-graphite/60">
                         {r.x.toFixed(1)}
                       </td>
-                      <td className="py-2 pr-4 text-right font-mono text-xs text-gray-500">
+                      <td className="py-2 pr-4 text-right font-mono text-xs text-graphite/60">
                         {r.y.toFixed(1)}
                       </td>
                       <td className="py-2 pr-4 text-right font-mono text-xs">
@@ -405,18 +405,18 @@ export default function BoltPatternPage() {
                       <td className="py-2 pr-4 text-right font-mono text-xs">
                         {r.Vy.toFixed(1)}
                       </td>
-                      <td className={`py-2 pr-4 text-right font-bold font-mono text-xs ${isMax ? "text-red-700" : "text-gray-800"}`}>
+                      <td className={`py-2 pr-4 text-right font-bold font-mono text-xs ${isMax ? "text-signal-red-deep" : "text-graphite"}`}>
                         {r.V.toFixed(1)}
                       </td>
                       <td className="py-2">
                         <div className="flex items-center justify-end gap-2">
-                          <div className="w-16 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                          <div className="w-16 bg-panel-gray rounded-full h-1.5 overflow-hidden">
                             <div
-                              className="h-1.5 rounded-full bg-blue-500 transition-all"
+                              className="h-1.5 rounded-full bg-steel-blue transition-all"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
-                          <span className="text-xs text-gray-500 w-8 text-right">
+                          <span className="text-xs text-graphite/60 w-8 text-right">
                             {pct.toFixed(0)}%
                           </span>
                         </div>
@@ -429,7 +429,7 @@ export default function BoltPatternPage() {
           </div>
 
           {/* How to use this result */}
-          <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800">
+          <div className="mt-4 bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
             <strong>Using this result:</strong> The critical bolt&#39;s resultant |V| is the design shear load.
             Compare it against the bolt&#39;s shear capacity: F_allow = (bolt proof load × 0.577) for Von Mises,
             or F_allow = bolt tensile area × allowable shear stress from your design code (e.g. AISC, VDI 2230).
@@ -461,7 +461,7 @@ type DiagramProps = {
 function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
   if (bolts.length === 0) {
     return (
-      <div className="flex-1 min-h-[240px] flex items-center justify-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-lg">
+      <div className="flex-1 min-h-[240px] flex items-center justify-center text-graphite/50 text-sm border border-dashed border-panel-gray rounded-lg">
         Add bolts to see the diagram
       </div>
     );
@@ -502,7 +502,7 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
   return (
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="w-full rounded-lg bg-gray-50 border border-gray-100"
+      className="w-full rounded-lg bg-instrument-white border border-panel-gray"
       style={{ minHeight: 220 }}
     >
       {/* Centroid crosshairs (dashed) */}
@@ -510,11 +510,11 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
         <>
           <line
             x1={0} y1={sy(centroid.y)} x2={W} y2={sy(centroid.y)}
-            stroke="#cbd5e1" strokeWidth={1} strokeDasharray="4 3"
+            stroke="#CDD2D5" strokeWidth={1} strokeDasharray="4 3"
           />
           <line
             x1={sx(centroid.x)} y1={0} x2={sx(centroid.x)} y2={H}
-            stroke="#cbd5e1" strokeWidth={1} strokeDasharray="4 3"
+            stroke="#CDD2D5" strokeWidth={1} strokeDasharray="4 3"
           />
         </>
       )}
@@ -533,7 +533,7 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
             {isMax && (
               <circle
                 cx={cx} cy={cy} r={boltR + 5}
-                fill="none" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="3 2"
+                fill="none" stroke="#9B3B3E" strokeWidth={1.5} strokeDasharray="3 2"
               />
             )}
             <circle
@@ -556,7 +556,7 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
               <text
                 x={cx} y={cy + boltR + 11}
                 textAnchor="middle"
-                fill="#64748b" fontSize={8.5}
+                fill="#5F6164" fontSize={8.5}
               >
                 {result.V.toFixed(0)}
               </text>
@@ -568,7 +568,7 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
       {/* Centroid marker (purple dot) */}
       {centroid && (
         <g>
-          <circle cx={sx(centroid.x)} cy={sy(centroid.y)} r={4} fill="#7c3aed" />
+          <circle cx={sx(centroid.x)} cy={sy(centroid.y)} r={4} fill="#5F6164" />
           {/* Horizontal bar of ⊕ */}
           <line
             x1={sx(centroid.x) - 6} y1={sy(centroid.y)}
@@ -583,7 +583,7 @@ function BoltPatternDiagram({ bolts, centroid, results, maxV }: DiagramProps) {
           />
           <text
             x={sx(centroid.x) + 8} y={sy(centroid.y) - 6}
-            fill="#7c3aed" fontSize={8.5} fontStyle="italic"
+            fill="#5F6164" fontSize={8.5} fontStyle="italic"
           >
             centroid
           </text>
@@ -605,13 +605,13 @@ function LoadInput({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <label className="text-xs text-gray-600 flex-1 leading-tight">{label}</label>
+      <label className="text-xs text-graphite/70 flex-1 leading-tight">{label}</label>
       <input
         type="number"
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder="0"
-        className="w-28 border border-gray-200 rounded px-2 py-1 text-sm text-right focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       />
     </div>
   );

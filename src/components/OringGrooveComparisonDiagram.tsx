@@ -73,27 +73,27 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
       <defs>
         <pattern id="ogHatch" width="7" height="7" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#e2e8f0" strokeWidth="1.5" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="#E7EAEC" strokeWidth="1.5" />
         </pattern>
         <marker id="ogDim" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-          <path d="M4,0.6 L1,4 L4,7.4" fill="none" stroke="#2563eb" strokeWidth="1.1" />
+          <path d="M4,0.6 L1,4 L4,7.4" fill="none" stroke="#2B4C7E" strokeWidth="1.1" />
         </marker>
         <marker id="ogGap" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-          <path d="M4,0.6 L1,4 L4,7.4" fill="none" stroke="#dc2626" strokeWidth="1.2" />
+          <path d="M4,0.6 L1,4 L4,7.4" fill="none" stroke="#9B3B3E" strokeWidth="1.2" />
         </marker>
       </defs>
 
       {/* ══ Titles ══ */}
-      <text x={L_CX} y="22" textAnchor="middle" fontSize="11" fontWeight="700" fill="#dc2626">
+      <text x={L_CX} y="22" textAnchor="middle" fontSize="11" fontWeight="700" fill="#9B3B3E">
         ✗ Groove too deep
       </text>
-      <text x={L_CX} y="36" textAnchor="middle" fontSize="9.5" fill="#b91c1c">
+      <text x={L_CX} y="36" textAnchor="middle" fontSize="9.5" fill="#9B3B3E">
         insufficient squeeze — leak risk
       </text>
-      <text x={R_CX} y="22" textAnchor="middle" fontSize="11" fontWeight="700" fill="#16a34a">
+      <text x={R_CX} y="22" textAnchor="middle" fontSize="11" fontWeight="700" fill="#4B7B4E">
         ✓ Target squeeze achieved
       </text>
-      <text x={R_CX} y="36" textAnchor="middle" fontSize="9.5" fill="#15803d">
+      <text x={R_CX} y="36" textAnchor="middle" fontSize="9.5" fill="#4B7B4E">
         {squeeze.toFixed(0)}% squeeze — ring seals on both faces
       </text>
 
@@ -101,7 +101,7 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
 
       {/* Lid / mating surface */}
       <rect x="40" y={LID_TOP} width="156" height={FACE_Y - LID_TOP}
-            fill="#e2e8f0" stroke="#64748b" strokeWidth="1.3" />
+            fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.3" />
       <rect x="40" y={LID_TOP} width="156" height={FACE_Y - LID_TOP}
             fill="url(#ogHatch)" stroke="none" />
 
@@ -110,7 +110,7 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
         d={`M40,${FACE_Y} L${L_CX - HALF_GROOVE},${FACE_Y} L${L_CX - HALF_GROOVE},${badFloor}
             L${L_CX + HALF_GROOVE},${badFloor} L${L_CX + HALF_GROOVE},${FACE_Y}
             L196,${FACE_Y} L196,${BODY_BOT} L40,${BODY_BOT} Z`}
-        fill="#e2e8f0" stroke="#64748b" strokeWidth="1.3" />
+        fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.3" />
       <path
         d={`M40,${FACE_Y} L${L_CX - HALF_GROOVE},${FACE_Y} L${L_CX - HALF_GROOVE},${badFloor}
             L${L_CX + HALF_GROOVE},${badFloor} L${L_CX + HALF_GROOVE},${FACE_Y}
@@ -119,22 +119,22 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
 
       {/* The ring, uncompressed — it never touches the lid */}
       <circle cx={L_CX} cy={badCy} r={R_PX}
-              fill="#fecaca" stroke="#dc2626" strokeWidth="1.8" />
+              fill="#F3E7E8" stroke="#9B3B3E" strokeWidth="1.8" />
 
       {/* The leak path */}
       <line x1={L_CX} y1={FACE_Y} x2={L_CX} y2={badTop}
-            stroke="#dc2626" strokeWidth="1.3"
+            stroke="#9B3B3E" strokeWidth="1.3"
             markerStart="url(#ogGap)" markerEnd="url(#ogGap)" />
       <line x1={L_CX + 6} y1={FACE_Y + gapPx / 2} x2={176} y2={FACE_Y - 4}
-            stroke="#dc2626" strokeWidth="0.9" />
-      <text x="150" y={FACE_Y - 8} fontSize="9" fontWeight="700" fill="#dc2626">
+            stroke="#9B3B3E" strokeWidth="0.9" />
+      <text x="150" y={FACE_Y - 8} fontSize="9" fontWeight="700" fill="#9B3B3E">
         gap
       </text>
 
       {/* W dimension across the free ring */}
       <line x1={L_CX - R_PX} y1={badCy} x2={L_CX + R_PX} y2={badCy}
-            stroke="#7f1d1d" strokeWidth="1" markerStart="url(#ogGap)" markerEnd="url(#ogGap)" />
-      <text x={L_CX} y={badCy - 5} textAnchor="middle" fontSize="9" fontWeight="700" fill="#7f1d1d">
+            stroke="#7A2B2E" strokeWidth="1" markerStart="url(#ogGap)" markerEnd="url(#ogGap)" />
+      <text x={L_CX} y={badCy - 5} textAnchor="middle" fontSize="9" fontWeight="700" fill="#7A2B2E">
         W = {W.toFixed(2)}
       </text>
 
@@ -142,10 +142,10 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
           dimension line — horizontal text has nowhere near enough room between
           the groove wall and the ring. */}
       <line x1={L_CX - HALF_GROOVE + 13} y1={FACE_Y} x2={L_CX - HALF_GROOVE + 13} y2={badFloor}
-            stroke="#dc2626" strokeWidth="1" markerStart="url(#ogGap)" markerEnd="url(#ogGap)" />
+            stroke="#9B3B3E" strokeWidth="1" markerStart="url(#ogGap)" markerEnd="url(#ogGap)" />
       <text
         x={L_CX - HALF_GROOVE + 8} y={(FACE_Y + badFloor) / 2}
-        textAnchor="middle" fontSize="9" fontWeight="700" fill="#dc2626"
+        textAnchor="middle" fontSize="9" fontWeight="700" fill="#9B3B3E"
         transform={`rotate(-90 ${L_CX - HALF_GROOVE + 8} ${(FACE_Y + badFloor) / 2})`}
       >
         G &gt; W
@@ -154,7 +154,7 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
       {/* ═════════════ RIGHT — CORRECT ═════════════ */}
 
       <rect x="264" y={LID_TOP} width="156" height={FACE_Y - LID_TOP}
-            fill="#e2e8f0" stroke="#64748b" strokeWidth="1.3" />
+            fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.3" />
       <rect x="264" y={LID_TOP} width="156" height={FACE_Y - LID_TOP}
             fill="url(#ogHatch)" stroke="none" />
 
@@ -162,7 +162,7 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
         d={`M264,${FACE_Y} L${R_CX - HALF_GROOVE},${FACE_Y} L${R_CX - HALF_GROOVE},${goodFloor}
             L${R_CX + HALF_GROOVE},${goodFloor} L${R_CX + HALF_GROOVE},${FACE_Y}
             L420,${FACE_Y} L420,${BODY_BOT} L264,${BODY_BOT} Z`}
-        fill="#e2e8f0" stroke="#64748b" strokeWidth="1.3" />
+        fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.3" />
       <path
         d={`M264,${FACE_Y} L${R_CX - HALF_GROOVE},${FACE_Y} L${R_CX - HALF_GROOVE},${goodFloor}
             L${R_CX + HALF_GROOVE},${goodFloor} L${R_CX + HALF_GROOVE},${FACE_Y}
@@ -171,27 +171,27 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
 
       {/* Free-state outline — the overlap with the lid is exactly the squeeze */}
       <circle cx={R_CX} cy={goodFloor - R_PX} r={R_PX}
-              fill="none" stroke="#94a3b8" strokeWidth="1.1" strokeDasharray="4 3" />
+              fill="none" stroke="#98999B" strokeWidth="1.1" strokeDasharray="4 3" />
 
       {/* The ring as actually compressed: touching floor AND lid */}
       <ellipse cx={R_CX} cy={goodFloor - ry} rx={rx} ry={ry}
-               fill="#bbf7d0" stroke="#16a34a" strokeWidth="1.8" />
+               fill="#E9EFEA" stroke="#4B7B4E" strokeWidth="1.8" />
 
       {/* Contact call-outs — a seal needs BOTH faces loaded */}
-      <circle cx={R_CX} cy={FACE_Y} r="2.6" fill="#16a34a" />
-      <circle cx={R_CX} cy={goodFloor} r="2.6" fill="#16a34a" />
+      <circle cx={R_CX} cy={FACE_Y} r="2.6" fill="#4B7B4E" />
+      <circle cx={R_CX} cy={goodFloor} r="2.6" fill="#4B7B4E" />
       <line x1={R_CX + rx - 4} y1={FACE_Y} x2="404" y2={FACE_Y - 16}
-            stroke="#16a34a" strokeWidth="0.9" />
-      <text x="368" y={FACE_Y - 20} fontSize="9" fontWeight="700" fill="#15803d">
+            stroke="#4B7B4E" strokeWidth="0.9" />
+      <text x="368" y={FACE_Y - 20} fontSize="9" fontWeight="700" fill="#4B7B4E">
         sealing contact
       </text>
 
       {/* Groove depth dimension, rotated for the same reason as the left one */}
       <line x1={R_CX - HALF_GROOVE + 13} y1={FACE_Y} x2={R_CX - HALF_GROOVE + 13} y2={goodFloor}
-            stroke="#2563eb" strokeWidth="1" markerStart="url(#ogDim)" markerEnd="url(#ogDim)" />
+            stroke="#2B4C7E" strokeWidth="1" markerStart="url(#ogDim)" markerEnd="url(#ogDim)" />
       <text
         x={R_CX - HALF_GROOVE + 8} y={(FACE_Y + goodFloor) / 2}
-        textAnchor="middle" fontSize="9" fontWeight="700" fill="#2563eb"
+        textAnchor="middle" fontSize="9" fontWeight="700" fill="#2B4C7E"
         transform={`rotate(-90 ${R_CX - HALF_GROOVE + 8} ${(FACE_Y + goodFloor) / 2})`}
       >
         G = {G.toFixed(2)}
@@ -205,13 +205,13 @@ export default function OringGrooveComparisonDiagram({ W, G, squeezePct }: Props
         and measured nothing.
       */}
       <line x1={R_CX - 21} y1={goodFloor - W_PX + 9} x2="286" y2={LID_TOP - 8}
-            stroke="#94a3b8" strokeWidth="0.9" />
-      <text x="284" y={LID_TOP - 11} textAnchor="end" fontSize="8.5" fill="#64748b">
+            stroke="#98999B" strokeWidth="0.9" />
+      <text x="284" y={LID_TOP - 11} textAnchor="end" fontSize="8.5" fill="#5F6164">
         free-state outline — overlap = squeeze
       </text>
 
       {/* ══ Footnote ══ */}
-      <text x="230" y="216" textAnchor="middle" fontSize="9" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="216" textAnchor="middle" fontSize="9" fill="#98999B" fontStyle="italic">
         Squeeze % = (W − G) / W × 100 — a deeper groove gives LESS squeeze, not more.
       </text>
     </svg>

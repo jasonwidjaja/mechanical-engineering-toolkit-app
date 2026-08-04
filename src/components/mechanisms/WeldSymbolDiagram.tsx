@@ -31,106 +31,106 @@ export default function WeldSymbolDiagram() {
       <defs>
         <marker id="wsArrow" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5"
                 orient="auto">
-          <path d="M0,1.5 L8,4.5 L0,7.5 Z" fill="#1e293b" />
+          <path d="M0,1.5 L8,4.5 L0,7.5 Z" fill="#1A1D21" />
         </marker>
         <pattern id="wsHatch" width="5" height="5" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="5" stroke="#cbd5e1" strokeWidth="1.1" />
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#CDD2D5" strokeWidth="1.1" />
         </pattern>
       </defs>
 
       {/* ══════════ The joint the arrow points at ══════════ */}
       {/* Horizontal member */}
-      <rect x="344" y="172" width="98" height="14" fill="#e2e8f0" stroke="#64748b"
+      <rect x="344" y="172" width="98" height="14" fill="#E7EAEC" stroke="#5F6164"
             strokeWidth="1.2" />
       <rect x="344" y="172" width="98" height="14" fill="url(#wsHatch)" stroke="none" />
       {/* Vertical member, forming a T */}
-      <rect x="382" y="124" width="14" height="48" fill="#e2e8f0" stroke="#64748b"
+      <rect x="382" y="124" width="14" height="48" fill="#E7EAEC" stroke="#5F6164"
             strokeWidth="1.2" />
       <rect x="382" y="124" width="14" height="48" fill="url(#wsHatch)" stroke="none" />
 
       {/* ══════════ Reference line, tail and arrow ══════════ */}
-      <line x1={REF_X0} y1={REF_Y} x2={REF_X1} y2={REF_Y} stroke="#1e293b" strokeWidth="2" />
+      <line x1={REF_X0} y1={REF_Y} x2={REF_X1} y2={REF_Y} stroke="#1A1D21" strokeWidth="2" />
       {/* Tail — where the process or spec goes, omitted when there isn't one */}
       <path d={`M${REF_X0},${REF_Y} L${REF_X0 - 17},${REF_Y - 11} M${REF_X0},${REF_Y} L${REF_X0 - 17},${REF_Y + 11}`}
-            stroke="#1e293b" strokeWidth="2" fill="none" />
+            stroke="#1A1D21" strokeWidth="2" fill="none" />
       {/* Arrow, from the elbow to the joint */}
-      <line x1={REF_X1} y1={REF_Y} x2="378" y2="168" stroke="#1e293b" strokeWidth="2"
+      <line x1={REF_X1} y1={REF_Y} x2="378" y2="168" stroke="#1A1D21" strokeWidth="2"
             markerEnd="url(#wsArrow)" />
 
       {/* ══════════ Weld symbols on the reference line ══════════ */}
       {/* OTHER side — above the line */}
       <path d={`M200,${REF_Y} L200,${REF_Y - 20} L220,${REF_Y} Z`}
-            fill="#bfdbfe" stroke="#1d4ed8" strokeWidth="1.8" />
-      <text x="194" y={REF_Y - 7} textAnchor="end" fontSize="10.5" fontWeight="700" fill="#1d4ed8">
+            fill="#BFC9D8" stroke="#2B4C7E" strokeWidth="1.8" />
+      <text x="194" y={REF_Y - 7} textAnchor="end" fontSize="10.5" fontWeight="700" fill="#2B4C7E">
         6
       </text>
 
       {/* ARROW side — below the line */}
       <path d={`M244,${REF_Y} L244,${REF_Y + 20} L264,${REF_Y} Z`}
-            fill="#fed7aa" stroke="#c2410c" strokeWidth="1.8" />
-      <text x="238" y={REF_Y + 15} textAnchor="end" fontSize="10.5" fontWeight="700" fill="#c2410c">
+            fill="#E1D5BF" stroke="#7E6027" strokeWidth="1.8" />
+      <text x="238" y={REF_Y + 15} textAnchor="end" fontSize="10.5" fontWeight="700" fill="#7E6027">
         6
       </text>
 
       {/* Weld-all-around circle, at the elbow */}
-      <circle cx={REF_X1} cy={REF_Y} r="6.5" fill="none" stroke="#7c3aed" strokeWidth="2" />
+      <circle cx={REF_X1} cy={REF_Y} r="6.5" fill="none" stroke="#5F6164" strokeWidth="2" />
 
       {/* ══════════ Callouts ══════════ */}
       {/* Other side */}
-      <line x1="210" y1={REF_Y - 21} x2="196" y2="60" stroke="#1d4ed8" strokeWidth="0.8" />
-      <text x="192" y="52" textAnchor="middle" fontSize="9" fontWeight="700" fill="#1d4ed8">
+      <line x1="210" y1={REF_Y - 21} x2="196" y2="60" stroke="#2B4C7E" strokeWidth="0.8" />
+      <text x="192" y="52" textAnchor="middle" fontSize="9" fontWeight="700" fill="#2B4C7E">
         OTHER side
       </text>
-      <text x="192" y="42" textAnchor="middle" fontSize="8.5" fill="#3b82f6">
+      <text x="192" y="42" textAnchor="middle" fontSize="8.5" fill="#2B4C7E">
         symbol ABOVE the line
       </text>
 
       {/* Arrow side */}
-      <line x1="254" y1={REF_Y + 21} x2="268" y2="182" stroke="#c2410c" strokeWidth="0.8" />
-      <text x="272" y="192" fontSize="9" fontWeight="700" fill="#c2410c">
+      <line x1="254" y1={REF_Y + 21} x2="268" y2="182" stroke="#7E6027" strokeWidth="0.8" />
+      <text x="272" y="192" fontSize="9" fontWeight="700" fill="#7E6027">
         ARROW side
       </text>
-      <text x="272" y="202" fontSize="8.5" fill="#ea580c">
+      <text x="272" y="202" fontSize="8.5" fill="#A17D36">
         symbol BELOW the line
       </text>
 
       {/* Reference line */}
-      <line x1="172" y1={REF_Y + 1} x2="150" y2="158" stroke="#64748b" strokeWidth="0.8" />
-      <text x="146" y="168" textAnchor="end" fontSize="8.5" fill="#475569">
+      <line x1="172" y1={REF_Y + 1} x2="150" y2="158" stroke="#5F6164" strokeWidth="0.8" />
+      <text x="146" y="168" textAnchor="end" fontSize="8.5" fill="#5F6164">
         reference line
       </text>
 
       {/* Tail */}
-      <line x1="138" y1={REF_Y - 8} x2="120" y2="82" stroke="#64748b" strokeWidth="0.8" />
-      <text x="116" y="76" textAnchor="end" fontSize="8.5" fill="#475569">
+      <line x1="138" y1={REF_Y - 8} x2="120" y2="82" stroke="#5F6164" strokeWidth="0.8" />
+      <text x="116" y="76" textAnchor="end" fontSize="8.5" fill="#5F6164">
         tail — process / spec
       </text>
-      <text x="116" y="66" textAnchor="end" fontSize="8" fill="#94a3b8">
+      <text x="116" y="66" textAnchor="end" fontSize="8" fill="#98999B">
         (omitted if unused)
       </text>
 
       {/* All around */}
-      <line x1={REF_X1 + 6} y1={REF_Y - 6} x2="356" y2="84" stroke="#7c3aed" strokeWidth="0.8" />
-      <text x="360" y="80" fontSize="8.5" fontWeight="700" fill="#7c3aed">
+      <line x1={REF_X1 + 6} y1={REF_Y - 6} x2="356" y2="84" stroke="#5F6164" strokeWidth="0.8" />
+      <text x="360" y="80" fontSize="8.5" fontWeight="700" fill="#5F6164">
         weld all around
       </text>
 
       {/* Arrow. Sits under the joint rather than beside it — to the right there
           were only ~60px before the viewBox edge, which clipped the last word. */}
-      <text x="393" y="215" textAnchor="middle" fontSize="8.5" fill="#475569">
+      <text x="393" y="215" textAnchor="middle" fontSize="8.5" fill="#5F6164">
         arrow → the joint
       </text>
 
       {/* Leg size. Parked bottom-left, clear of the reference-line and
           arrow-side leaders that cross the middle of the drawing. */}
-      <text x="14" y="206" fontSize="8" fill="#94a3b8">
+      <text x="14" y="206" fontSize="8" fill="#98999B">
         number left of the symbol = leg size (mm)
       </text>
 
       {/* ══════════ Basic shapes row ══════════ */}
-      <line x1="14" y1="228" x2="446" y2="228" stroke="#e2e8f0" strokeWidth="1" />
-      <text x="14" y="222" fontSize="9" fontWeight="700" fill="#475569">
+      <line x1="14" y1="228" x2="446" y2="228" stroke="#E7EAEC" strokeWidth="1" />
+      <text x="14" y="222" fontSize="9" fontWeight="700" fill="#5F6164">
         Basic symbols
       </text>
 
@@ -143,34 +143,34 @@ export default function WeldSymbolDiagram() {
         const y = 256; // mini reference line
         return (
           <g key={s.name}>
-            <line x1={s.cx - 28} y1={y} x2={s.cx + 28} y2={y} stroke="#1e293b" strokeWidth="1.6" />
+            <line x1={s.cx - 28} y1={y} x2={s.cx + 28} y2={y} stroke="#1A1D21" strokeWidth="1.6" />
 
             {s.draw === "fillet" && (
               <path d={`M${s.cx - 10},${y} L${s.cx - 10},${y + 15} L${s.cx + 5},${y} Z`}
-                    fill="#fed7aa" stroke="#c2410c" strokeWidth="1.5" />
+                    fill="#E1D5BF" stroke="#7E6027" strokeWidth="1.5" />
             )}
             {s.draw === "square" && (
               <>
-                <line x1={s.cx - 6} y1={y} x2={s.cx - 6} y2={y + 15} stroke="#c2410c" strokeWidth="1.8" />
-                <line x1={s.cx + 6} y1={y} x2={s.cx + 6} y2={y + 15} stroke="#c2410c" strokeWidth="1.8" />
+                <line x1={s.cx - 6} y1={y} x2={s.cx - 6} y2={y + 15} stroke="#7E6027" strokeWidth="1.8" />
+                <line x1={s.cx + 6} y1={y} x2={s.cx + 6} y2={y + 15} stroke="#7E6027" strokeWidth="1.8" />
               </>
             )}
             {s.draw === "vee" && (
               <path d={`M${s.cx - 9},${y + 15} L${s.cx},${y} L${s.cx + 9},${y + 15}`}
-                    fill="none" stroke="#c2410c" strokeWidth="1.8" />
+                    fill="none" stroke="#7E6027" strokeWidth="1.8" />
             )}
             {s.draw === "field" && (
               <>
                 {/* Flag at the elbow: staff up, pennant to the right */}
-                <line x1={s.cx + 28} y1={y} x2={s.cx + 28} y2={y - 17} stroke="#7c3aed" strokeWidth="1.8" />
+                <line x1={s.cx + 28} y1={y} x2={s.cx + 28} y2={y - 17} stroke="#5F6164" strokeWidth="1.8" />
                 <path d={`M${s.cx + 28},${y - 17} L${s.cx + 41},${y - 12} L${s.cx + 28},${y - 7} Z`}
-                      fill="#7c3aed" />
+                      fill="#5F6164" />
                 <path d={`M${s.cx - 8},${y} L${s.cx - 8},${y + 13} L${s.cx + 5},${y} Z`}
-                      fill="#ede9fe" stroke="#7c3aed" strokeWidth="1.3" />
+                      fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.3" />
               </>
             )}
 
-            <text x={s.cx} y={y + 30} textAnchor="middle" fontSize="8.5" fill="#475569">
+            <text x={s.cx} y={y + 30} textAnchor="middle" fontSize="8.5" fill="#5F6164">
               {s.name}
             </text>
           </g>

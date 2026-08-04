@@ -127,8 +127,8 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
         x={blockX} y={compTop}
         width={blockW} height={compH}
         rx={4}
-        fill="#bfdbfe"  /* blue-200 */
-        stroke="#3b82f6" /* blue-500 */
+        fill="#BFC9D8"  /* blue-200 */
+        stroke="#2B4C7E" /* blue-500 */
         strokeWidth={1.5}
       />
       <text
@@ -136,7 +136,7 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
         textAnchor="middle"
         fontSize={13}
         fontWeight="600"
-        fill="#1d4ed8" /* blue-700 */
+        fill="#2B4C7E" /* blue-700 */
       >
         Component
       </text>
@@ -145,8 +145,8 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
       <rect
         x={blockX} y={timTop}
         width={blockW} height={layerH}
-        fill="#fde68a"   /* amber-200 */
-        stroke="#f59e0b" /* amber-400 */
+        fill="#F4F0E7"   /* amber-200 */
+        stroke="#A17D36" /* amber-400 */
         strokeWidth={1.5}
       />
       {/* k value label inside the TIM layer (only if layer is tall enough) */}
@@ -155,7 +155,7 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
           x={blockX + blockW / 2} y={timTop + layerH / 2 + 4}
           textAnchor="middle"
           fontSize={10}
-          fill="#92400e" /* amber-800 */
+          fill="#7E6027" /* amber-800 */
         >
           k = {kVal || "?"} W/m·K
         </text>
@@ -166,19 +166,19 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
       <line
         x1={blockX - 8} y1={timTop}
         x2={blockX - 8} y2={timTop + layerH}
-        stroke="#f59e0b" strokeWidth={1.5}
+        stroke="#A17D36" strokeWidth={1.5}
       />
       {/* Top tick */}
       <line
         x1={blockX - 12} y1={timTop}
         x2={blockX - 4}  y2={timTop}
-        stroke="#f59e0b" strokeWidth={1.5}
+        stroke="#A17D36" strokeWidth={1.5}
       />
       {/* Bottom tick */}
       <line
         x1={blockX - 12} y1={timTop + layerH}
         x2={blockX - 4}  y2={timTop + layerH}
-        stroke="#f59e0b" strokeWidth={1.5}
+        stroke="#A17D36" strokeWidth={1.5}
       />
       {/* "t" label */}
       <text
@@ -186,7 +186,7 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
         textAnchor="middle"
         fontSize={10}
         fontStyle="italic"
-        fill="#b45309" /* amber-700 */
+        fill="#A17D36" /* amber-700 */
       >
         t
       </text>
@@ -196,8 +196,8 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
         x={blockX} y={heatTop}
         width={blockW} height={heatH}
         rx={4}
-        fill="#e5e7eb"   /* gray-200 */
-        stroke="#9ca3af" /* gray-400 */
+        fill="#E7EAEC"   /* gray-200 */
+        stroke="#98999B" /* gray-400 */
         strokeWidth={1.5}
       />
       <text
@@ -205,7 +205,7 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
         textAnchor="middle"
         fontSize={13}
         fontWeight="600"
-        fill="#374151" /* gray-700 */
+        fill="#1A1D21" /* gray-700 */
       >
         Heatsink / Chassis
       </text>
@@ -215,13 +215,13 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
       <line
         x1={arrowX} y1={arrowTop}
         x2={arrowX} y2={arrowBot - 12}
-        stroke="#ef4444" /* red-500 */
+        stroke="#9B3B3E" /* red-500 */
         strokeWidth={2}
       />
       {/* Arrowhead */}
       <polygon
         points={`${arrowX - 7},${arrowBot - 12} ${arrowX + 7},${arrowBot - 12} ${arrowX},${arrowBot}`}
-        fill="#ef4444"
+        fill="#9B3B3E"
       />
       {/* Labels above and below arrow */}
       {arrowLabel.map((line, i) => (
@@ -229,7 +229,7 @@ function TIMDiagram({ tMm, kVal, pVal, result }: DiagramProps) {
           key={i}
           x={arrowX + 12} y={arrowTop + 20 + i * 16}
           fontSize={10}
-          fill="#b91c1c" /* red-700 */
+          fill="#9B3B3E" /* red-700 */
         >
           {line}
         </text>
@@ -328,17 +328,17 @@ export default function TIMResistancePage() {
     <div className="max-w-2xl mx-auto">
 
       {/* Back navigation */}
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
       {/* Page title */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">
         Thermal Interface Material (TIM) Resistance Calculator
       </h1>
 
       {/* Accuracy disclaimer — amber banner at the top */}
-      <p className="text-amber-700 text-sm font-medium mb-6">
+      <p className="text-signal-amber-deep text-sm font-medium mb-6">
         First-pass estimate — not CFD-accurate
       </p>
 
@@ -350,15 +350,15 @@ export default function TIMResistancePage() {
       <div className="flex flex-col md:flex-row gap-6">
 
         {/* ── Left column: inputs ── */}
-        <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5">
+        <div className="flex-1 bg-white rounded-lg border border-panel-gray p-6 flex flex-col gap-5">
 
           {/* TIM type dropdown */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">TIM Type</label>
+            <label className="text-sm font-medium text-graphite/80">TIM Type</label>
             <select
               value={timType}
               onChange={(e) => handleTimTypeChange(e.target.value as TimType)}
-              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 transition"
+              className="rounded-lg border border-graphite/20 bg-white px-3 py-2 text-sm transition"
             >
               {/* Object.entries gives us [key, value] pairs from TIM_PRESETS */}
               {Object.entries(TIM_PRESETS).map(([key, { label, k }]) => (
@@ -367,7 +367,7 @@ export default function TIMResistancePage() {
                 </option>
               ))}
             </select>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-graphite/50">
               Selecting a standard type pre-fills k — you can still edit it below.
             </p>
           </div>
@@ -419,15 +419,15 @@ export default function TIMResistancePage() {
           {/* Calculate button */}
           <button
             onClick={handleCalculate}
-            className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
           >
             Calculate
           </button>
         </div>
 
         {/* ── Right column: SVG diagram ── */}
-        <div className="flex-shrink-0 md:w-72 bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center gap-2">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+        <div className="flex-shrink-0 md:w-72 bg-white rounded-lg border border-panel-gray p-4 flex flex-col items-center justify-center gap-2">
+          <p className="text-xs font-semibold text-graphite/60 uppercase tracking-wide">
             Cross-section view
           </p>
           {/*
@@ -445,8 +445,8 @@ export default function TIMResistancePage() {
 
       {/* ── Results card — only shown after a successful calculation ── */}
       {result && (
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-blue-900 mb-4">Result</h2>
+        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
 
           {/* Two big-number tiles side by side */}
           <div className="grid grid-cols-2 gap-4">
@@ -465,19 +465,19 @@ export default function TIMResistancePage() {
           </div>
 
           {/* Formula line — shows exact values substituted in */}
-          <p className="mt-4 text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono">
+          <p className="mt-4 text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
             {formulaLine}
           </p>
-          <p className="mt-1 text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono">
+          <p className="mt-1 text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
             ΔT = {pInput} W × {result.rTim.toFixed(4)} °C/W
           </p>
         </div>
       )}
 
       {/* ── Disclaimer card ── */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
-        <h3 className="text-sm font-semibold text-amber-800 mb-2">Important limitations</h3>
-        <ul className="text-xs text-amber-700 space-y-1 list-disc list-inside">
+      <div className="mt-6 bg-signal-amber-tint border border-signal-amber-line rounded-lg p-5">
+        <h3 className="text-sm font-semibold text-signal-amber-deep mb-2">Important limitations</h3>
+        <ul className="text-xs text-signal-amber-deep space-y-1 list-disc list-inside">
           <li>Assumes uniform heat flux across the entire contact area.</li>
           <li>Does not account for contact resistance due to surface roughness.</li>
           <li>Bond-line thickness (BLT) in practice may differ from the nominal spec.</li>
@@ -511,7 +511,7 @@ type InputFieldProps = {
 function InputField({ label, unit, value, onChange, error, placeholder, hint }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <label className="text-sm font-medium text-graphite/80">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="number"
@@ -519,22 +519,22 @@ function InputField({ label, unit, value, onChange, error, placeholder, hint }: 
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`
-            flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-            focus:ring-2 focus:ring-blue-400 transition
-            [appearance:textfield]
-            [&::-webkit-outer-spin-button]:appearance-none
-            [&::-webkit-inner-spin-button]:appearance-none
-            ${error ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-          `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield]
+ [&::-webkit-outer-spin-button]:appearance-none
+ [&::-webkit-inner-spin-button]:appearance-none
+ ${error ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
         />
         {unit && (
-          <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+          <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
             {unit}
           </span>
         )}
       </div>
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      {hint && !error && <p className="text-xs text-gray-400">{hint}</p>}
+      {error && <p className="text-xs text-signal-red">{error}</p>}
+      {hint && !error && <p className="text-xs text-graphite/50">{hint}</p>}
     </div>
   );
 }
@@ -554,19 +554,19 @@ function ResultTile({ label, value, unit, primary = false }: ResultTileProps) {
   return (
     <div
       className={`rounded-lg border px-4 py-4 text-center ${
-        primary
-          ? "bg-blue-600 border-blue-700 text-white"
-          : "bg-white border-blue-100 text-gray-800"
-      }`}
+ primary
+ ? "bg-steel-blue border-steel-blue-deep text-white"
+ : "bg-white border-steel-blue-line text-graphite"
+ }`}
     >
       {/* Small label above the number */}
-      <p className={`text-xs font-semibold mb-1 ${primary ? "text-blue-200" : "text-blue-500"}`}>
+      <p className={`text-xs font-semibold mb-1 ${primary ? "text-steel-blue-tint" : "text-steel-blue"}`}>
         {label}
       </p>
       {/* Large result number */}
       <p className="text-2xl font-bold leading-tight">{value}</p>
       {/* Unit below the number */}
-      <p className={`text-xs mt-1 ${primary ? "text-blue-300" : "text-gray-400"}`}>{unit}</p>
+      <p className={`text-xs mt-1 ${primary ? "text-steel-blue-tint" : "text-graphite/50"}`}>{unit}</p>
     </div>
   );
 }

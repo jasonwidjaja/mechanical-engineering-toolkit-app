@@ -95,10 +95,10 @@ const GUIDANCE_BANDS: GuidanceBand[] = [
 // will be purged from the production CSS bundle. All classes must appear as
 // complete, literal strings somewhere in the source.
 const BADGE_CLASSES: Record<GuidanceBand["color"], { badge: string; text: string; bg: string; border: string }> = {
-  red:    { badge: "bg-red-100 border-red-300 text-red-800",         text: "text-red-700",    bg: "bg-red-50",    border: "border-red-200"    },
-  orange: { badge: "bg-orange-100 border-orange-300 text-orange-800", text: "text-orange-700", bg: "bg-orange-50", border: "border-orange-200" },
-  yellow: { badge: "bg-yellow-100 border-yellow-300 text-yellow-800", text: "text-yellow-700", bg: "bg-yellow-50", border: "border-yellow-200" },
-  green:  { badge: "bg-green-100 border-green-300 text-green-800",    text: "text-green-700",  bg: "bg-green-50",  border: "border-green-200"  },
+  red:    { badge: "bg-signal-red-tint border-signal-red-line text-signal-red-deep",         text: "text-signal-red-deep",    bg: "bg-signal-red-tint",    border: "border-signal-red-line"    },
+  orange: { badge: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep", text: "text-signal-amber-deep", bg: "bg-signal-amber-tint", border: "border-signal-amber-line" },
+  yellow: { badge: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep", text: "text-signal-amber-deep", bg: "bg-signal-amber-tint", border: "border-signal-amber-line" },
+  green:  { badge: "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",    text: "text-phosphor-green-deep",  bg: "bg-phosphor-green-tint",  border: "border-phosphor-green-line"  },
 };
 
 // ---------------------------------------------------------------------------
@@ -184,22 +184,22 @@ export default function HeatsinkSizingPage() {
     <div className="max-w-lg mx-auto">
 
       {/* Back navigation */}
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
       {/* Page title */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">
         Heat Sink Sizing Estimator
       </h1>
 
       {/* Accuracy label */}
-      <p className="text-amber-700 text-sm font-medium mb-6">
+      <p className="text-signal-amber-deep text-sm font-medium mb-6">
         First-pass estimate — not CFD-accurate
       </p>
 
       {/* ── Input card ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5">
+      <div className="bg-white rounded-lg border border-panel-gray p-6 flex flex-col gap-5">
 
         {/* P — power dissipation */}
         <InputField
@@ -237,7 +237,7 @@ export default function HeatsinkSizingPage() {
         {/* Calculate button */}
         <button
           onClick={handleCalculate}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
         >
           Calculate
         </button>
@@ -250,8 +250,8 @@ export default function HeatsinkSizingPage() {
         half-typed field, so those fall back to null and the diagram shows the
         generic symbol rather than "NaN °C".
       */}
-      <div className="mt-6 bg-white border border-gray-200 rounded-xl p-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-2">Thermal path</h2>
+      <div className="mt-6 bg-white border border-panel-gray rounded-lg p-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-2">Thermal path</h2>
         <HeatSinkDiagram
           tAmb={Number.isFinite(parseFloat(tAmbInput)) ? parseFloat(tAmbInput) : null}
           tMax={Number.isFinite(parseFloat(tMaxInput)) ? parseFloat(tMaxInput) : null}
@@ -260,16 +260,16 @@ export default function HeatsinkSizingPage() {
 
       {/* ── Results card — only rendered when we have a valid result ── */}
       {result && guidance && (
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-blue-900 mb-4">Result</h2>
+        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
 
           {/* Big R_required number */}
-          <div className="bg-blue-600 border border-blue-700 rounded-lg px-4 py-4 text-center mb-4">
-            <p className="text-xs font-semibold text-blue-200 mb-1">R_required</p>
+          <div className="bg-steel-blue border border-steel-blue-deep rounded-lg px-4 py-4 text-center mb-4">
+            <p className="text-xs font-semibold text-steel-blue-tint mb-1">R_required</p>
             <p className="text-3xl font-bold text-white leading-tight">
               {result.rRequired.toFixed(2)}
             </p>
-            <p className="text-xs text-blue-300 mt-1">°C/W</p>
+            <p className="text-xs text-steel-blue-tint mt-1">°C/W</p>
           </div>
 
           {/*
@@ -291,7 +291,7 @@ export default function HeatsinkSizingPage() {
           </div>
 
           {/* Formula line — shows the exact values substituted in */}
-          <p className="mt-4 text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono">
+          <p className="mt-4 text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
             {formulaLine}
           </p>
 
@@ -299,7 +299,7 @@ export default function HeatsinkSizingPage() {
             Small note reminding the engineer that this is the total R,
             not just the heatsink R — they need to subtract θ_jc and θ_cs.
           */}
-          <p className="mt-3 text-xs text-blue-600">
+          <p className="mt-3 text-xs text-steel-blue">
             <strong>Note:</strong> R_required is the total junction-to-ambient budget. To find the required
             heat-sink R_sa, subtract the junction-to-case (θ_jc) and case-to-sink (θ_cs) resistances
             from the component datasheet:&nbsp;
@@ -309,18 +309,18 @@ export default function HeatsinkSizingPage() {
       )}
 
       {/* ── Reference table — always visible ── */}
-      <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">
+      <div className="mt-6 bg-white rounded-lg border border-panel-gray p-5">
+        <h3 className="text-sm font-semibold text-graphite/80 mb-3">
           Typical Heat Sink R_sa Reference
         </h3>
-        <table className="w-full text-xs text-gray-600">
+        <table className="w-full text-xs text-graphite/70">
           <thead>
-            <tr className="border-b border-gray-100">
-              <th className="text-left pb-2 font-medium text-gray-500">Heat sink type</th>
-              <th className="text-right pb-2 font-medium text-gray-500">Typical R_sa (°C/W)</th>
+            <tr className="border-b border-panel-gray">
+              <th className="text-left pb-2 font-medium text-graphite/60">Heat sink type</th>
+              <th className="text-right pb-2 font-medium text-graphite/60">Typical R_sa (°C/W)</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-panel-gray">
             {REFERENCE_TABLE.map(({ type, range }) => (
               <tr key={type}>
                 <td className="py-1.5 pr-4">{type}</td>
@@ -329,16 +329,16 @@ export default function HeatsinkSizingPage() {
             ))}
           </tbody>
         </table>
-        <p className="mt-3 text-xs text-gray-400">
+        <p className="mt-3 text-xs text-graphite/50">
           Values are approximate and vary widely with fin geometry, airflow velocity, and orientation.
           Always consult the manufacturer datasheet for the specific part.
         </p>
       </div>
 
       {/* ── Disclaimer card ── */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
-        <h3 className="text-sm font-semibold text-amber-800 mb-2">Important limitations</h3>
-        <ul className="text-xs text-amber-700 space-y-1 list-disc list-inside">
+      <div className="mt-6 bg-signal-amber-tint border border-signal-amber-line rounded-lg p-5">
+        <h3 className="text-sm font-semibold text-signal-amber-deep mb-2">Important limitations</h3>
+        <ul className="text-xs text-signal-amber-deep space-y-1 list-disc list-inside">
           <li>This formula gives the total thermal budget, not the heat-sink resistance alone.</li>
           <li>θ_jc and θ_cs (from the component datasheet) must be subtracted to get R_sa.</li>
           <li>Does not account for PCB spreading resistance or adjacent component heat load.</li>
@@ -373,7 +373,7 @@ type InputFieldProps = {
 function InputField({ label, unit, value, onChange, error, placeholder, hint }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <label className="text-sm font-medium text-graphite/80">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="number"
@@ -381,22 +381,22 @@ function InputField({ label, unit, value, onChange, error, placeholder, hint }: 
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`
-            flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-            focus:ring-2 focus:ring-blue-400 transition
-            [appearance:textfield]
-            [&::-webkit-outer-spin-button]:appearance-none
-            [&::-webkit-inner-spin-button]:appearance-none
-            ${error ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-          `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield]
+ [&::-webkit-outer-spin-button]:appearance-none
+ [&::-webkit-inner-spin-button]:appearance-none
+ ${error ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
         />
         {unit && (
-          <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+          <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
             {unit}
           </span>
         )}
       </div>
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      {hint && !error && <p className="text-xs text-gray-400">{hint}</p>}
+      {error && <p className="text-xs text-signal-red">{error}</p>}
+      {hint && !error && <p className="text-xs text-graphite/50">{hint}</p>}
     </div>
   );
 }

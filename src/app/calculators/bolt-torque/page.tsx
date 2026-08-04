@@ -121,14 +121,14 @@ export default function BoltTorquePage() {
 
   return (
     <div className="max-w-lg mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Bolt Torque Calculator</h1>
-      <p className="text-gray-500 text-sm mb-4">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Bolt Torque Calculator</h1>
+      <p className="text-graphite/60 text-sm mb-4">
         Uses the nut-factor formula{" "}
-        <span className="font-mono bg-gray-100 px-1 rounded">T = K × F × d</span>{" "}
+        <span className="font-mono bg-panel-gray px-1 rounded">T = K × F × d</span>{" "}
         to find the tightening torque needed to reach a target clamp force.
       </p>
 
@@ -139,10 +139,10 @@ export default function BoltTorquePage() {
             key={u}
             onClick={() => switchUnits(u)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-              units === u
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"
-            }`}
+ units === u
+ ? "bg-steel-blue text-white border-steel-blue-deep"
+ : "bg-white text-graphite/70 border-graphite/20 hover:border-steel-blue-line"
+ }`}
           >
             {u === "metric" ? "Metric (mm / N)" : "Imperial (in / lbf)"}
           </button>
@@ -150,7 +150,7 @@ export default function BoltTorquePage() {
       </div>
 
       {/* Input form */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5">
+      <div className="bg-white rounded-lg border border-panel-gray p-6 flex flex-col gap-5">
         <InputField
           label="Bolt Diameter"
           unit={cfg.diamUnit}
@@ -180,7 +180,7 @@ export default function BoltTorquePage() {
         />
         <button
           onClick={handleCalculate}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
         >
           Calculate Torque
         </button>
@@ -188,8 +188,8 @@ export default function BoltTorquePage() {
 
       {/* Results — three unit cards, primary one highlighted */}
       {result && (
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-blue-900 mb-4">Result</h2>
+        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
           <div className="grid grid-cols-3 gap-3">
             {/* N·m is primary for metric */}
             <ResultValue
@@ -212,23 +212,23 @@ export default function BoltTorquePage() {
           </div>
 
           {/* Show the exact numbers plugged in — great for double-checking */}
-          <p className="mt-4 text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2 font-mono">
+          <p className="mt-4 text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
             {cfg.formulaLine}
           </p>
         </div>
       )}
 
       {/* K-factor reference — embedded in the page so the user never has to look it up */}
-      <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">K-Factor (Nut Factor) Reference</h3>
-        <table className="w-full text-xs text-gray-600">
+      <div className="mt-6 bg-white rounded-lg border border-panel-gray p-5">
+        <h3 className="text-sm font-semibold text-graphite/80 mb-3">K-Factor (Nut Factor) Reference</h3>
+        <table className="w-full text-xs text-graphite/70">
           <thead>
-            <tr className="border-b border-gray-100">
-              <th className="text-left pb-2 font-medium text-gray-500">Surface / Condition</th>
-              <th className="text-right pb-2 font-medium text-gray-500">K range</th>
+            <tr className="border-b border-panel-gray">
+              <th className="text-left pb-2 font-medium text-graphite/60">Surface / Condition</th>
+              <th className="text-right pb-2 font-medium text-graphite/60">K range</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-panel-gray">
             {[
               ["Moly-disulfide (anti-seize)", "0.10 – 0.13"],
               ["Heavy machine oil / waxed", "0.12 – 0.15"],
@@ -245,7 +245,7 @@ export default function BoltTorquePage() {
             ))}
           </tbody>
         </table>
-        <p className="mt-3 text-xs text-gray-400">
+        <p className="mt-3 text-xs text-graphite/50">
           K varies with bolt grade, plating, lubricant, and installation method. Use a torque audit or
           tension-measuring test for safety-critical joints.
         </p>
@@ -274,7 +274,7 @@ type InputFieldProps = {
 function InputField({ label, unit, value, onChange, error, placeholder, hint }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <label className="text-sm font-medium text-graphite/80">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="number"
@@ -282,20 +282,20 @@ function InputField({ label, unit, value, onChange, error, placeholder, hint }: 
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`
-            flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-            focus:ring-2 focus:ring-blue-400 transition
-            [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-            ${error ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-          `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${error ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
         />
         {unit && (
-          <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+          <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
             {unit}
           </span>
         )}
       </div>
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      {hint && !error && <p className="text-xs text-gray-400">{hint}</p>}
+      {error && <p className="text-xs text-signal-red">{error}</p>}
+      {hint && !error && <p className="text-xs text-graphite/50">{hint}</p>}
     </div>
   );
 }
@@ -314,12 +314,12 @@ function ResultValue({ label, value, primary = false }: ResultValueProps) {
   return (
     <div
       className={`rounded-lg border px-3 py-3 text-center ${
-        primary
-          ? "bg-blue-600 border-blue-700 text-white"
-          : "bg-white border-blue-100 text-gray-800"
-      }`}
+ primary
+ ? "bg-steel-blue border-steel-blue-deep text-white"
+ : "bg-white border-steel-blue-line text-graphite"
+ }`}
     >
-      <p className={`text-xs font-semibold mb-1 ${primary ? "text-blue-200" : "text-blue-500"}`}>
+      <p className={`text-xs font-semibold mb-1 ${primary ? "text-steel-blue-tint" : "text-steel-blue"}`}>
         {label}
       </p>
       <p className="text-xl font-bold leading-tight">{value}</p>

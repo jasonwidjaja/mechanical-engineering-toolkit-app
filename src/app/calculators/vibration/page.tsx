@@ -106,24 +106,24 @@ export default function VibrationPage() {
   return (
     <div className="max-w-lg mx-auto">
       {/* Back navigation */}
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Natural Frequency Estimator</h1>
-      <p className="text-gray-500 text-sm mb-6">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Natural Frequency Estimator</h1>
+      <p className="text-graphite/60 text-sm mb-6">
         Simple mass-spring model — first-pass estimate only
       </p>
 
       {/* ------------------------------------------------------------------ */}
       {/* INPUT CARD                                                           */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col gap-5 mb-4">
+      <div className="bg-white rounded-lg border border-panel-gray p-6 flex flex-col gap-5 mb-4">
 
         {/* Mass input */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
-            Effective Mass <span className="font-normal text-gray-400">(m)</span>
+          <label className="text-sm font-medium text-graphite/80">
+            Effective Mass <span className="font-normal text-graphite/50">(m)</span>
           </label>
           <div className="flex items-center gap-2">
             <input
@@ -132,19 +132,19 @@ export default function VibrationPage() {
               onChange={e => { setMass(e.target.value); setResult(null); }}
               placeholder="e.g. 2.5"
               className={`
-                flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-                focus:ring-2 focus:ring-blue-400 transition
-                [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                ${errors.mass ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-              `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.mass ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
             />
-            <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+            <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
               kg
             </span>
           </div>
-          {errors.mass && <p className="text-xs text-red-600">{errors.mass}</p>}
+          {errors.mass && <p className="text-xs text-signal-red">{errors.mass}</p>}
           {!errors.mass && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-graphite/50">
               Lumped mass of the moving body (include attached components)
             </p>
           )}
@@ -152,8 +152,8 @@ export default function VibrationPage() {
 
         {/* Stiffness input */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-700">
-            Effective Stiffness <span className="font-normal text-gray-400">(k)</span>
+          <label className="text-sm font-medium text-graphite/80">
+            Effective Stiffness <span className="font-normal text-graphite/50">(k)</span>
           </label>
           <div className="flex items-center gap-2">
             <input
@@ -162,19 +162,19 @@ export default function VibrationPage() {
               onChange={e => { setStiffness(e.target.value); setResult(null); }}
               placeholder="e.g. 10000"
               className={`
-                flex-1 rounded-lg border px-3 py-2 text-sm outline-none
-                focus:ring-2 focus:ring-blue-400 transition
-                [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                ${errors.stiffness ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}
-              `}
+ flex-1 rounded-lg border px-3 py-2 text-sm
+ transition
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.stiffness ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20 bg-white"}
+ `}
             />
-            <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+            <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
               N/m
             </span>
           </div>
-          {errors.stiffness && <p className="text-xs text-red-600">{errors.stiffness}</p>}
+          {errors.stiffness && <p className="text-xs text-signal-red">{errors.stiffness}</p>}
           {!errors.stiffness && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-graphite/50">
               Spring/structural stiffness resisting the motion (N/m = N per meter of deflection)
             </p>
           )}
@@ -183,7 +183,7 @@ export default function VibrationPage() {
         {/* Calculate button */}
         <button
           onClick={handleCalculate}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
         >
           Calculate Natural Frequency
         </button>
@@ -195,36 +195,36 @@ export default function VibrationPage() {
       {result && (
         <>
           {/* Primary result tile: f_n */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-4">
-            <h2 className="text-lg font-semibold text-blue-900 mb-4">Result</h2>
+          <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6 mb-4">
+            <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
 
             {/* f_n — the main answer, shown large */}
-            <div className="bg-blue-600 border border-blue-700 rounded-lg px-4 py-4 text-white text-center mb-3">
-              <p className="text-xs font-semibold text-blue-200 mb-1 uppercase tracking-wide">
+            <div className="bg-steel-blue border border-steel-blue-deep rounded-lg px-4 py-4 text-white text-center mb-3">
+              <p className="text-xs font-semibold text-steel-blue-tint mb-1 uppercase tracking-wide">
                 Natural Frequency (f<sub>n</sub>)
               </p>
               <p className="text-3xl font-bold">{result.fn.toFixed(3)}</p>
-              <p className="text-sm text-blue-200 mt-0.5">Hz</p>
+              <p className="text-sm text-steel-blue-tint mt-0.5">Hz</p>
             </div>
 
             {/* Secondary results: ω_n and T side-by-side */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white border border-blue-100 rounded-lg px-3 py-3 text-center">
-                <p className="text-xs font-semibold text-blue-500 mb-1">
+              <div className="bg-white border border-steel-blue-line rounded-lg px-3 py-3 text-center">
+                <p className="text-xs font-semibold text-steel-blue mb-1">
                   Angular freq. (ω<sub>n</sub>)
                 </p>
-                <p className="text-xl font-bold text-gray-800">{result.wn.toFixed(3)}</p>
-                <p className="text-xs text-gray-400 mt-0.5">rad/s</p>
+                <p className="text-xl font-bold text-graphite">{result.wn.toFixed(3)}</p>
+                <p className="text-xs text-graphite/50 mt-0.5">rad/s</p>
               </div>
-              <div className="bg-white border border-blue-100 rounded-lg px-3 py-3 text-center">
-                <p className="text-xs font-semibold text-blue-500 mb-1">Period (T)</p>
-                <p className="text-xl font-bold text-gray-800">{result.T.toFixed(3)}</p>
-                <p className="text-xs text-gray-400 mt-0.5">ms</p>
+              <div className="bg-white border border-steel-blue-line rounded-lg px-3 py-3 text-center">
+                <p className="text-xs font-semibold text-steel-blue mb-1">Period (T)</p>
+                <p className="text-xl font-bold text-graphite">{result.T.toFixed(3)}</p>
+                <p className="text-xs text-graphite/50 mt-0.5">ms</p>
               </div>
             </div>
 
             {/* Formula with substituted values */}
-            <div className="mt-4 bg-blue-100 rounded-lg px-3 py-2 text-xs font-mono text-blue-700 space-y-0.5">
+            <div className="mt-4 bg-steel-blue-tint rounded-lg px-3 py-2 text-xs font-mono text-steel-blue-deep space-y-0.5">
               <p>ω_n = √(k / m) = √({parseFloat(stiffness).toLocaleString()} / {parseFloat(mass)}) = {result.wn.toFixed(4)} rad/s</p>
               <p>f_n = ω_n / (2π) = {result.fn.toFixed(4)} Hz</p>
               <p>T   = 1 / f_n = {(result.T / 1000).toFixed(6)} s = {result.T.toFixed(3)} ms</p>
@@ -232,20 +232,20 @@ export default function VibrationPage() {
           </div>
 
           {/* ---- Resonance reference table -------------------------------- */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-4">
-            <h3 className="text-sm font-semibold text-gray-700 mb-1">Excitation Frequency Reference</h3>
-            <p className="text-xs text-gray-400 mb-3">
+          <div className="bg-white rounded-lg border border-panel-gray p-5 mb-4">
+            <h3 className="text-sm font-semibold text-graphite/80 mb-1">Excitation Frequency Reference</h3>
+            <p className="text-xs text-graphite/50 mb-3">
               Rows highlighted in yellow are within ±20% of your calculated f<sub>n</sub> — possible
               resonance overlap.
             </p>
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-xs text-gray-400 border-b border-gray-100">
+                <tr className="text-xs text-graphite/50 border-b border-panel-gray">
                   <th className="text-left pb-2 pr-4">Source</th>
                   <th className="text-right pb-2">Typical frequency</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-panel-gray">
                 {EXCITATION_SOURCES.map(row => {
                   const overlap = isResonanceOverlap(result.fn, row.fLow, row.fHigh);
                   // Format the frequency cell: single value vs a range
@@ -256,18 +256,18 @@ export default function VibrationPage() {
                   return (
                     <tr
                       key={row.source}
-                      className={overlap ? "bg-yellow-50" : ""}
+                      className={overlap ? "bg-signal-amber-tint" : ""}
                     >
-                      <td className={`py-2 pr-4 ${overlap ? "text-yellow-800 font-medium" : "text-gray-600"}`}>
+                      <td className={`py-2 pr-4 ${overlap ? "text-signal-amber-deep font-medium" : "text-graphite/70"}`}>
                         {row.source}
                         {/* Resonance warning badge */}
                         {overlap && (
-                          <span className="ml-2 text-xs text-yellow-700 font-semibold">
+                          <span className="ml-2 text-xs text-signal-amber-deep font-semibold">
                             ⚠ Possible resonance overlap — consider design changes.
                           </span>
                         )}
                       </td>
-                      <td className={`py-2 text-right font-mono text-xs ${overlap ? "text-yellow-700 font-semibold" : "text-gray-500"}`}>
+                      <td className={`py-2 text-right font-mono text-xs ${overlap ? "text-signal-amber-deep font-semibold" : "text-graphite/60"}`}>
                         {freqLabel}
                       </td>
                     </tr>
@@ -282,7 +282,7 @@ export default function VibrationPage() {
       {/* ------------------------------------------------------------------ */}
       {/* DISCLAIMER                                                           */}
       {/* ------------------------------------------------------------------ */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+      <div className="bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>Disclaimer:</strong> Simple 1-DOF model. Real assemblies have multiple modes,
         frequency-dependent stiffness, damping effects, and boundary condition sensitivities.
         Verify critical assemblies with modal FEA and physical shake-table testing.

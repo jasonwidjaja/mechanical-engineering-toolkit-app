@@ -35,10 +35,10 @@ export default function DataTable({
   alignTop?: boolean;
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-lg border border-panel-gray bg-white">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
+          <tr className="bg-instrument-white border-b border-panel-gray text-left text-xs text-graphite/60">
             {columns.map((c, i) => (
               <th
                 key={i}
@@ -50,14 +50,14 @@ export default function DataTable({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-panel-gray">
           {rows.map(row => (
             <tr
               key={row.key}
-              className={`hover:bg-gray-50 transition-colors ${alignTop ? "align-top" : ""}`}
+              className={`hover:bg-instrument-white transition-colors ${alignTop ? "align-top" : ""}`}
             >
               {row.cells.map((cell, i) => (
-                <td key={i} className={`px-4 py-3 ${columns[i]?.className ?? "text-gray-600"}`}>
+                <td key={i} className={`px-4 py-3 ${columns[i]?.className ?? "text-graphite/70"}`}>
                   {cell}
                 </td>
               ))}

@@ -87,48 +87,48 @@ export default function GearPairDiagram({ n1, n2, stage, driverClockwise }: Prop
       <defs>
         <marker id={`gearArr${stage}`} markerWidth="7" markerHeight="7" refX="5.5" refY="3.5"
                 orient="auto">
-          <path d="M0,1 L6,3.5 L0,6 Z" fill="#2563eb" />
+          <path d="M0,1 L6,3.5 L0,6 Z" fill="#2B4C7E" />
         </marker>
       </defs>
 
-      <text x="6" y="14" fontSize="9" fontWeight="700" fill="#94a3b8">
+      <text x="6" y="14" fontSize="9" fontWeight="700" fill="#98999B">
         STAGE {stage}
       </text>
 
       {/* ── Driver ── */}
-      <path d={teeth(x1, CY, r1, n1)} stroke="#1d4ed8" strokeWidth="1.5" fill="none" />
-      <circle cx={x1} cy={CY} r={r1} fill="#dbeafe" stroke="#2563eb" strokeWidth="1.6" />
-      <circle cx={x1} cy={CY} r={r1} fill="none" stroke="#1d4ed8" strokeWidth="0.7"
+      <path d={teeth(x1, CY, r1, n1)} stroke="#2B4C7E" strokeWidth="1.5" fill="none" />
+      <circle cx={x1} cy={CY} r={r1} fill="#E5EAF0" stroke="#2B4C7E" strokeWidth="1.6" />
+      <circle cx={x1} cy={CY} r={r1} fill="none" stroke="#2B4C7E" strokeWidth="0.7"
               strokeDasharray="3 2" opacity="0.55" />
-      <circle cx={x1} cy={CY} r="3.4" fill="#1e3a8a" />
-      <path d={rotationArc(x1, CY, r1, driverClockwise)} fill="none" stroke="#2563eb"
+      <circle cx={x1} cy={CY} r="3.4" fill="#1E3659" />
+      <path d={rotationArc(x1, CY, r1, driverClockwise)} fill="none" stroke="#2B4C7E"
             strokeWidth="1.4" markerEnd={`url(#gearArr${stage})`} />
 
       {/* ── Driven — always turns the opposite way on an external mesh ── */}
-      <path d={teeth(x2, CY, r2, n2)} stroke="#047857" strokeWidth="1.5" fill="none" />
-      <circle cx={x2} cy={CY} r={r2} fill="#d1fae5" stroke="#059669" strokeWidth="1.6" />
-      <circle cx={x2} cy={CY} r={r2} fill="none" stroke="#047857" strokeWidth="0.7"
+      <path d={teeth(x2, CY, r2, n2)} stroke="#3A6039" strokeWidth="1.5" fill="none" />
+      <circle cx={x2} cy={CY} r={r2} fill="#E9EFEA" stroke="#3A6039" strokeWidth="1.6" />
+      <circle cx={x2} cy={CY} r={r2} fill="none" stroke="#3A6039" strokeWidth="0.7"
               strokeDasharray="3 2" opacity="0.55" />
-      <circle cx={x2} cy={CY} r="3.4" fill="#064e3b" />
-      <path d={rotationArc(x2, CY, r2, !driverClockwise)} fill="none" stroke="#059669"
+      <circle cx={x2} cy={CY} r="3.4" fill="#3A6039" />
+      <path d={rotationArc(x2, CY, r2, !driverClockwise)} fill="none" stroke="#3A6039"
             strokeWidth="1.4" markerEnd={`url(#gearArr${stage})`} />
 
       {/* ── Labels ── */}
-      <text x={x1} y={CY + r1 + 20} textAnchor="middle" fontSize="10" fontWeight="700" fill="#1d4ed8">
+      <text x={x1} y={CY + r1 + 20} textAnchor="middle" fontSize="10" fontWeight="700" fill="#2B4C7E">
         N₁ = {n1}
       </text>
-      <text x={x1} y={CY + r1 + 31} textAnchor="middle" fontSize="8.5" fill="#60a5fa">
+      <text x={x1} y={CY + r1 + 31} textAnchor="middle" fontSize="8.5" fill="#2B4C7E">
         driver
       </text>
 
-      <text x={x2} y={CY + r2 + 20} textAnchor="middle" fontSize="10" fontWeight="700" fill="#047857">
+      <text x={x2} y={CY + r2 + 20} textAnchor="middle" fontSize="10" fontWeight="700" fill="#3A6039">
         N₂ = {n2}
       </text>
-      <text x={x2} y={CY + r2 + 31} textAnchor="middle" fontSize="8.5" fill="#34d399">
+      <text x={x2} y={CY + r2 + 31} textAnchor="middle" fontSize="8.5" fill="#4B7B4E">
         driven
       </text>
 
-      <text x={CX} y="166" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#475569">
+      <text x={CX} y="166" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#5F6164">
         ratio {ratio.toFixed(2)} : 1
       </text>
     </svg>

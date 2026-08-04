@@ -91,18 +91,18 @@ export default function BasePlatePage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Base Plate Anchor Bolt Tension</h1>
-      <p className="text-sm text-gray-500 mb-5">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Base Plate Anchor Bolt Tension</h1>
+      <p className="text-sm text-graphite/60 mb-5">
         Overturning moment distributed across a bolt circle — first-pass estimate
       </p>
 
       {/* ---- Inputs card ---- */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">Inputs</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-5 mb-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-4">Inputs</h2>
         <div className="flex flex-col gap-4">
 
           {/* M — overturning moment */}
@@ -116,13 +116,13 @@ export default function BasePlatePage() {
 
           {/* N — number of bolts */}
           <div className="flex items-start gap-3">
-            <label className="text-xs text-gray-600 flex-1 leading-tight pt-1.5">
+            <label className="text-xs text-graphite/70 flex-1 leading-tight pt-1.5">
               N — Number of bolts
             </label>
             <select
               value={N}
               onChange={e => { setN(e.target.value); setResult(null); }}
-              className="w-28 border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none bg-white"
+              className="w-28 border border-panel-gray rounded px-2 py-1 text-sm bg-white"
             >
               {boltOptions.map(n => (
                 <option key={n} value={n}>{n}</option>
@@ -153,18 +153,18 @@ export default function BasePlatePage() {
       {/* ---- Calculate button ---- */}
       <button
         onClick={calculate}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-4"
+        className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-4"
       >
         Calculate Bolt Tension
       </button>
 
       {calcError && (
-        <p className="text-sm text-red-600 mb-4">{calcError}</p>
+        <p className="text-sm text-signal-red mb-4">{calcError}</p>
       )}
 
       {/* ---- SVG diagram ---- */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Pattern Diagram (top-down view)</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-4 mb-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-3">Pattern Diagram (top-down view)</h2>
         <BasePlateDiagram
           N={parseInt(N, 10) || 4}
           result={result}
@@ -173,11 +173,11 @@ export default function BasePlatePage() {
 
       {/* ---- Results card ---- */}
       {result && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-4">
-          <h2 className="text-base font-semibold text-blue-900 mb-3">Results</h2>
+        <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5 mb-4">
+          <h2 className="text-base font-semibold text-steel-blue-deep mb-3">Results</h2>
 
           {/* Formula recap */}
-          <p className="text-xs text-blue-700 mb-3 font-mono">
+          <p className="text-xs text-steel-blue-deep mb-3 font-mono">
             F_moment_max = 2M / (N × R) = 2 × {result.M.toFixed(0)} / ({result.N} × {result.R_m.toFixed(4)})
           </p>
 
@@ -186,40 +186,40 @@ export default function BasePlatePage() {
               label="Tension from moment alone"
               value={`${result.F_moment_max.toFixed(1)} N`}
               sub={`(${(result.F_moment_max / 1000).toFixed(3)} kN)`}
-              color="text-gray-800"
+              color="text-graphite"
             />
             <ResultRow
               label={`Compressive relief per bolt (P / N = ${result.F_axial.toFixed(1)} N)`}
               value={`−${result.F_axial.toFixed(1)} N`}
-              color="text-green-700"
+              color="text-phosphor-green-deep"
             />
 
-            <div className="border-t border-blue-200 my-1" />
+            <div className="border-t border-steel-blue-line my-1" />
 
             {result.net_max > 0 ? (
               <div className="flex items-start justify-between">
-                <span className="text-sm text-red-700 font-semibold flex-1">
+                <span className="text-sm text-signal-red-deep font-semibold flex-1">
                   Net max bolt tension
                 </span>
                 <div className="text-right">
-                  <span className="text-lg font-bold text-red-700">
+                  <span className="text-lg font-bold text-signal-red-deep">
                     {result.net_max.toFixed(1)} N
                   </span>
-                  <span className="block text-xs text-red-500">
+                  <span className="block text-xs text-signal-red">
                     ({(result.net_max / 1000).toFixed(3)} kN) — bolt in TENSION
                   </span>
                 </div>
               </div>
             ) : (
               <div className="flex items-start justify-between">
-                <span className="text-sm text-green-700 font-semibold flex-1">
+                <span className="text-sm text-phosphor-green-deep font-semibold flex-1">
                   Net max bolt tension
                 </span>
                 <div className="text-right">
-                  <span className="text-lg font-bold text-green-700">
+                  <span className="text-lg font-bold text-phosphor-green-deep">
                     {result.net_max.toFixed(1)} N
                   </span>
-                  <span className="block text-xs text-green-600">
+                  <span className="block text-xs text-phosphor-green">
                     Weight dominates — all bolts in compression. No net tensile demand.
                   </span>
                 </div>
@@ -227,9 +227,9 @@ export default function BasePlatePage() {
             )}
           </div>
 
-          <p className="text-xs text-blue-700">
+          <p className="text-xs text-steel-blue-deep">
             Compare against bolt proof load from the{" "}
-            <Link href="/calculators/bolt-torque" className="underline hover:text-blue-900">
+            <Link href="/calculators/bolt-torque" className="underline hover:text-steel-blue-deep">
               Bolt Torque Calculator
             </Link>
             .
@@ -238,7 +238,7 @@ export default function BasePlatePage() {
       )}
 
       {/* ---- Disclaimer ---- */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800">
+      <div className="bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>First-pass estimate only.</strong> This uses the elastic method for a circular bolt pattern under pure overturning.
         It does not account for base-plate flexibility, prying forces, or combined shear + tension.
         Verify with a licensed structural engineer for safety-critical applications.
@@ -291,7 +291,7 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
 
   // Determine bolt fill colors
   function boltFill(i: number): string {
-    if (!result) return "#9ca3af"; // gray before calculation
+    if (!result) return "#98999B"; // gray before calculation
 
     // Per spec: bolt 0 is the max tension bolt.
     // Other bolts on the tension side (sin > 0 in engineering coords) are in tension.
@@ -314,8 +314,8 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
     // F_moment_i = F_moment_max × sinVal  (since F_moment_max = 2M/(N×R) and F_i = 2M×sin/(N×R))
     const F_i = result.F_moment_max * sinVal - result.F_axial;
 
-    if (F_i > 0)  return "rgba(239,68,68,0.8)";    // red — tension
-    return "rgba(34,197,94,0.6)";                   // green — compression
+    if (F_i > 0)  return "rgba(155, 59, 62,0.8)";    // red — tension
+    return "rgba(75, 123, 78,0.6)";                   // green — compression
   }
 
   // Moment arrow: CCW arc, center (150,150), radius 30, from 30° to 330°
@@ -358,20 +358,20 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
   return (
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="w-full rounded-lg bg-gray-50 border border-gray-100"
+      className="w-full rounded-lg bg-instrument-white border border-panel-gray"
       style={{ minHeight: 260 }}
       aria-label="Base plate bolt circle diagram"
     >
       {/* Outer plate boundary */}
       <circle
         cx={CX} cy={CY} r={PLATE_R}
-        fill="none" stroke="#d1d5db" strokeWidth={2}
+        fill="none" stroke="#CDD2D5" strokeWidth={2}
       />
 
       {/* Bolt pitch circle (dashed) */}
       <circle
         cx={CX} cy={CY} r={BOLT_R_PX}
-        fill="none" stroke="#9ca3af" strokeWidth={1.5} strokeDasharray="5 4"
+        fill="none" stroke="#98999B" strokeWidth={1.5} strokeDasharray="5 4"
       />
 
       {/* Radius label line (center → bolt 1) */}
@@ -380,11 +380,11 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
           <line
             x1={CX} y1={CY}
             x2={labelBoltCX} y2={labelBoltCY}
-            stroke="#6b7280" strokeWidth={1} strokeDasharray="3 2"
+            stroke="#5F6164" strokeWidth={1} strokeDasharray="3 2"
           />
           <text
             x={rLabelX} y={rLabelY}
-            fill="#374151" fontSize={11} fontStyle="italic" fontWeight="600"
+            fill="#1A1D21" fontSize={11} fontStyle="italic" fontWeight="600"
           >
             R
           </text>
@@ -394,18 +394,18 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
       {/* Moment arrow (CCW curved arrow near center) */}
       <path
         d={momentArcPath}
-        fill="none" stroke="#3b82f6" strokeWidth={2}
+        fill="none" stroke="#2B4C7E" strokeWidth={2}
       />
       {/* Arrowhead */}
       <path
         d={`M ${arrowTipX} ${arrowTipY} L ${arrowA1X} ${arrowA1Y} L ${arrowA2X} ${arrowA2Y} Z`}
-        fill="#3b82f6"
+        fill="#2B4C7E"
       />
       {/* "M" label near center */}
       <text
         x={CX} y={CY + 4}
         textAnchor="middle" dominantBaseline="middle"
-        fill="#3b82f6" fontSize={12} fontWeight="bold"
+        fill="#2B4C7E" fontSize={12} fontWeight="bold"
       >
         M
       </text>
@@ -421,7 +421,7 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
             {isMaxTension && result && result.net_max > 0 && (
               <circle
                 cx={b.cx} cy={b.cy} r={BOLT_DOT + 5}
-                fill="none" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="3 2"
+                fill="none" stroke="#9B3B3E" strokeWidth={1.5} strokeDasharray="3 2"
               />
             )}
             {/* Bolt dot */}
@@ -443,7 +443,7 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
       })}
 
       {/* Center dot */}
-      <circle cx={CX} cy={CY} r={4} fill="#6b7280" />
+      <circle cx={CX} cy={CY} r={4} fill="#5F6164" />
 
       {/* "MAX TENSION" label pointing to bolt 0 */}
       {result && result.net_max > 0 && (
@@ -452,11 +452,11 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
           <line
             x1={maxBoltCX + 14} y1={maxBoltCY - 14}
             x2={maxBoltCX + 3}  y2={maxBoltCY - BOLT_DOT - 2}
-            stroke="#ef4444" strokeWidth={1}
+            stroke="#9B3B3E" strokeWidth={1}
           />
           <text
             x={maxBoltCX + 16} y={maxBoltCY - 16}
-            fill="#ef4444" fontSize={8.5} fontWeight="bold"
+            fill="#9B3B3E" fontSize={8.5} fontWeight="bold"
           >
             MAX TENSION
           </text>
@@ -466,10 +466,10 @@ function BasePlateDiagram({ N, result }: { N: number; result: CalcResult | null 
       {/* Legend */}
       {result && (
         <g>
-          <circle cx={10} cy={H - 30} r={5} fill="rgba(239,68,68,0.8)" />
-          <text x={19} y={H - 26} fill="#6b7280" fontSize={8}>Tension</text>
-          <circle cx={65} cy={H - 30} r={5} fill="rgba(34,197,94,0.6)" />
-          <text x={74} y={H - 26} fill="#6b7280" fontSize={8}>Compression</text>
+          <circle cx={10} cy={H - 30} r={5} fill="rgba(155, 59, 62,0.8)" />
+          <text x={19} y={H - 26} fill="#5F6164" fontSize={8}>Tension</text>
+          <circle cx={65} cy={H - 30} r={5} fill="rgba(75, 123, 78,0.6)" />
+          <text x={74} y={H - 26} fill="#5F6164" fontSize={8}>Compression</text>
         </g>
       )}
     </svg>
@@ -494,8 +494,8 @@ function InputRow({
   return (
     <div className="flex items-start gap-3">
       <div className="flex-1">
-        <label className="text-xs text-gray-600 leading-tight block">{label}</label>
-        {hint && <p className="text-xs text-gray-400 mt-0.5">{hint}</p>}
+        <label className="text-xs text-graphite/70 leading-tight block">{label}</label>
+        {hint && <p className="text-xs text-graphite/50 mt-0.5">{hint}</p>}
       </div>
       <div className="flex items-center gap-1.5 shrink-0">
         <input
@@ -503,9 +503,9 @@ function InputRow({
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder={placeholder ?? ""}
-          className="w-28 border border-gray-200 rounded px-2 py-1 text-sm text-right focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-xs text-gray-400 w-8">{unit}</span>
+        <span className="text-xs text-graphite/50 w-8">{unit}</span>
       </div>
     </div>
   );
@@ -522,10 +522,10 @@ function ResultRow({
 }) {
   return (
     <div className="flex items-start justify-between">
-      <span className="text-sm text-gray-700 flex-1">{label}</span>
+      <span className="text-sm text-graphite/80 flex-1">{label}</span>
       <div className="text-right">
-        <span className={`text-base font-bold font-mono ${color ?? "text-gray-800"}`}>{value}</span>
-        {sub && <span className="block text-xs text-gray-500">{sub}</span>}
+        <span className={`text-base font-bold font-mono ${color ?? "text-graphite"}`}>{value}</span>
+        {sub && <span className="block text-xs text-graphite/60">{sub}</span>}
       </div>
     </div>
   );

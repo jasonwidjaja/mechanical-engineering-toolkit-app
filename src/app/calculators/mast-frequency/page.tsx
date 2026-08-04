@@ -141,20 +141,20 @@ export default function MastFrequencyPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">
         Mast Natural Frequency &amp; Vortex Shedding Check
       </h1>
-      <p className="text-sm text-gray-500 mb-5">
+      <p className="text-sm text-graphite/60 mb-5">
         First-pass check against vortex-induced resonance — TIA-222 / ASCE 7
       </p>
 
       {/* ---- Inputs card ---- */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">Mast Section &amp; Loading</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-5 mb-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-4">Mast Section &amp; Loading</h2>
         <div className="flex flex-col gap-4">
 
           {/* L */}
@@ -185,11 +185,11 @@ export default function MastFrequencyPage() {
           {/* Material + E */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <label className="text-xs text-gray-600 flex-1">Material</label>
+              <label className="text-xs text-graphite/70 flex-1">Material</label>
               <select
                 value={matIdx}
                 onChange={e => handleMaterialChange(parseInt(e.target.value, 10))}
-                className="w-44 border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none bg-white"
+                className="w-44 border border-panel-gray rounded px-2 py-1 text-sm bg-white"
               >
                 {MATERIALS.map((mat, i) => (
                   <option key={mat.label} value={i}>{mat.label}</option>
@@ -197,7 +197,7 @@ export default function MastFrequencyPage() {
               </select>
             </div>
             <div className="flex items-center gap-3">
-              <label className="text-xs text-gray-600 flex-1">
+              <label className="text-xs text-graphite/70 flex-1">
                 E — Young&#39;s modulus{MATERIALS[matIdx].E_GPa === null ? " (enter value)" : ""}
               </label>
               <div className="flex items-center gap-1.5 shrink-0">
@@ -206,11 +206,11 @@ export default function MastFrequencyPage() {
                   value={E}
                   onChange={e => { setE(e.target.value); setResult(null); }}
                   readOnly={MATERIALS[matIdx].E_GPa !== null}
-                  className={`w-28 border border-gray-200 rounded px-2 py-1 text-sm text-right focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
-                    MATERIALS[matIdx].E_GPa !== null ? "bg-gray-50 text-gray-500 cursor-default" : ""
-                  }`}
+                  className={`w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+ MATERIALS[matIdx].E_GPa !== null ? "bg-instrument-white text-graphite/60 cursor-default" : ""
+ }`}
                 />
-                <span className="text-xs text-gray-400 w-8">GPa</span>
+                <span className="text-xs text-graphite/50 w-8">GPa</span>
               </div>
             </div>
           </div>
@@ -225,8 +225,8 @@ export default function MastFrequencyPage() {
           />
 
           {/* V_min, V_max */}
-          <div className="border-t border-gray-100 pt-3 flex flex-col gap-3">
-            <p className="text-xs font-medium text-gray-500">Design wind speed range</p>
+          <div className="border-t border-panel-gray pt-3 flex flex-col gap-3">
+            <p className="text-xs font-medium text-graphite/60">Design wind speed range</p>
             <InputRow
               label="V_min — Minimum design wind speed"
               unit="m/s"
@@ -247,29 +247,29 @@ export default function MastFrequencyPage() {
       {/* ---- Calculate button ---- */}
       <button
         onClick={calculate}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-4"
+        className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-4"
       >
         Calculate Natural Frequency
       </button>
 
       {calcError && (
-        <p className="text-sm text-red-600 mb-4">{calcError}</p>
+        <p className="text-sm text-signal-red mb-4">{calcError}</p>
       )}
 
       {/* ---- SVG diagram ---- */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Vortex Shedding Pattern (top-down view)</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-4 mb-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-3">Vortex Shedding Pattern (top-down view)</h2>
         <VortexSheddingDiagram />
       </div>
 
       {/* ---- Results card ---- */}
       {result && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-4">
-          <h2 className="text-base font-semibold text-blue-900 mb-4">Results</h2>
+        <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5 mb-4">
+          <h2 className="text-base font-semibold text-steel-blue-deep mb-4">Results</h2>
 
           {/* Section properties */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Section Properties</p>
+            <p className="text-xs font-semibold text-steel-blue-deep uppercase tracking-wide mb-2">Section Properties</p>
             <div className="flex flex-col gap-1.5">
               <ResultRow
                 label="Inner diameter D_i"
@@ -288,11 +288,11 @@ export default function MastFrequencyPage() {
 
           {/* Frequency results */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Frequencies</p>
+            <p className="text-xs font-semibold text-steel-blue-deep uppercase tracking-wide mb-2">Frequencies</p>
             <div className="flex flex-col gap-1.5">
               <div className="flex items-start justify-between">
-                <span className="text-sm text-gray-700 flex-1 font-semibold">Natural frequency f_n</span>
-                <span className="text-xl font-bold font-mono text-blue-800">
+                <span className="text-sm text-graphite/80 flex-1 font-semibold">Natural frequency f_n</span>
+                <span className="text-xl font-bold font-mono text-steel-blue-deep">
                   {result.f_n.toFixed(3)} Hz
                 </span>
               </div>
@@ -312,24 +312,24 @@ export default function MastFrequencyPage() {
           </div>
 
           {/* Resonance flag */}
-          <div className="border-t border-blue-200 pt-3">
+          <div className="border-t border-steel-blue-line pt-3">
             {result.resonance ? (
-              <div className="bg-red-50 border border-red-300 rounded-lg px-4 py-3">
-                <p className="text-sm font-semibold text-red-700">
+              <div className="bg-signal-red-tint border border-signal-red-line rounded-lg px-4 py-3">
+                <p className="text-sm font-semibold text-signal-red-deep">
                   Resonance risk — shedding frequency overlaps natural frequency at{" "}
                   {result.V_resonance.toFixed(1)} m/s.
                 </p>
-                <p className="text-xs text-red-600 mt-1">
+                <p className="text-xs text-signal-red mt-1">
                   Consider helical strakes, a tuned mass damper, or a design change to shift f_n
                   outside the shedding range.
                 </p>
               </div>
             ) : (
-              <div className="bg-green-50 border border-green-300 rounded-lg px-4 py-3">
-                <p className="text-sm font-semibold text-green-700">
+              <div className="bg-phosphor-green-tint border border-phosphor-green-line rounded-lg px-4 py-3">
+                <p className="text-sm font-semibold text-phosphor-green-deep">
                   No resonance overlap in the specified wind range.
                 </p>
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-phosphor-green mt-1">
                   Resonance would occur at {result.V_resonance.toFixed(1)} m/s, which is outside
                   your V_min–V_max window.
                 </p>
@@ -340,7 +340,7 @@ export default function MastFrequencyPage() {
       )}
 
       {/* ---- Disclaimer ---- */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800">
+      <div className="bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>First-pass estimate only.</strong> Assumes a uniform, undamped cantilever with no
         added mass (payload, fittings) and a Strouhal number of 0.2. Real-world behavior is
         affected by structural damping, boundary conditions, and Reynolds number.
@@ -371,7 +371,7 @@ function renderArrowhead(x: number, y: number, key: number) {
     <polygon
       key={key}
       points={`${x},${y} ${x - size},${y - size / 2} ${x - size},${y + size / 2}`}
-      fill="#3b82f6"
+      fill="#2B4C7E"
     />
   );
 }
@@ -403,8 +403,8 @@ function renderVortex(
 
   return (
     <g key={key} opacity={opacity}>
-      <path d={arcPath} fill="none" stroke="#3b82f6" strokeWidth={1.5} />
-      <path d={`M ${x2} ${y2} L ${a1x} ${a1y} L ${a2x} ${a2y} Z`} fill="#3b82f6" />
+      <path d={arcPath} fill="none" stroke="#2B4C7E" strokeWidth={1.5} />
+      <path d={`M ${x2} ${y2} L ${a1x} ${a1y} L ${a2x} ${a2y} Z`} fill="#2B4C7E" />
     </g>
   );
 }
@@ -428,7 +428,7 @@ function VortexSheddingDiagram() {
   return (
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="w-full rounded-lg bg-gray-50 border border-gray-100"
+      className="w-full rounded-lg bg-instrument-white border border-panel-gray"
       style={{ minHeight: 160 }}
       aria-label="Vortex shedding diagram showing alternating vortices behind a cylinder"
     >
@@ -437,31 +437,31 @@ function VortexSheddingDiagram() {
         <g key={i}>
           <line
             x1={10} y1={y} x2={arrowEndX - 6} y2={y}
-            stroke="#3b82f6" strokeWidth={1.5}
+            stroke="#2B4C7E" strokeWidth={1.5}
           />
           {renderArrowhead(arrowEndX, y, i)}
         </g>
       ))}
 
       {/* "V" label above top arrow */}
-      <text x={48} y={22} fill="#2563eb" fontSize={11} fontStyle="italic" fontWeight="bold">V</text>
+      <text x={48} y={22} fill="#2B4C7E" fontSize={11} fontStyle="italic" fontWeight="bold">V</text>
 
       {/* Cylinder (mast cross-section) */}
       <circle
         cx={CYL_CX} cy={CYL_CY} r={CYL_R}
-        fill="#d1d5db" stroke="#374151" strokeWidth={2}
+        fill="#CDD2D5" stroke="#1A1D21" strokeWidth={2}
       />
 
       {/* "D" dimension label inside the cylinder */}
       <line
         x1={CYL_CX - CYL_R + 4} y1={CYL_CY}
         x2={CYL_CX + CYL_R - 4} y2={CYL_CY}
-        stroke="#374151" strokeWidth={1}
+        stroke="#1A1D21" strokeWidth={1}
       />
       <text
         x={CYL_CX} y={CYL_CY + 4}
         textAnchor="middle" dominantBaseline="middle"
-        fill="#374151" fontSize={10} fontWeight="bold"
+        fill="#1A1D21" fontSize={10} fontWeight="bold"
       >
         D
       </text>
@@ -472,14 +472,14 @@ function VortexSheddingDiagram() {
         d={`M ${CYL_CX + CYL_R + 2} ${CYL_CY - CYL_R - 4}
             Q ${CYL_CX + CYL_R + 20} ${CYL_CY - CYL_R + 5}
               ${CYL_CX + CYL_R + 35} ${CYL_CY - 20}`}
-        fill="none" stroke="#93c5fd" strokeWidth={1} strokeDasharray="4 2"
+        fill="none" stroke="#BFC9D8" strokeWidth={1} strokeDasharray="4 2"
       />
       {/* Lower streamline */}
       <path
         d={`M ${CYL_CX + CYL_R + 2} ${CYL_CY + CYL_R + 4}
             Q ${CYL_CX + CYL_R + 20} ${CYL_CY + CYL_R - 5}
               ${CYL_CX + CYL_R + 35} ${CYL_CY + 20}`}
-        fill="none" stroke="#93c5fd" strokeWidth={1} strokeDasharray="4 2"
+        fill="none" stroke="#BFC9D8" strokeWidth={1} strokeDasharray="4 2"
       />
 
       {/* Von Kármán vortex street — alternating upper/lower pairs downstream */}
@@ -496,7 +496,7 @@ function VortexSheddingDiagram() {
       <text
         x={W / 2} y={H - 8}
         textAnchor="middle"
-        fill="#6b7280" fontSize={9} fontStyle="italic"
+        fill="#5F6164" fontSize={9} fontStyle="italic"
       >
         f_shed = 0.2 × V / D
       </text>
@@ -521,17 +521,17 @@ function InputRow({
   return (
     <div className="flex items-start gap-3">
       <div className="flex-1">
-        <label className="text-xs text-gray-600 leading-tight block">{label}</label>
-        {hint && <p className="text-xs text-gray-400 mt-0.5">{hint}</p>}
+        <label className="text-xs text-graphite/70 leading-tight block">{label}</label>
+        {hint && <p className="text-xs text-graphite/50 mt-0.5">{hint}</p>}
       </div>
       <div className="flex items-center gap-1.5 shrink-0">
         <input
           type="number"
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-28 border border-gray-200 rounded px-2 py-1 text-sm text-right focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-xs text-gray-400 w-8">{unit}</span>
+        <span className="text-xs text-graphite/50 w-8">{unit}</span>
       </div>
     </div>
   );
@@ -541,8 +541,8 @@ function InputRow({
 function ResultRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-xs text-gray-600">{label}</span>
-      <span className="text-sm font-mono font-semibold text-gray-800">{value}</span>
+      <span className="text-xs text-graphite/70">{label}</span>
+      <span className="text-sm font-mono font-semibold text-graphite">{value}</span>
     </div>
   );
 }

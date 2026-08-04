@@ -45,77 +45,77 @@ export default function SheetMetalBendDiagram() {
          aria-label="Sheet metal flat pattern with hole-to-bend and hole-to-edge distances, next to the formed part showing inside bend radius">
       <defs>
         <marker id="smArrowS" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-          <path d="M6,0.7 L0.5,3.5 L6,6.3" fill="none" stroke="#2563eb" strokeWidth="1.2" />
+          <path d="M6,0.7 L0.5,3.5 L6,6.3" fill="none" stroke="#2B4C7E" strokeWidth="1.2" />
         </marker>
         <marker id="smArrowE" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
-          <path d="M1,0.7 L6.5,3.5 L1,6.3" fill="none" stroke="#2563eb" strokeWidth="1.2" />
+          <path d="M1,0.7 L6.5,3.5 L1,6.3" fill="none" stroke="#2B4C7E" strokeWidth="1.2" />
         </marker>
       </defs>
 
       {/* ══ Titles ══ */}
-      <text x={F_X + F_W / 2} y="30" textAnchor="middle" fontSize="11" fontWeight="600" fill="#334155">
+      <text x={F_X + F_W / 2} y="30" textAnchor="middle" fontSize="11" fontWeight="600" fill="#1A1D21">
         Flat pattern (as cut)
       </text>
-      <text x={F_X + F_W / 2} y="44" textAnchor="middle" fontSize="9" fill="#94a3b8">
+      <text x={F_X + F_W / 2} y="44" textAnchor="middle" fontSize="9" fill="#98999B">
         top view
       </text>
-      <text x="352" y="30" textAnchor="middle" fontSize="11" fontWeight="600" fill="#334155">
+      <text x="352" y="30" textAnchor="middle" fontSize="11" fontWeight="600" fill="#1A1D21">
         Formed part (after brake)
       </text>
-      <text x="352" y="44" textAnchor="middle" fontSize="9" fill="#94a3b8">
+      <text x="352" y="44" textAnchor="middle" fontSize="9" fill="#98999B">
         side view
       </text>
 
       {/* ═══════════════ LEFT — FLAT PATTERN ═══════════════ */}
 
       <rect x={F_X} y={F_Y} width={F_W} height={F_H} rx="2"
-            fill="#f1f5f9" stroke="#64748b" strokeWidth="1.6" />
+            fill="#F5F6F7" stroke="#5F6164" strokeWidth="1.6" />
 
       {/* Bend line — dash-dot is the standard drawing convention for a bend */}
       <line x1={BEND_X} y1={F_Y} x2={BEND_X} y2={F_Y + F_H}
-            stroke="#f59e0b" strokeWidth="1.8" strokeDasharray="10 3 2 3" />
-      <text x={BEND_X + 5} y={F_Y + F_H + 13} fontSize="9" fontWeight="600" fill="#b45309">
+            stroke="#A17D36" strokeWidth="1.8" strokeDasharray="10 3 2 3" />
+      <text x={BEND_X + 5} y={F_Y + F_H + 13} fontSize="9" fontWeight="600" fill="#A17D36">
         bend line
       </text>
 
       {/* The hole */}
       <circle cx={HOLE_CX} cy={HOLE_CY} r={HOLE_R}
-              fill="#ffffff" stroke="#64748b" strokeWidth="1.5" />
+              fill="#ffffff" stroke="#5F6164" strokeWidth="1.5" />
       {/* Center mark */}
       <line x1={HOLE_CX - HOLE_R - 5} y1={HOLE_CY} x2={HOLE_CX + HOLE_R + 5} y2={HOLE_CY}
-            stroke="#94a3b8" strokeWidth="0.8" strokeDasharray="5 2 1 2" />
+            stroke="#98999B" strokeWidth="0.8" strokeDasharray="5 2 1 2" />
       <line x1={HOLE_CX} y1={HOLE_CY - HOLE_R - 5} x2={HOLE_CX} y2={HOLE_CY + HOLE_R + 5}
-            stroke="#94a3b8" strokeWidth="0.8" strokeDasharray="5 2 1 2" />
+            stroke="#98999B" strokeWidth="0.8" strokeDasharray="5 2 1 2" />
 
       {/* — Dimension: hole edge → bend line (the 1.5T + R rule) — */}
       <line x1={HOLE_CX + HOLE_R} y1={HOLE_CY} x2={BEND_X} y2={HOLE_CY}
-            stroke="#2563eb" strokeWidth="1.1"
+            stroke="#2B4C7E" strokeWidth="1.1"
             markerStart="url(#smArrowS)" markerEnd="url(#smArrowE)" />
       <text x={(HOLE_CX + HOLE_R + BEND_X) / 2} y={HOLE_CY - 7} textAnchor="middle"
-            fontSize="9" fontWeight="600" fill="#2563eb">
+            fontSize="9" fontWeight="600" fill="#2B4C7E">
         1.5T + R
       </text>
       <text x={(HOLE_CX + HOLE_R + BEND_X) / 2} y={HOLE_CY + 15} textAnchor="middle"
-            fontSize="8" fill="#60a5fa">
+            fontSize="8" fill="#2B4C7E">
         hole→bend
       </text>
 
       {/* — Dimension: hole edge → left part edge (1.5–2T) — */}
       <line x1={F_X} y1={HOLE_CY} x2={HOLE_CX - HOLE_R} y2={HOLE_CY}
-            stroke="#2563eb" strokeWidth="1.1"
+            stroke="#2B4C7E" strokeWidth="1.1"
             markerStart="url(#smArrowS)" markerEnd="url(#smArrowE)" />
       <text x={(F_X + HOLE_CX - HOLE_R) / 2} y={HOLE_CY - 7} textAnchor="middle"
-            fontSize="9" fontWeight="600" fill="#2563eb">
+            fontSize="9" fontWeight="600" fill="#2B4C7E">
         1.5–2T
       </text>
       <text x={(F_X + HOLE_CX - HOLE_R) / 2} y={HOLE_CY + 15} textAnchor="middle"
-            fontSize="8" fill="#60a5fa">
+            fontSize="8" fill="#2B4C7E">
         hole→edge
       </text>
 
       {/* Why the hole→bend dimension exists. Worded as the consequence of going
           BELOW it, so it doesn't read as a criticism of the (correct) part drawn. */}
-      <text x={F_X} y={F_Y - 6} fontSize="8.5" fill="#dc2626">
+      <text x={F_X} y={F_Y - 6} fontSize="8.5" fill="#9B3B3E">
         go below this and the hole pulls into a teardrop
       </text>
 
@@ -138,41 +138,41 @@ export default function SheetMetalBendDiagram() {
             L${cx + innerR},${B_Y + T + innerR}
             A ${innerR} ${innerR} 0 0 0 ${cx},${B_Y + T}
             L${B_X},${B_Y + T} Z`}
-        fill="#cbd5e1" stroke="#475569" strokeWidth="1.6" strokeLinejoin="round" />
+        fill="#CDD2D5" stroke="#5F6164" strokeWidth="1.6" strokeLinejoin="round" />
 
       {/* Inside radius callout — leader line pointing at the inner arc */}
       <line x1={cx + 4} y1={B_Y + T + 4} x2={cx - 30} y2={B_Y + 48}
-            stroke="#2563eb" strokeWidth="1" />
-      <text x={cx - 78} y={B_Y + 58} fontSize="9" fontWeight="600" fill="#2563eb">
+            stroke="#2B4C7E" strokeWidth="1" />
+      <text x={cx - 78} y={B_Y + 58} fontSize="9" fontWeight="600" fill="#2B4C7E">
         inside R ≥ 1× t
       </text>
 
       {/* Material thickness dimension on the web */}
       <line x1={B_X - 9} y1={B_Y} x2={B_X - 9} y2={B_Y + T}
-            stroke="#2563eb" strokeWidth="1.1"
+            stroke="#2B4C7E" strokeWidth="1.1"
             markerStart="url(#smArrowS)" markerEnd="url(#smArrowE)" />
       <text x={B_X - 13} y={B_Y + T / 2 + 3} textAnchor="end" fontSize="9"
-            fontWeight="600" fill="#2563eb">t</text>
+            fontWeight="600" fill="#2B4C7E">t</text>
 
       {/* Flange length dimension */}
       <line x1={cx + innerR + outerR + 12} y1={B_Y + outerR}
             x2={cx + innerR + outerR + 12} y2={B_Y + outerR + FLANGE}
-            stroke="#2563eb" strokeWidth="1.1"
+            stroke="#2B4C7E" strokeWidth="1.1"
             markerStart="url(#smArrowS)" markerEnd="url(#smArrowE)" />
       <text x={cx + innerR + outerR + 17} y={B_Y + outerR + FLANGE / 2 - 3}
-            fontSize="9" fontWeight="600" fill="#2563eb">flange</text>
+            fontSize="9" fontWeight="600" fill="#2B4C7E">flange</text>
       <text x={cx + innerR + outerR + 17} y={B_Y + outerR + FLANGE / 2 + 8}
-            fontSize="9" fill="#2563eb">≥ 4× t</text>
+            fontSize="9" fill="#2B4C7E">≥ 4× t</text>
 
       {/* Show where the hole ends up on the formed part */}
       <ellipse cx={B_X + 40} cy={B_Y + T / 2} rx={11} ry={2.6}
-               fill="#ffffff" stroke="#64748b" strokeWidth="1.2" />
+               fill="#ffffff" stroke="#5F6164" strokeWidth="1.2" />
 
       {/* ══ Footnote ══ */}
-      <text x="230" y="216" textAnchor="middle" fontSize="9" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="216" textAnchor="middle" fontSize="9" fill="#98999B" fontStyle="italic">
         T = material thickness, R = inside bend radius.
       </text>
-      <text x="230" y="230" textAnchor="middle" fontSize="9" fill="#94a3b8">
+      <text x="230" y="230" textAnchor="middle" fontSize="9" fill="#98999B">
         Bend perpendicular to the mill grain for the lowest cracking risk.
       </text>
     </svg>

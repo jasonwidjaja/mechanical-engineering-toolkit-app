@@ -55,10 +55,10 @@ export default function OringCrossSectionDiagram({ W, G, status }: Props) {
   const ellCY   = floorY - G_PX / 2;
 
   // --- Color: matches squeeze status ---
-  const color = status === "green"  ? "#16a34a"
-              : status === "yellow" ? "#d97706"
-              : status === "red"    ? "#dc2626"
-              : "#3b82f6"; // neutral blue when not yet calculated
+  const color = status === "green"  ? "#4B7B4E"
+              : status === "yellow" ? "#A17D36"
+              : status === "red"    ? "#9B3B3E"
+              : "#2B4C7E"; // neutral blue when not yet calculated
 
   // Whether actual compression is happening (G must be less than W)
   const isCompressed = G > 0 && G < W;
@@ -91,10 +91,10 @@ export default function OringCrossSectionDiagram({ W, G, status }: Props) {
       <rect
         x={bodyL} y={plateTop}
         width={bodyR - bodyL} height={plateH}
-        fill="#dde3ec" stroke="#94a3b8" strokeWidth={1}
+        fill="#E7EAEC" stroke="#98999B" strokeWidth={1}
       />
       {/* Part body with groove cut out */}
-      <path d={bodyPath} fill="#dde3ec" stroke="#94a3b8" strokeWidth={1} />
+      <path d={bodyPath} fill="#E7EAEC" stroke="#98999B" strokeWidth={1} />
 
       {/* ── O-ring ── */}
 
@@ -118,46 +118,46 @@ export default function OringCrossSectionDiagram({ W, G, status }: Props) {
       {/* ── W dimension (left side) ── */}
       {/* Leader lines: thin dashed horizontals from the circle edges to the dim line */}
       <line x1={dimWX} y1={circCY - circR} x2={gLeft - 2}  y2={circCY - circR}
-        stroke="#94a3b8" strokeWidth={0.7} strokeDasharray="3 2" />
+        stroke="#98999B" strokeWidth={0.7} strokeDasharray="3 2" />
       <line x1={dimWX} y1={circCY + circR} x2={gLeft - 2}  y2={circCY + circR}
-        stroke="#94a3b8" strokeWidth={0.7} strokeDasharray="3 2" />
+        stroke="#98999B" strokeWidth={0.7} strokeDasharray="3 2" />
       {/* Main vertical dim line */}
       <line x1={dimWX} y1={circCY - circR} x2={dimWX} y2={circCY + circR}
-        stroke="#475569" strokeWidth={1} />
+        stroke="#5F6164" strokeWidth={1} />
       {/* Arrowheads (apex outward, base inward) */}
-      <polygon points={`${dimWX},${circCY - circR} ${dimWX - 3},${circCY - circR + 7} ${dimWX + 3},${circCY - circR + 7}`} fill="#475569" />
-      <polygon points={`${dimWX},${circCY + circR} ${dimWX - 3},${circCY + circR - 7} ${dimWX + 3},${circCY + circR - 7}`} fill="#475569" />
+      <polygon points={`${dimWX},${circCY - circR} ${dimWX - 3},${circCY - circR + 7} ${dimWX + 3},${circCY - circR + 7}`} fill="#5F6164" />
+      <polygon points={`${dimWX},${circCY + circR} ${dimWX - 3},${circCY + circR - 7} ${dimWX + 3},${circCY + circR - 7}`} fill="#5F6164" />
       {/* W label */}
       <text x={dimWX - 12} y={circCY + 4} textAnchor="middle"
-        fill="#1e293b" fontSize={15} fontWeight="700" fontStyle="italic">
+        fill="#1A1D21" fontSize={15} fontWeight="700" fontStyle="italic">
         W
       </text>
 
       {/* ── G dimension (right side) ── */}
       {/* Leader lines from groove floor and groove top to dim line */}
       <line x1={dimGX} y1={topY}    x2={gRight + 2} y2={topY}
-        stroke="#94a3b8" strokeWidth={0.7} strokeDasharray="3 2" />
+        stroke="#98999B" strokeWidth={0.7} strokeDasharray="3 2" />
       <line x1={dimGX} y1={floorY}  x2={gRight + 2} y2={floorY}
-        stroke="#94a3b8" strokeWidth={0.7} strokeDasharray="3 2" />
+        stroke="#98999B" strokeWidth={0.7} strokeDasharray="3 2" />
       {/* Main vertical dim line */}
       <line x1={dimGX} y1={topY} x2={dimGX} y2={floorY}
-        stroke="#475569" strokeWidth={1} />
+        stroke="#5F6164" strokeWidth={1} />
       {/* Arrowheads */}
-      <polygon points={`${dimGX},${topY}    ${dimGX - 3},${topY + 7}    ${dimGX + 3},${topY + 7}`}    fill="#475569" />
-      <polygon points={`${dimGX},${floorY}  ${dimGX - 3},${floorY - 7}  ${dimGX + 3},${floorY - 7}`}  fill="#475569" />
+      <polygon points={`${dimGX},${topY}    ${dimGX - 3},${topY + 7}    ${dimGX + 3},${topY + 7}`}    fill="#5F6164" />
+      <polygon points={`${dimGX},${floorY}  ${dimGX - 3},${floorY - 7}  ${dimGX + 3},${floorY - 7}`}  fill="#5F6164" />
       {/* G label */}
       <text x={dimGX + 12} y={(topY + floorY) / 2 + 4} textAnchor="middle"
-        fill="#1e293b" fontSize={15} fontWeight="700" fontStyle="italic">
+        fill="#1A1D21" fontSize={15} fontWeight="700" fontStyle="italic">
         G
       </text>
 
       {/* ── Legend (bottom-left) ── */}
       <line x1={12} y1={192} x2={28} y2={192} stroke={color} strokeWidth={1.5} strokeDasharray="5 3" opacity={0.6} />
-      <text x={32} y={196} fill="#64748b" fontSize={9}>free state (W)</text>
+      <text x={32} y={196} fill="#5F6164" fontSize={9}>free state (W)</text>
       {isCompressed && (
         <>
           <rect x={112} y={187} width={16} height={10} fill={color} fillOpacity={0.65} rx={1} />
-          <text x={132} y={196} fill="#64748b" fontSize={9}>compressed</text>
+          <text x={132} y={196} fill="#5F6164" fontSize={9}>compressed</text>
         </>
       )}
     </svg>

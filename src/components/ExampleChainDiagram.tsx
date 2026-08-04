@@ -78,47 +78,47 @@ export default function ExampleChainDiagram({ opener, closers, result }: Props) 
           {/* Small arrowheads for the dimension line — drawn as open "V" ticks,
               which is the engineering-drawing convention rather than solid blocks */}
           <marker id="chainArrowL" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-            <path d="M7,1 L1,4 L7,7" fill="none" stroke="#2563eb" strokeWidth="1.3" />
+            <path d="M7,1 L1,4 L7,7" fill="none" stroke="#2B4C7E" strokeWidth="1.3" />
           </marker>
           <marker id="chainArrowR" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto">
-            <path d="M1,1 L7,4 L1,7" fill="none" stroke="#2563eb" strokeWidth="1.3" />
+            <path d="M1,1 L7,4 L1,7" fill="none" stroke="#2B4C7E" strokeWidth="1.3" />
           </marker>
         </defs>
 
         {/* ── The opening dimension, spanning everything ── */}
-        <text x={W / 2} y="16" textAnchor="middle" fontSize="11" fontWeight="600" fill="#1d4ed8">
+        <text x={W / 2} y="16" textAnchor="middle" fontSize="11" fontWeight="600" fill="#2B4C7E">
           {opener.label}
         </text>
-        <text x={W / 2} y="28" textAnchor="middle" fontSize="10" fill="#3b82f6">
+        <text x={W / 2} y="28" textAnchor="middle" fontSize="10" fill="#2B4C7E">
           {fmt(opener.value)} mm — opens (+)
         </text>
         <line
           x1={PAD} y1={DIM_Y} x2={W - PAD} y2={DIM_Y}
-          stroke="#2563eb" strokeWidth="1.3"
+          stroke="#2B4C7E" strokeWidth="1.3"
           markerStart="url(#chainArrowL)" markerEnd="url(#chainArrowR)"
         />
 
         {/* Extension lines tying the dimension span to the blocks below it */}
         <line x1={PAD} y1={DIM_Y - 6} x2={PAD} y2={BLOCK_BOT + 6}
-              stroke="#93c5fd" strokeWidth="1" />
+              stroke="#BFC9D8" strokeWidth="1" />
         <line x1={W - PAD} y1={DIM_Y - 6} x2={W - PAD} y2={BLOCK_BOT + 6}
-              stroke="#93c5fd" strokeWidth="1" />
+              stroke="#BFC9D8" strokeWidth="1" />
 
         {/* ── Closing dimensions, laid end to end ── */}
         {segments.map(seg => (
           <g key={seg.label}>
             <rect
               x={seg.x} y={BLOCK_Y} width={seg.width} height={BLOCK_H}
-              fill="#fef3c7" stroke="#d97706" strokeWidth="1.2"
+              fill="#F4F0E7" stroke="#A17D36" strokeWidth="1.2"
             />
             {/* Index ties this block to the numbered legend below the drawing —
                 the block is far too narrow to hold the full dimension name. */}
             <text x={seg.x + seg.width / 2} y={BLOCK_Y + 13} textAnchor="middle"
-                  fontSize="8.5" fill="#b45309">
+                  fontSize="8.5" fill="#A17D36">
               {seg.index}
             </text>
             <text x={seg.x + seg.width / 2} y={BLOCK_Y + 27} textAnchor="middle"
-                  fontSize="10.5" fontWeight="700" fill="#92400e">
+                  fontSize="10.5" fontWeight="700" fill="#7E6027">
               {fmt(seg.value)}
             </text>
           </g>
@@ -127,24 +127,24 @@ export default function ExampleChainDiagram({ opener, closers, result }: Props) 
         {/* ── The resultant — what's physically left over ── */}
         <rect
           x={resultX} y={BLOCK_Y - 4} width={resultW} height={BLOCK_H + 8}
-          fill="#d1fae5" stroke="#059669" strokeWidth="1.8"
+          fill="#E9EFEA" stroke="#3A6039" strokeWidth="1.8"
         />
         <text x={resultX + resultW / 2} y={BLOCK_Y + 13} textAnchor="middle"
-              fontSize="8.5" fontWeight="600" fill="#047857">
+              fontSize="8.5" fontWeight="600" fill="#3A6039">
           =
         </text>
         <text x={resultX + resultW / 2} y={BLOCK_Y + 27} textAnchor="middle"
-              fontSize="10.5" fontWeight="700" fill="#065f46">
+              fontSize="10.5" fontWeight="700" fill="#3A6039">
           {fmt(result.value)}
         </text>
 
         {/* ── The arithmetic, spelled out under the picture ── */}
         <text x={W / 2} y={BLOCK_BOT + 26} textAnchor="middle" fontSize="10.5"
-              fontFamily="ui-monospace, monospace" fill="#475569">
+              fontFamily="ui-monospace, monospace" fill="#5F6164">
           {fmt(opener.value)}
           {closers.map(c => ` − ${fmt(c.value)}`).join("")}
           {" = "}
-          <tspan fontWeight="700" fill="#047857">{fmt(result.value)} mm</tspan>
+          <tspan fontWeight="700" fill="#3A6039">{fmt(result.value)} mm</tspan>
         </text>
       </svg>
 
@@ -155,22 +155,22 @@ export default function ExampleChainDiagram({ opener, closers, result }: Props) 
         {segments.map(seg => (
           <span key={seg.label} className="flex items-center gap-1.5">
             <span
-              className="inline-flex items-center justify-center w-4 h-4 rounded-sm border border-amber-500 bg-amber-100 text-[9px] font-semibold text-amber-800"
+              className="inline-flex items-center justify-center w-4 h-4 rounded-sm border border-signal-amber bg-signal-amber-tint text-[9px] font-semibold text-signal-amber-deep"
               aria-hidden="true"
             >
               {seg.index}
             </span>
-            <span className="text-gray-600">
-              {seg.label} <span className="font-mono text-gray-500">{fmt(seg.value)}</span>
+            <span className="text-graphite/70">
+              {seg.label} <span className="font-mono text-graphite/60">{fmt(seg.value)}</span>
             </span>
           </span>
         ))}
         <span className="flex items-center gap-1.5">
           <span
-            className="inline-block w-4 h-4 rounded-sm border-2 border-emerald-600 bg-emerald-100"
+            className="inline-block w-4 h-4 rounded-sm border-2 border-phosphor-green bg-phosphor-green-tint"
             aria-hidden="true"
           />
-          <span className="text-gray-700 font-medium">
+          <span className="text-graphite/80 font-medium">
             {result.label} <span className="font-mono">{fmt(result.value)}</span>
           </span>
         </span>

@@ -596,11 +596,11 @@ export const TOLERANCE_ROWS: ToleranceRow[] = [
 
 /** Fill colours for the spectrum chart, matching the table's category chips. */
 export const CATEGORY_COLORS: Record<ToleranceCategory, string> = {
-  Machining: "#2563eb", // blue-600
-  Cutting: "#0891b2",   // cyan-600
-  Casting: "#d97706",   // amber-600
-  Molding: "#7c3aed",   // violet-600
-  Additive: "#059669",  // emerald-600
+  Machining: "#2B4C7E", // blue-600
+  Cutting: "#2B4C7E",   // cyan-600
+  Casting: "#A17D36",   // amber-600
+  Molding: "#5F6164",   // violet-600
+  Additive: "#3A6039",  // emerald-600
 };
 
 /**

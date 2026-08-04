@@ -72,14 +72,14 @@ export default function OringSqueezeCalculatorPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">O-Ring Squeeze Calculator</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <h1 className="text-2xl font-bold text-graphite mb-1">O-Ring Squeeze Calculator</h1>
+      <p className="text-sm text-graphite/60 mb-6">
         Calculates how much an O-ring is compressed when a groove closes.{" "}
-        <span className="font-mono bg-gray-100 px-1 rounded text-xs">
+        <span className="font-mono bg-panel-gray px-1 rounded text-xs">
           Squeeze % = (W − G) / W × 100
         </span>
         {" "}— where W is the O-ring wire diameter and G is the groove depth.
@@ -91,8 +91,8 @@ export default function OringSqueezeCalculatorPage() {
         <div className="flex flex-col gap-4">
 
           {/* Seal type selector */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-700 mb-3">Seal Type</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <p className="text-sm font-semibold text-graphite/80 mb-3">Seal Type</p>
             <div className="flex gap-5">
               {(["static", "dynamic"] as SealType[]).map(t => (
                 <label key={t} className="flex items-center gap-2 cursor-pointer select-none">
@@ -100,13 +100,13 @@ export default function OringSqueezeCalculatorPage() {
                     type="radio"
                     checked={sealType === t}
                     onChange={() => { setSealType(t); setResult(null); }}
-                    className="accent-blue-600"
+                    className="accent-steel-blue"
                   />
-                  <span className="text-sm capitalize text-gray-700">{t}</span>
+                  <span className="text-sm capitalize text-graphite/80">{t}</span>
                 </label>
               ))}
             </div>
-            <p className="mt-2 text-xs text-gray-400">
+            <p className="mt-2 text-xs text-graphite/50">
               {sealType === "static"
                 ? "No relative motion between surfaces — target 15–30% squeeze."
                 : "Reciprocating or oscillating motion — target 10–20% squeeze."}
@@ -114,13 +114,13 @@ export default function OringSqueezeCalculatorPage() {
           </div>
 
           {/* O-ring cross-section W */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
-            <p className="text-sm font-semibold text-gray-700">O-Ring Cross-Section Diameter (W)</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5 flex flex-col gap-3">
+            <p className="text-sm font-semibold text-graphite/80">O-Ring Cross-Section Diameter (W)</p>
             {/* Dropdown of standard AS568 sizes + Custom option */}
             <select
               value={wSelection}
               onChange={e => { setWSelection(e.target.value); setErrors({}); setResult(null); }}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+              className="w-full border border-graphite/20 rounded-lg px-3 py-2 text-sm bg-white"
             >
               {AS568_CROSS_SECTIONS.map(s => (
                 <option key={s.w} value={String(s.w)}>{s.label}</option>
@@ -135,74 +135,74 @@ export default function OringSqueezeCalculatorPage() {
                   value={wCustom}
                   onChange={e => { setWCustom(e.target.value); setErrors({}); setResult(null); }}
                   placeholder="e.g. 4.0"
-                  className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
-                    [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                    ${errors.w ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                  className={`flex-1 border rounded-lg px-3 py-2 text-sm
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.w ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
                 />
-                <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">mm</span>
+                <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
               </div>
             )}
-            {errors.w && <p className="text-xs text-red-600">{errors.w}</p>}
+            {errors.w && <p className="text-xs text-signal-red">{errors.w}</p>}
           </div>
 
           {/* Groove depth G */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-700 mb-2">Groove Depth (G)</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <p className="text-sm font-semibold text-graphite/80 mb-2">Groove Depth (G)</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
                 value={G}
                 onChange={e => { setG(e.target.value); setResult(null); }}
                 placeholder={`e.g. ${(svgW * 0.80).toFixed(2)}`}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.g ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.g ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">mm</span>
+              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
             </div>
-            {errors.g && <p className="text-xs text-red-600">{errors.g}</p>}
-            <p className="mt-1 text-xs text-gray-400">
+            {errors.g && <p className="text-xs text-signal-red">{errors.g}</p>}
+            <p className="mt-1 text-xs text-graphite/50">
               Measured from groove floor to the mating surface face (closed groove height)
             </p>
           </div>
 
           <button
             onClick={handleCalculate}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
           >
             Calculate Squeeze
           </button>
 
           {/* Result card */}
           {result && (
-            <div className={`rounded-xl border p-5 ${
-              result.status === "green"  ? "bg-green-50 border-green-200"  :
-              result.status === "yellow" ? "bg-amber-50 border-amber-200"  :
-                                           "bg-red-50   border-red-200"
-            }`}>
+            <div className={`rounded-lg border p-5 ${
+ result.status === "green" ? "bg-phosphor-green-tint border-phosphor-green-line" :
+ result.status === "yellow" ? "bg-signal-amber-tint border-signal-amber-line" :
+ "bg-signal-red-tint border-signal-red-line"
+ }`}>
               <div className="flex items-baseline gap-2 mb-1">
                 <span className={`text-3xl font-bold ${
-                  result.status === "green"  ? "text-green-700"  :
-                  result.status === "yellow" ? "text-amber-700"  :
-                                               "text-red-700"
-                }`}>
+ result.status === "green" ? "text-phosphor-green-deep" :
+ result.status === "yellow" ? "text-signal-amber-deep" :
+ "text-signal-red-deep"
+ }`}>
                   {result.squeeze.toFixed(1)}%
                 </span>
                 <span className={`text-sm ${
-                  result.status === "green"  ? "text-green-600"  :
-                  result.status === "yellow" ? "text-amber-600"  :
-                                               "text-red-600"
-                }`}>squeeze</span>
+ result.status === "green" ? "text-phosphor-green" :
+ result.status === "yellow" ? "text-signal-amber" :
+ "text-signal-red"
+ }`}>squeeze</span>
               </div>
               <p className={`text-sm font-medium ${
-                result.status === "green"  ? "text-green-700"  :
-                result.status === "yellow" ? "text-amber-700"  :
-                                             "text-red-700"
-              }`}>
+ result.status === "green" ? "text-phosphor-green-deep" :
+ result.status === "yellow" ? "text-signal-amber-deep" :
+ "text-signal-red-deep"
+ }`}>
                 {result.status === "green" ? "✓" : result.status === "yellow" ? "⚠" : "✗"}{" "}
                 {result.message}
               </p>
-              <p className="mt-2 text-xs text-gray-400 font-mono">
+              <p className="mt-2 text-xs text-graphite/50 font-mono">
                 ({W_num} − {G_num.toFixed(2)}) / {W_num} × 100
               </p>
             </div>
@@ -210,22 +210,22 @@ export default function OringSqueezeCalculatorPage() {
         </div>
 
         {/* ── RIGHT: Live SVG diagram ── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Cross-Section View</h2>
+        <div className="bg-white rounded-lg border border-panel-gray p-4 flex flex-col">
+          <h2 className="text-sm font-semibold text-graphite/80 mb-3">Cross-Section View</h2>
           {/* The diagram updates live as W/G change — no Calculate needed to see it */}
           <OringCrossSectionDiagram
             W={svgW}
             G={svgG}
             status={result?.status ?? null}
           />
-          <p className="mt-2 text-xs text-gray-400 text-center">
+          <p className="mt-2 text-xs text-graphite/50 text-center">
             Dashed circle = free state (diameter W) · Solid ellipse = compressed (height G)
           </p>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+      <div className="mt-6 bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>Starting point estimate.</strong> Final groove dimensions should be verified against
         the O-ring manufacturer&#39;s groove design charts (e.g.,{" "}
         <em>Parker O-Ring Handbook ORD 5700</em>) and must account for thermal expansion,

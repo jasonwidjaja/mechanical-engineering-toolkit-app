@@ -71,11 +71,11 @@ export default function SurfaceProfileDiagram() {
       <defs>
         <pattern id="spHatch" width="5" height="5" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="5" stroke="#cbd5e1" strokeWidth="1.1" />
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#CDD2D5" strokeWidth="1.1" />
         </pattern>
       </defs>
 
-      <text x="10" y="16" fontSize="10" fontWeight="700" fill="#475569">
+      <text x="10" y="16" fontSize="10" fontWeight="700" fill="#5F6164">
         Surface profile, greatly magnified
       </text>
 
@@ -97,34 +97,34 @@ export default function SurfaceProfileDiagram() {
             {/* Highlight the row that governs static O-ring sealing */}
             {f.sealRelevant && (
               <rect x="4" y={baseY - MAX_AMP - 9} width="452" height={rowH - 2} rx="6"
-                    fill="#ecfdf5" stroke="#a7f3d0" strokeWidth="1.2" />
+                    fill="#E9EFEA" stroke="#E9EFEA" strokeWidth="1.2" />
             )}
 
             {/* Bulk material below the surface */}
             <path d={`${top} L${X1},${bodyBot} L${X0},${bodyBot} Z`}
-                  fill="#e2e8f0" stroke="none" />
+                  fill="#E7EAEC" stroke="none" />
             <path d={`${top} L${X1},${bodyBot} L${X0},${bodyBot} Z`}
                   fill="url(#spHatch)" stroke="none" opacity="0.7" />
             {/* The surface itself */}
             <path d={top} fill="none"
-                  stroke={f.sealRelevant ? "#059669" : "#475569"} strokeWidth="1.5" />
+                  stroke={f.sealRelevant ? "#3A6039" : "#5F6164"} strokeWidth="1.5" />
 
             {/* Mean line — Ra is the average deviation from exactly this */}
             <line x1={X0} y1={baseY} x2={X1} y2={baseY}
-                  stroke="#94a3b8" strokeWidth="0.7" strokeDasharray="4 3" />
+                  stroke="#98999B" strokeWidth="0.7" strokeDasharray="4 3" />
 
             {/* Row label */}
             <text x="88" y={baseY - 1} textAnchor="end" fontSize="10" fontWeight="700"
-                  fill={f.sealRelevant ? "#047857" : "#334155"}>
+                  fill={f.sealRelevant ? "#3A6039" : "#1A1D21"}>
               Ra {f.raUm}
             </text>
-            <text x="88" y={baseY + 10} textAnchor="end" fontSize="8" fill="#94a3b8">
+            <text x="88" y={baseY + 10} textAnchor="end" fontSize="8" fill="#98999B">
               µm
             </text>
 
             {f.sealRelevant && (
               <text x={X1} y={baseY - MAX_AMP - 1} textAnchor="end" fontSize="8.5"
-                    fontWeight="700" fill="#047857">
+                    fontWeight="700" fill="#3A6039">
                 ← static O-ring seal surfaces
               </text>
             )}
@@ -133,12 +133,12 @@ export default function SurfaceProfileDiagram() {
       })}
 
       {/* Mean-line explainer, tied to the first row */}
-      <line x1={X0 + 6} y1="48" x2="70" y2="30" stroke="#94a3b8" strokeWidth="0.8" />
-      <text x="100" y="28" fontSize="8.5" fill="#94a3b8">
+      <line x1={X0 + 6} y1="48" x2="70" y2="30" stroke="#98999B" strokeWidth="0.8" />
+      <text x="100" y="28" fontSize="8.5" fill="#98999B">
         dashed = mean line; Ra is the average deviation from it
       </text>
 
-      <text x="230" y="288" textAnchor="middle" fontSize="8.5" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="288" textAnchor="middle" fontSize="8.5" fill="#98999B" fontStyle="italic">
         Vertical scale compressed (∝ √Ra). A 12.5 µm surface is ~30× rougher than 0.4 µm, not ~5×.
       </text>
     </svg>

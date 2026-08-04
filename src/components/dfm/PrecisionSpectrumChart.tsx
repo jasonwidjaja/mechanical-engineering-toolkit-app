@@ -91,32 +91,32 @@ function SpectrumTooltip({
   const d = payload[0].payload;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-md px-3 py-2 text-xs max-w-[240px]">
+    <div className="bg-white border border-panel-gray rounded-lg px-3 py-2 text-xs max-w-[240px]">
       <div className="flex items-center gap-1.5 mb-1">
         <span
           className="inline-block w-2.5 h-2.5 rounded-sm"
           style={{ backgroundColor: CATEGORY_COLORS[d.category] }}
           aria-hidden="true"
         />
-        <span className="font-semibold text-gray-800">{d.process}</span>
+        <span className="font-semibold text-graphite">{d.process}</span>
       </div>
-      <div className="text-gray-500 mb-1">{d.category}</div>
+      <div className="text-graphite/60 mb-1">{d.category}</div>
       {d.isPoint ? (
-        <div className="text-gray-700">
+        <div className="text-graphite/80">
           Typical: <span className="font-mono font-medium">±{d.tight} mm</span>
         </div>
       ) : (
         <>
-          <div className="text-gray-700">
+          <div className="text-graphite/80">
             Tightest: <span className="font-mono font-medium">±{d.tight} mm</span>
           </div>
-          <div className="text-gray-600">
+          <div className="text-graphite/70">
             Standard: <span className="font-mono">±{d.loose} mm</span>
           </div>
         </>
       )}
       {d.fromPercent && (
-        <div className="text-gray-400 mt-1 leading-snug">
+        <div className="text-graphite/50 mt-1 leading-snug">
           Spec is a % of dimension — shown at a {SPECTRUM_REFERENCE_MM} mm reference size.
         </div>
       )}
@@ -127,8 +127,8 @@ function SpectrumTooltip({
 export default function PrecisionSpectrumChart() {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-800 mb-0.5">Precision Spectrum</h3>
-      <p className="text-xs text-gray-500 mb-3">
+      <h3 className="text-sm font-semibold text-graphite mb-0.5">Precision Spectrum</h3>
+      <p className="text-xs text-graphite/60 mb-3">
         Each bar spans a process&apos;s tightest achievable tolerance to its standard
         one. Sorted tightest first — <strong>further left is more precise</strong>.
         Note the log scale: each gridline is 10× the one before it.
@@ -138,7 +138,7 @@ export default function PrecisionSpectrumChart() {
           whose y-axis labels alone wouldn't group them. */}
       <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-3">
         {(Object.keys(CATEGORY_COLORS) as ToleranceCategory[]).map(cat => (
-          <span key={cat} className="flex items-center gap-1.5 text-xs text-gray-600">
+          <span key={cat} className="flex items-center gap-1.5 text-xs text-graphite/70">
             <span
               className="inline-block w-2.5 h-2.5 rounded-sm"
               style={{ backgroundColor: CATEGORY_COLORS[cat] }}
@@ -157,7 +157,7 @@ export default function PrecisionSpectrumChart() {
             margin={{ top: 4, right: 24, bottom: 24, left: 8 }}
             barCategoryGap="22%"
           >
-            <CartesianGrid horizontal={false} stroke="#f1f5f9" />
+            <CartesianGrid horizontal={false} stroke="#F5F6F7" />
 
             <XAxis
               type="number"
@@ -167,27 +167,27 @@ export default function PrecisionSpectrumChart() {
               ticks={TICKS}
               allowDataOverflow
               tickFormatter={v => `±${v}`}
-              tick={{ fontSize: 11, fill: "#94a3b8" }}
-              axisLine={{ stroke: "#e2e8f0" }}
+              tick={{ fontSize: 11, fill: "#98999B" }}
+              axisLine={{ stroke: "#E7EAEC" }}
               tickLine={false}
               label={{
                 value: "tolerance (mm, log scale)",
                 position: "insideBottom",
                 offset: -14,
-                style: { fontSize: 11, fill: "#94a3b8" },
+                style: { fontSize: 11, fill: "#98999B" },
               }}
             />
             <YAxis
               type="category"
               dataKey="process"
-              tick={{ fontSize: 10.5, fill: "#475569" }}
+              tick={{ fontSize: 10.5, fill: "#5F6164" }}
               axisLine={false}
               tickLine={false}
               width={158}
               interval={0}
             />
 
-            <Tooltip content={<SpectrumTooltip />} cursor={{ fill: "#f8fafc" }} />
+            <Tooltip content={<SpectrumTooltip />} cursor={{ fill: "#F5F6F7" }} />
 
             {/* isAnimationActive={false} for the same reason as MinWallChart —
                 recharts grows bars from zero, which renders wrong in a
@@ -201,7 +201,7 @@ export default function PrecisionSpectrumChart() {
         </ResponsiveContainer>
       </div>
 
-      <p className="text-xs text-gray-400 mt-2 leading-relaxed">
+      <p className="text-xs text-graphite/50 mt-2 leading-relaxed">
         Die casting and MIM specify tolerance as a percentage of the dimension, so they
         are plotted at a {SPECTRUM_REFERENCE_MM} mm reference size — at a different part
         size those two bars move. Grinding and reaming/boring publish a single figure

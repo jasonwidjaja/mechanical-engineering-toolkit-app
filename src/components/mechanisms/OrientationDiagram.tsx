@@ -31,71 +31,71 @@ export default function OrientationDiagram() {
       <defs>
         <pattern id="odHatch" width="5" height="5" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="5" stroke="#cbd5e1" strokeWidth="1.1" />
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#CDD2D5" strokeWidth="1.1" />
         </pattern>
         <marker id="odRot" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M0,1.5 L6.5,4 L0,6.5 Z" fill="#dc2626" />
+          <path d="M0,1.5 L6.5,4 L0,6.5 Z" fill="#9B3B3E" />
         </marker>
       </defs>
 
       {/* ═══════════════ BEFORE ═══════════════ */}
-      <text x="115" y="20" textAnchor="middle" fontSize="11" fontWeight="700" fill="#dc2626">
+      <text x="115" y="20" textAnchor="middle" fontSize="11" fontWeight="700" fill="#9B3B3E">
         ✗ Symmetric — installs either way
       </text>
-      <text x="115" y="34" textAnchor="middle" fontSize="9" fill="#b91c1c">
+      <text x="115" y="34" textAnchor="middle" fontSize="9" fill="#9B3B3E">
         nothing stops a 180° mistake
       </text>
 
       {/* Chassis it mounts to */}
-      <rect x="42" y="54" width="146" height="136" rx="4" fill="none" stroke="#94a3b8"
+      <rect x="42" y="54" width="146" height="136" rx="4" fill="none" stroke="#98999B"
             strokeWidth="1.2" strokeDasharray="4 3" />
 
       {/* The bracket */}
       <rect x="56" y={TOP} width="118" height={BOT - TOP} rx="3"
-            fill="#dbeafe" stroke="#2563eb" strokeWidth="1.6" />
+            fill="#E5EAF0" stroke="#2B4C7E" strokeWidth="1.6" />
 
       {/* Four holes, symmetric about both axes — that's the problem */}
       {[
         [76, 86], [154, 86], [76, 158], [154, 158],
       ].map(([cx, cy]) => (
         <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="#ffffff"
-                stroke="#2563eb" strokeWidth="1.4" />
+                stroke="#2B4C7E" strokeWidth="1.4" />
       ))}
 
       {/* The feature that has to end up on the right-hand side */}
-      <rect x="146" y="110" width="26" height="24" rx="2" fill="#f59e0b"
-            stroke="#b45309" strokeWidth="1.2" />
-      <text x="159" y="126" textAnchor="middle" fontSize="7" fontWeight="700" fill="#7c2d12">
+      <rect x="146" y="110" width="26" height="24" rx="2" fill="#A17D36"
+            stroke="#A17D36" strokeWidth="1.2" />
+      <text x="159" y="126" textAnchor="middle" fontSize="7" fontWeight="700" fill="#7E6027">
         I/O
       </text>
 
       {/* 180° rotation arrow through the part centre */}
-      <path d="M92,122 A23,23 0 1 1 106,143" fill="none" stroke="#dc2626" strokeWidth="1.5"
+      <path d="M92,122 A23,23 0 1 1 106,143" fill="none" stroke="#9B3B3E" strokeWidth="1.5"
             strokeDasharray="4 3" markerEnd="url(#odRot)" />
-      <text x="115" y="126" textAnchor="middle" fontSize="9.5" fontWeight="700" fill="#dc2626">
+      <text x="115" y="126" textAnchor="middle" fontSize="9.5" fontWeight="700" fill="#9B3B3E">
         180°
       </text>
 
-      <text x="115" y="204" textAnchor="middle" fontSize="8.5" fill="#b91c1c">
+      <text x="115" y="204" textAnchor="middle" fontSize="8.5" fill="#9B3B3E">
         Rotated, all four holes still line up —
       </text>
-      <text x="115" y="215" textAnchor="middle" fontSize="8.5" fill="#b91c1c">
+      <text x="115" y="215" textAnchor="middle" fontSize="8.5" fill="#9B3B3E">
         but the I/O now faces the wrong way.
       </text>
 
       {/* ═══════════════ AFTER ═══════════════ */}
-      <text x="345" y="20" textAnchor="middle" fontSize="11" fontWeight="700" fill="#16a34a">
+      <text x="345" y="20" textAnchor="middle" fontSize="11" fontWeight="700" fill="#4B7B4E">
         ✓ Keyed — only one way fits
       </text>
-      <text x="345" y="34" textAnchor="middle" fontSize="9" fill="#15803d">
+      <text x="345" y="34" textAnchor="middle" fontSize="9" fill="#4B7B4E">
         notched corner + matching rib
       </text>
 
-      <rect x="272" y="54" width="146" height="136" rx="4" fill="none" stroke="#94a3b8"
+      <rect x="272" y="54" width="146" height="136" rx="4" fill="none" stroke="#98999B"
             strokeWidth="1.2" strokeDasharray="4 3" />
 
       {/* Chassis rib — occupies the top-left corner, so only a notched part drops in */}
-      <path d="M276,58 L306,58 L276,88 Z" fill="#e2e8f0" stroke="#64748b" strokeWidth="1.2" />
+      <path d="M276,58 L306,58 L276,88 Z" fill="#E7EAEC" stroke="#5F6164" strokeWidth="1.2" />
       <path d="M276,58 L306,58 L276,88 Z" fill="url(#odHatch)" stroke="none" />
 
       {/*
@@ -105,40 +105,40 @@ export default function OrientationDiagram() {
       */}
       <path
         d={`M304,${TOP} L404,${TOP} L404,${BOT} L286,${BOT} L286,88 Z`}
-        fill="#dcfce7" stroke="#16a34a" strokeWidth="1.6" strokeLinejoin="round"
+        fill="#E9EFEA" stroke="#4B7B4E" strokeWidth="1.6" strokeLinejoin="round"
       />
 
       {[
         [308, 90], [384, 90], [308, 158], [384, 158],
       ].map(([cx, cy]) => (
         <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="#ffffff"
-                stroke="#16a34a" strokeWidth="1.4" />
+                stroke="#4B7B4E" strokeWidth="1.4" />
       ))}
 
-      <rect x="376" y="110" width="26" height="24" rx="2" fill="#f59e0b"
-            stroke="#b45309" strokeWidth="1.2" />
-      <text x="389" y="126" textAnchor="middle" fontSize="7" fontWeight="700" fill="#7c2d12">
+      <rect x="376" y="110" width="26" height="24" rx="2" fill="#A17D36"
+            stroke="#A17D36" strokeWidth="1.2" />
+      <text x="389" y="126" textAnchor="middle" fontSize="7" fontWeight="700" fill="#7E6027">
         I/O
       </text>
 
       {/* Callouts */}
-      <line x1="296" y1="78" x2="330" y2="104" stroke="#16a34a" strokeWidth="0.9" />
-      <text x="334" y="107" fontSize="8.5" fontWeight="700" fill="#15803d">
+      <line x1="296" y1="78" x2="330" y2="104" stroke="#4B7B4E" strokeWidth="0.9" />
+      <text x="334" y="107" fontSize="8.5" fontWeight="700" fill="#4B7B4E">
         keying notch
       </text>
-      <line x1="286" y1="64" x2="250" y2="48" stroke="#64748b" strokeWidth="0.9" />
-      <text x="246" y="45" textAnchor="end" fontSize="8.5" fill="#475569">
+      <line x1="286" y1="64" x2="250" y2="48" stroke="#5F6164" strokeWidth="0.9" />
+      <text x="246" y="45" textAnchor="end" fontSize="8.5" fill="#5F6164">
         chassis rib
       </text>
 
-      <text x="345" y="204" textAnchor="middle" fontSize="8.5" fill="#15803d">
+      <text x="345" y="204" textAnchor="middle" fontSize="8.5" fill="#4B7B4E">
         Rotated, the notch lands away from the rib —
       </text>
-      <text x="345" y="215" textAnchor="middle" fontSize="8.5" fill="#15803d">
+      <text x="345" y="215" textAnchor="middle" fontSize="8.5" fill="#4B7B4E">
         the corner fouls it and the part never seats.
       </text>
 
-      <text x="230" y="240" textAnchor="middle" fontSize="8.5" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="240" textAnchor="middle" fontSize="8.5" fill="#98999B" fontStyle="italic">
         One added feature, no extra parts or fasteners — the wrong build becomes impossible, not just discouraged.
       </text>
     </svg>

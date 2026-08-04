@@ -25,21 +25,20 @@ export default function ResourceList({ resources }: { resources: Resource[] }) {
             href={r.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-start gap-2.5 bg-white rounded-lg border border-gray-200 px-4 py-3
-                       hover:border-blue-400 hover:shadow-sm transition-all"
+            className="group flex items-start gap-2.5 bg-white rounded-lg border border-panel-gray px-4 py-3 hover:border-steel-blue-line hover: transition-all"
           >
-            <span className="text-blue-600 mt-0.5 shrink-0">🔗</span>
+            <span className="text-steel-blue mt-0.5 shrink-0">🔗</span>
             <span className="min-w-0">
-              <span className="block text-sm text-gray-700 group-hover:text-blue-700 leading-snug">
+              <span className="block text-sm text-graphite/80 group-hover:text-steel-blue-deep leading-snug">
                 {r.label}
               </span>
               {r.note && (
-                <span className="block text-xs text-gray-400 mt-0.5 leading-snug">{r.note}</span>
+                <span className="block text-xs text-graphite/50 mt-0.5 leading-snug">{r.note}</span>
               )}
             </span>
             {/* External-link glyph, so it's clear this leaves the site */}
             <svg
-              className="h-3.5 w-3.5 text-gray-300 group-hover:text-blue-500 shrink-0 ml-auto mt-1"
+              className="h-3.5 w-3.5 text-graphite/30 group-hover:text-steel-blue shrink-0 ml-auto mt-1"
               fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
               aria-hidden="true"
             >

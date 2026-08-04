@@ -44,110 +44,110 @@ export default function CastingSectionDiagram() {
       <defs>
         <pattern id="dieHatch" width="7" height="7" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#cbd5e1" strokeWidth="1.6" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="#CDD2D5" strokeWidth="1.6" />
         </pattern>
         <marker id="castArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-          <path d="M0,1 L7,4 L0,7 Z" fill="#475569" />
+          <path d="M0,1 L7,4 L0,7 Z" fill="#5F6164" />
         </marker>
       </defs>
 
       {/* ══ Titles ══ */}
-      <text x="110" y="18" textAnchor="middle" fontSize="11" fontWeight="600" fill="#16a34a">
+      <text x="110" y="18" textAnchor="middle" fontSize="11" fontWeight="600" fill="#4B7B4E">
         ✓ Drafted + filleted
       </text>
-      <text x="110" y="31" textAnchor="middle" fontSize="9" fill="#64748b">
+      <text x="110" y="31" textAnchor="middle" fontSize="9" fill="#5F6164">
         uniform section, cools evenly
       </text>
-      <text x="340" y="18" textAnchor="middle" fontSize="11" fontWeight="600" fill="#dc2626">
+      <text x="340" y="18" textAnchor="middle" fontSize="11" fontWeight="600" fill="#9B3B3E">
         ✗ Sharp corners + no draft
       </text>
-      <text x="340" y="31" textAnchor="middle" fontSize="9" fill="#64748b">
+      <text x="340" y="31" textAnchor="middle" fontSize="9" fill="#5F6164">
         heavy junction freezes last
       </text>
 
       {/* Ejection arrows */}
-      <line x1="110" y1="104" x2="110" y2="72" stroke="#475569" strokeWidth="1.6"
+      <line x1="110" y1="104" x2="110" y2="72" stroke="#5F6164" strokeWidth="1.6"
             markerEnd="url(#castArrow)" />
-      <text x="118" y="88" fontSize="9" fill="#64748b">ejection</text>
-      <line x1="340" y1="104" x2="340" y2="72" stroke="#475569" strokeWidth="1.6"
+      <text x="118" y="88" fontSize="9" fill="#5F6164">ejection</text>
+      <line x1="340" y1="104" x2="340" y2="72" stroke="#5F6164" strokeWidth="1.6"
             markerEnd="url(#castArrow)" />
-      <text x="348" y="88" fontSize="9" fill="#64748b">ejection</text>
+      <text x="348" y="88" fontSize="9" fill="#5F6164">ejection</text>
 
       {/* ═══════════════ LEFT ═══════════════ */}
 
       {/* Die steel: outer block with the part shape subtracted via evenodd fill */}
       <path d={`M20,${DIE_TOP} H200 V${DIE_BOT} H20 Z ${LEFT_PART}`}
-            fillRule="evenodd" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1.5" />
+            fillRule="evenodd" fill="#E7EAEC" stroke="#98999B" strokeWidth="1.5" />
       <path d={`M20,${DIE_TOP} H200 V${DIE_BOT} H20 Z ${LEFT_PART}`}
             fillRule="evenodd" fill="url(#dieHatch)" stroke="none" />
 
       {/* The casting itself */}
-      <path d={LEFT_PART} fill="#bfdbfe" stroke="#2563eb" strokeWidth="1.7"
+      <path d={LEFT_PART} fill="#BFC9D8" stroke="#2B4C7E" strokeWidth="1.7"
             strokeLinejoin="round" />
 
       {/* Largest inscribed circle at the junction — close to the wall thickness */}
-      <circle cx="110" cy="190" r="11" fill="none" stroke="#16a34a" strokeWidth="1.4"
+      <circle cx="110" cy="190" r="11" fill="none" stroke="#4B7B4E" strokeWidth="1.4"
               strokeDasharray="4 3" />
-      <line x1="121" y1="190" x2="152" y2="172" stroke="#16a34a" strokeWidth="1" />
-      <text x="150" y="168" fontSize="9" fontWeight="600" fill="#16a34a">no hot spot</text>
+      <line x1="121" y1="190" x2="152" y2="172" stroke="#4B7B4E" strokeWidth="1" />
+      <text x="150" y="168" fontSize="9" fontWeight="600" fill="#4B7B4E">no hot spot</text>
 
       {/* Fillet callout */}
-      <line x1="92" y1="190" x2="52" y2="170" stroke="#2563eb" strokeWidth="1" />
-      <text x="24" y="166" fontSize="9" fontWeight="600" fill="#2563eb">fillet</text>
+      <line x1="92" y1="190" x2="52" y2="170" stroke="#2B4C7E" strokeWidth="1" />
+      <text x="24" y="166" fontSize="9" fontWeight="600" fill="#2B4C7E">fillet</text>
 
       {/* Draft callout on the rib face */}
-      <line x1="119" y1="150" x2="156" y2="140" stroke="#2563eb" strokeWidth="1" />
-      <text x="152" y="136" fontSize="9" fontWeight="600" fill="#2563eb">draft ≥ 1°</text>
+      <line x1="119" y1="150" x2="156" y2="140" stroke="#2B4C7E" strokeWidth="1" />
+      <text x="152" y="136" fontSize="9" fontWeight="600" fill="#2B4C7E">draft ≥ 1°</text>
 
       {/* ═══════════════ RIGHT ═══════════════ */}
 
       <path d={`M250,${DIE_TOP} H430 V${DIE_BOT} H250 Z ${RIGHT_PART}`}
-            fillRule="evenodd" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1.5" />
+            fillRule="evenodd" fill="#E7EAEC" stroke="#98999B" strokeWidth="1.5" />
       <path d={`M250,${DIE_TOP} H430 V${DIE_BOT} H250 Z ${RIGHT_PART}`}
             fillRule="evenodd" fill="url(#dieHatch)" stroke="none" />
 
-      <path d={RIGHT_PART} fill="#fecaca" stroke="#dc2626" strokeWidth="1.7" />
+      <path d={RIGHT_PART} fill="#F3E7E8" stroke="#9B3B3E" strokeWidth="1.7" />
 
       {/* Much larger inscribed circle → this is the hot spot */}
-      <circle cx="340" cy="190" r="16" fill="#fca5a5" stroke="#dc2626" strokeWidth="1.4"
+      <circle cx="340" cy="190" r="16" fill="#E1C4C5" stroke="#9B3B3E" strokeWidth="1.4"
               strokeDasharray="4 3" />
       {/* The void that forms when it finally freezes with nothing left to feed it */}
       <path d="M336,186 q5,-3 8,1 q4,4 -1,7 q-6,3 -8,-2 q-2,-4 1,-6 Z"
-            fill="#7f1d1d" stroke="none" />
+            fill="#7A2B2E" stroke="none" />
 
-      <line x1="356" y1="186" x2="392" y2="168" stroke="#dc2626" strokeWidth="1" />
-      <text x="366" y="153" fontSize="9" fontWeight="600" fill="#dc2626">hot spot →</text>
-      <text x="366" y="164" fontSize="9" fontWeight="600" fill="#dc2626">shrinkage porosity</text>
+      <line x1="356" y1="186" x2="392" y2="168" stroke="#9B3B3E" strokeWidth="1" />
+      <text x="366" y="153" fontSize="9" fontWeight="600" fill="#9B3B3E">hot spot →</text>
+      <text x="366" y="164" fontSize="9" fontWeight="600" fill="#9B3B3E">shrinkage porosity</text>
 
       {/* Sharp corner callout */}
-      <line x1="324" y1="196" x2="288" y2="172" stroke="#dc2626" strokeWidth="1" />
-      <text x="256" y="168" fontSize="9" fontWeight="600" fill="#dc2626">sharp corner</text>
+      <line x1="324" y1="196" x2="288" y2="172" stroke="#9B3B3E" strokeWidth="1" />
+      <text x="256" y="168" fontSize="9" fontWeight="600" fill="#9B3B3E">sharp corner</text>
 
       {/* Scuff marks — zero draft means the rib rubs the die all the way out */}
       {[136, 150, 164, 178].map(y => (
         <g key={y}>
-          <path d={`M320,${y} l8,4`} stroke="#dc2626" strokeWidth="1.3" />
-          <path d={`M352,${y} l8,-4`} stroke="#dc2626" strokeWidth="1.3" />
+          <path d={`M320,${y} l8,4`} stroke="#9B3B3E" strokeWidth="1.3" />
+          <path d={`M352,${y} l8,-4`} stroke="#9B3B3E" strokeWidth="1.3" />
         </g>
       ))}
 
       {/* ══ Parting line ══ */}
-      <line x1="14" y1={DIE_TOP} x2="446" y2={DIE_TOP} stroke="#f59e0b" strokeWidth="1.3"
+      <line x1="14" y1={DIE_TOP} x2="446" y2={DIE_TOP} stroke="#A17D36" strokeWidth="1.3"
             strokeDasharray="10 3 2 3" opacity="0.85" />
-      <text x="446" y={DIE_TOP - 6} textAnchor="end" fontSize="9" fontWeight="600" fill="#b45309">
+      <text x="446" y={DIE_TOP - 6} textAnchor="end" fontSize="9" fontWeight="600" fill="#A17D36">
         parting line
       </text>
 
       {/* Wall-thickness note, kept below the die block so it doesn't sit on the hatch */}
-      <text x="230" y={DIE_BOT + 18} textAnchor="middle" fontSize="9" fill="#64748b">
+      <text x="230" y={DIE_BOT + 18} textAnchor="middle" fontSize="9" fill="#5F6164">
         Keep every section within ~2× the thinnest wall.
       </text>
 
       {/* ══ Footnote ══ */}
-      <text x="230" y="292" textAnchor="middle" fontSize="9" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="292" textAnchor="middle" fontSize="9" fill="#98999B" fontStyle="italic">
         Largest-inscribed-circle test: if a junction fits a noticeably bigger circle than its
       </text>
-      <text x="230" y="304" textAnchor="middle" fontSize="9" fill="#94a3b8" fontStyle="italic">
+      <text x="230" y="304" textAnchor="middle" fontSize="9" fill="#98999B" fontStyle="italic">
         neighbouring walls, that is what solidifies last — and where porosity forms.
       </text>
     </svg>

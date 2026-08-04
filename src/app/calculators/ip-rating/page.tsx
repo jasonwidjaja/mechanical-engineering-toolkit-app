@@ -18,12 +18,12 @@ export default function IPRatingPage() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Back navigation — plain <a> works here since we're in a server component */}
-      <a href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <a href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </a>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">IP Rating Reference</h1>
-      <p className="text-sm text-gray-500 mb-8">
+      <h1 className="text-2xl font-bold text-graphite mb-1">IP Rating Reference</h1>
+      <p className="text-sm text-graphite/60 mb-8">
         Ingress Protection codes per IEC 60529. Use this as a design checklist —
         always test to the actual standard, since sealing performance depends on groove
         geometry, O-ring material, compression set, and installation quality.
@@ -62,13 +62,13 @@ export default function IPRatingPage() {
       </div>
 
       {/* ── Common ratings for sealed enclosures ── */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">
+      <h2 className="text-lg font-semibold text-graphite mb-4">
         Common Ratings for Sealed Enclosures
       </h2>
       <div className="overflow-x-auto mb-8">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
+            <tr className="bg-instrument-white border-b border-panel-gray text-left text-xs text-graphite/60">
               <th className="px-4 py-3 font-semibold">Rating</th>
               <th className="px-4 py-3 font-semibold">Protection Level</th>
               <th className="px-4 py-3 font-semibold">Typical Sealing Method</th>
@@ -76,18 +76,18 @@ export default function IPRatingPage() {
               <th className="px-4 py-3 font-semibold">Design Notes</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-panel-gray">
             {RATINGS.map(r => (
-              <tr key={r.code} className="hover:bg-gray-50 transition-colors">
+              <tr key={r.code} className="hover:bg-instrument-white transition-colors">
                 <td className="px-4 py-3">
-                  <span className="font-bold text-blue-700 text-base">{r.code}</span>
+                  <span className="font-bold text-steel-blue-deep text-base">{r.code}</span>
                 </td>
-                <td className="px-4 py-3 text-gray-700">{r.protection}</td>
-                <td className="px-4 py-3 text-gray-600">{r.method}</td>
+                <td className="px-4 py-3 text-graphite/80">{r.protection}</td>
+                <td className="px-4 py-3 text-graphite/70">{r.method}</td>
                 <td className="px-4 py-3">
-                  <span className="font-mono text-gray-700">{r.minSqueeze}</span>
+                  <span className="font-mono text-graphite/80">{r.minSqueeze}</span>
                 </td>
-                <td className="px-4 py-3 text-gray-500 text-xs leading-relaxed">{r.notes}</td>
+                <td className="px-4 py-3 text-graphite/60 text-xs leading-relaxed">{r.notes}</td>
               </tr>
             ))}
           </tbody>
@@ -95,18 +95,18 @@ export default function IPRatingPage() {
       </div>
 
       {/* ── O-ring material quick reference ── */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">O-Ring Material Quick Reference</h2>
+      <h2 className="text-lg font-semibold text-graphite mb-4">O-Ring Material Quick Reference</h2>
       <div className="overflow-x-auto mb-8">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs text-gray-500">
+            <tr className="bg-instrument-white border-b border-panel-gray text-left text-xs text-graphite/60">
               <th className="px-4 py-3 font-semibold">Material</th>
               <th className="px-4 py-3 font-semibold">Temp Range</th>
               <th className="px-4 py-3 font-semibold">Good For</th>
               <th className="px-4 py-3 font-semibold">Avoid</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-panel-gray">
             {[
               ["NBR (Buna-N)", "−40 to +120°C", "Petroleum oils, hydraulic fluid, water", "Ozone, ketones, strong acids"],
               ["EPDM", "−55 to +150°C", "Water, steam, brake fluid, outdoor UV", "Petroleum oils, aromatic hydrocarbons"],
@@ -114,11 +114,11 @@ export default function IPRatingPage() {
               ["FKM (Viton®)", "−20 to +200°C", "Fuels, oils, acids, aerospace fluids", "Ketones, amines, hot water"],
               ["PTFE (encapsulated)", "−200 to +260°C", "Aggressive chemicals, universal", "Abrasion (hard, low resilience)"],
             ].map(([mat, temp, good, avoid]) => (
-              <tr key={mat} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-gray-800">{mat}</td>
-                <td className="px-4 py-3 font-mono text-xs text-gray-600">{temp}</td>
-                <td className="px-4 py-3 text-gray-600 text-xs">{good}</td>
-                <td className="px-4 py-3 text-red-600 text-xs">{avoid}</td>
+              <tr key={mat} className="hover:bg-instrument-white">
+                <td className="px-4 py-3 font-medium text-graphite">{mat}</td>
+                <td className="px-4 py-3 font-mono text-xs text-graphite/70">{temp}</td>
+                <td className="px-4 py-3 text-graphite/70 text-xs">{good}</td>
+                <td className="px-4 py-3 text-signal-red text-xs">{avoid}</td>
               </tr>
             ))}
           </tbody>
@@ -126,11 +126,11 @@ export default function IPRatingPage() {
       </div>
 
       {/* ── Design checklist ── */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-blue-900 mb-3">
+      <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5">
+        <h2 className="text-sm font-semibold text-steel-blue-deep mb-3">
           Seal Design Checklist
         </h2>
-        <ul className="text-xs text-blue-800 space-y-1.5 list-none">
+        <ul className="text-xs text-steel-blue-deep space-y-1.5 list-none">
           {[
             "Verify squeeze is within target range (15–30% static, 10–20% dynamic) after accounting for tolerance stack.",
             "Check groove fill ratio (O-ring cross-sectional area / groove cross-sectional area) — typically 75–85% for static seals.",
@@ -141,7 +141,7 @@ export default function IPRatingPage() {
             "For IP66 (high-pressure jet): consider a retained or dovetail groove to prevent O-ring blow-out under direct jet impingement.",
           ].map(item => (
             <li key={item} className="flex gap-2">
-              <span className="text-blue-400 mt-0.5">▸</span>
+              <span className="text-steel-blue mt-0.5">▸</span>
               <span>{item}</span>
             </li>
           ))}
@@ -201,23 +201,23 @@ type CodeTableProps = {
 
 function CodeTable({ title, rows, highlightRows = [] }: CodeTableProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-200">
-        <p className="text-xs font-semibold text-gray-600">{title}</p>
+    <div className="bg-white rounded-lg border border-panel-gray overflow-hidden">
+      <div className="bg-instrument-white px-4 py-2.5 border-b border-panel-gray">
+        <p className="text-xs font-semibold text-graphite/70">{title}</p>
       </div>
       <table className="w-full text-xs">
         <tbody>
           {rows.map(([digit, desc], i) => (
             <tr
               key={digit}
-              className={`border-b border-gray-50 last:border-0 ${
-                highlightRows.includes(i) ? "bg-blue-50/50" : ""
-              }`}
+              className={`border-b border-panel-gray last:border-0 ${
+ highlightRows.includes(i) ? "bg-steel-blue-tint/50" : ""
+ }`}
             >
-              <td className={`px-4 py-2 font-bold w-8 ${highlightRows.includes(i) ? "text-blue-700" : "text-gray-500"}`}>
+              <td className={`px-4 py-2 font-bold w-8 ${highlightRows.includes(i) ? "text-steel-blue-deep" : "text-graphite/60"}`}>
                 {digit}
               </td>
-              <td className="px-4 py-2 text-gray-600">{desc}</td>
+              <td className="px-4 py-2 text-graphite/70">{desc}</td>
             </tr>
           ))}
         </tbody>

@@ -69,14 +69,14 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
       <svg viewBox={`0 0 ${VB_W} 160`} className="w-full h-auto" role="img"
            aria-label="These four link lengths cannot form a closed four-bar linkage.">
         <rect x="1" y="1" width={VB_W - 2} height="158" rx="10"
-              fill="#fef2f2" stroke="#fecaca" strokeWidth="1.5" />
-        <text x={VB_W / 2} y="70" textAnchor="middle" fontSize="13" fontWeight="700" fill="#b91c1c">
+              fill="#F3E7E8" stroke="#F3E7E8" strokeWidth="1.5" />
+        <text x={VB_W / 2} y="70" textAnchor="middle" fontSize="13" fontWeight="700" fill="#9B3B3E">
           These lengths cannot form a closed loop
         </text>
-        <text x={VB_W / 2} y="94" textAnchor="middle" fontSize="10.5" fill="#991b1b">
+        <text x={VB_W / 2} y="94" textAnchor="middle" fontSize="10.5" fill="#7A2B2E">
           One link is longer than the other three combined, so the linkage can never close.
         </text>
-        <text x={VB_W / 2} y="112" textAnchor="middle" fontSize="10.5" fill="#991b1b">
+        <text x={VB_W / 2} y="112" textAnchor="middle" fontSize="10.5" fill="#7A2B2E">
           Shorten it, or lengthen the others, and the diagram will appear.
         </text>
       </svg>
@@ -160,7 +160,7 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
     return `M${p1.x.toFixed(2)},${p1.y.toFixed(2)} A${r.toFixed(2)},${r.toFixed(2)} 0 ${large} 0 ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`;
   };
 
-  const linkColor = (idx: number) => (idx === shortestIdx ? "#dc2626" : "#2563eb");
+  const linkColor = (idx: number) => (idx === shortestIdx ? "#9B3B3E" : "#2B4C7E");
   const arc = travelArc();
 
   return (
@@ -173,20 +173,20 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
       <defs>
         <pattern id="fbGround" width="6" height="6" patternUnits="userSpaceOnUse"
                  patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="6" stroke="#cbd5e1" strokeWidth="1.4" />
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#CDD2D5" strokeWidth="1.4" />
         </pattern>
         <marker id="fbArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M0,1.5 L6.5,4 L0,6.5 Z" fill="#7c3aed" />
+          <path d="M0,1.5 L6.5,4 L0,6.5 Z" fill="#5F6164" />
         </marker>
       </defs>
 
       {/* ── Reachable travel of the input link ── */}
       {fullRotation ? (
-        <circle cx={sx(0)} cy={sy(0)} r={l2 * scale} fill="none" stroke="#16a34a"
+        <circle cx={sx(0)} cy={sy(0)} r={l2 * scale} fill="none" stroke="#4B7B4E"
                 strokeWidth="1.3" strokeDasharray="5 4" opacity="0.8" />
       ) : (
         arc && (
-          <path d={arc} fill="none" stroke="#d97706" strokeWidth="2.4"
+          <path d={arc} fill="none" stroke="#A17D36" strokeWidth="2.4"
                 strokeDasharray="5 4" opacity="0.9" markerEnd="url(#fbArrow)" />
         )
       )}
@@ -209,9 +209,9 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
       {[A, D].map((P, i) => (
         <g key={i}>
           <path d={`M${sx(P.x)},${sy(P.y)} L${sx(P.x) - 11},${sy(P.y) + 17} L${sx(P.x) + 11},${sy(P.y) + 17} Z`}
-                fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1.2" />
+                fill="#F5F6F7" stroke="#98999B" strokeWidth="1.2" />
           <rect x={sx(P.x) - 15} y={sy(P.y) + 17} width="30" height="6" fill="url(#fbGround)"
-                stroke="#94a3b8" strokeWidth="1" />
+                stroke="#98999B" strokeWidth="1" />
         </g>
       ))}
 
@@ -223,8 +223,8 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
         { p: D, label: "D" },
       ].map(({ p, label }) => (
         <g key={label}>
-          <circle cx={sx(p.x)} cy={sy(p.y)} r="5" fill="#ffffff" stroke="#334155" strokeWidth="1.8" />
-          <text x={sx(p.x) + 9} y={sy(p.y) - 7} fontSize="10" fontWeight="700" fill="#334155"
+          <circle cx={sx(p.x)} cy={sy(p.y)} r="5" fill="#ffffff" stroke="#1A1D21" strokeWidth="1.8" />
+          <text x={sx(p.x) + 9} y={sy(p.y) - 7} fontSize="10" fontWeight="700" fill="#1A1D21"
                 stroke="#ffffff" strokeWidth="3" paintOrder="stroke" strokeLinejoin="round">
             {label}
           </text>
@@ -266,7 +266,7 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
               textAnchor="middle"
               fontSize="9.5"
               fontWeight={idx === shortestIdx ? 700 : 600}
-              fill={idx === shortestIdx ? "#dc2626" : "#1d4ed8"}
+              fill={idx === shortestIdx ? "#9B3B3E" : "#2B4C7E"}
               /*
                 White halo behind the glyphs. A perpendicular offset alone can't
                 guarantee clearance — a ~100px-wide horizontal label set against
@@ -289,19 +289,19 @@ export default function FourBarDiagram({ l1, l2, l3, l4 }: Props) {
 
       {/* ── Verdict banner ── */}
       <text x={VB_W / 2} y="22" textAnchor="middle" fontSize="11" fontWeight="700"
-            fill={fullRotation ? "#16a34a" : "#b45309"}>
+            fill={fullRotation ? "#4B7B4E" : "#A17D36"}>
         {fullRotation
           ? "✓ Input link rotates continuously — 360°"
           : `✗ Input link rocks only — about ${sweepDeg}° of travel`}
       </text>
-      <text x={VB_W / 2} y="37" textAnchor="middle" fontSize="9" fill="#64748b">
+      <text x={VB_W / 2} y="37" textAnchor="middle" fontSize="9" fill="#5F6164">
         {fullRotation
           ? "dashed green circle = the crank's full path; a motor can drive this directly"
           : "amber arc = the limited range the input link can reach before the loop jams"}
       </text>
 
       {/* Legend note: the shortest link is what the Grashof test turns on. */}
-      <text x={VB_W / 2} y={vbH - 12} textAnchor="middle" fontSize="9" fill="#94a3b8"
+      <text x={VB_W / 2} y={vbH - 12} textAnchor="middle" fontSize="9" fill="#98999B"
             fontStyle="italic">
         Shortest link (S) shown in red. Drawn at input angle {theta}° — a valid closed position.
       </text>

@@ -297,19 +297,19 @@ export default function ToleranceStackupPage() {
     <div className="max-w-4xl mx-auto">
       <Link
         href="/"
-        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6"
+        className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6"
       >
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Tolerance Stackup Analyzer</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Tolerance Stackup Analyzer</h1>
+      <p className="text-sm text-graphite/60 mb-6">
         Build a 1-D tolerance chain and see every step of the worst-case and RSS math —
         or switch to the tutorial to learn how stackups work.
       </p>
 
       {/* ── Tab switcher ── */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
+      <div className="flex gap-2 mb-6 border-b border-panel-gray">
         <TabButton active={tab === "builder"} onClick={() => setTab("builder")}>
           Stackup Builder
         </TabButton>
@@ -358,13 +358,13 @@ function BuilderTab({
   return (
     <div className="flex flex-col gap-6">
       {/* Example loader */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium text-gray-600">Load a worked example:</span>
+      <div className="bg-white rounded-lg border border-panel-gray p-4 flex flex-wrap items-center gap-3">
+        <span className="text-sm font-medium text-graphite/70">Load a worked example:</span>
         {EXAMPLES.map((ex) => (
           <button
             key={ex.key}
             onClick={() => onLoadExample(ex)}
-            className="text-xs bg-gray-50 border border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-gray-600 hover:text-blue-700 px-3 py-1.5 rounded-lg transition-colors"
+            className="text-xs bg-instrument-white border border-panel-gray hover:border-steel-blue-line hover:bg-steel-blue-tint text-graphite/70 hover:text-steel-blue-deep px-3 py-1.5 rounded-lg transition-colors"
           >
             {ex.title.replace(/^Example [AB] — /, `Example ${ex.key}: `)}
           </button>
@@ -372,15 +372,15 @@ function BuilderTab({
       </div>
 
       {/* Dimension chain table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">
-          Dimension Loop <span className="font-normal text-gray-400">({rows.length} dimensions)</span>
+      <div className="bg-white rounded-lg border border-panel-gray p-5">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-3">
+          Dimension Loop <span className="font-normal text-graphite/50">({rows.length} dimensions)</span>
         </h2>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[560px]">
             <thead>
-              <tr className="text-xs text-gray-400 border-b border-gray-100 text-left">
+              <tr className="text-xs text-graphite/50 border-b border-panel-gray text-left">
                 <th className="pb-2 pr-2 w-6">#</th>
                 <th className="pb-2 pr-2">Label</th>
                 <th className="pb-2 pr-2 w-24">Nominal (mm)</th>
@@ -389,17 +389,17 @@ function BuilderTab({
                 <th className="pb-2 w-6"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-panel-gray">
               {rows.map((r, i) => (
                 <tr key={r.id}>
-                  <td className="py-1.5 pr-2 text-gray-400 text-xs">{i + 1}</td>
+                  <td className="py-1.5 pr-2 text-graphite/50 text-xs">{i + 1}</td>
                   <td className="py-1.5 pr-2">
                     <input
                       type="text"
                       value={r.label}
                       onChange={(e) => onUpdate(r.id, "label", e.target.value)}
                       placeholder="e.g. Standoff height"
-                      className="w-full border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none"
+                      className="w-full border border-panel-gray rounded px-2 py-1 text-sm"
                     />
                   </td>
                   <td className="py-1.5 pr-2">
@@ -408,7 +408,7 @@ function BuilderTab({
                       value={r.nominal}
                       onChange={(e) => onUpdate(r.id, "nominal", e.target.value)}
                       placeholder="0.00"
-                      className="w-full border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-full border border-panel-gray rounded px-2 py-1 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </td>
                   <td className="py-1.5 pr-2">
@@ -417,7 +417,7 @@ function BuilderTab({
                       value={r.tol}
                       onChange={(e) => onUpdate(r.id, "tol", e.target.value)}
                       placeholder="0.00"
-                      className="w-full border border-gray-200 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-full border border-panel-gray rounded px-2 py-1 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </td>
                   <td className="py-1.5 pr-2">
@@ -425,11 +425,11 @@ function BuilderTab({
                     <select
                       value={r.direction}
                       onChange={(e) => onUpdate(r.id, "direction", e.target.value)}
-                      className={`w-full border rounded px-2 py-1 text-xs focus:ring-1 focus:ring-blue-400 outline-none bg-white ${
-                        r.direction === "opens"
-                          ? "border-blue-200 text-blue-700"
-                          : "border-amber-200 text-amber-700"
-                      }`}
+                      className={`w-full border rounded px-2 py-1 text-xs bg-white ${
+ r.direction === "opens"
+ ? "border-steel-blue-line text-steel-blue-deep"
+ : "border-signal-amber-line text-signal-amber-deep"
+ }`}
                     >
                       <option value="opens">Opens gap (+)</option>
                       <option value="closes">Closes gap (−)</option>
@@ -439,7 +439,7 @@ function BuilderTab({
                     <button
                       onClick={() => onRemove(r.id)}
                       disabled={rows.length <= 1}
-                      className="text-gray-300 hover:text-red-400 disabled:opacity-20 text-lg leading-none px-1 transition-colors"
+                      className="text-graphite/30 hover:text-signal-red disabled:opacity-20 text-lg leading-none px-1 transition-colors"
                       title="Remove dimension"
                     >
                       ×
@@ -453,15 +453,15 @@ function BuilderTab({
 
         <button
           onClick={onAdd}
-          className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+          className="mt-3 text-sm text-steel-blue hover:text-steel-blue-deep font-medium transition-colors"
         >
           + Add dimension
         </button>
       </div>
 
       {/* Dimension chain diagram */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Dimension Chain</h2>
+      <div className="bg-white rounded-lg border border-panel-gray p-5">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-3">Dimension Chain</h2>
         <StackupChainDiagram computed={computed} />
       </div>
 
@@ -477,15 +477,15 @@ function BuilderTab({
 /** The live formula-substitution panel — updates on every keystroke. */
 function ShowYourWork({ computed }: { computed: Computed }) {
   return (
-    <div className="bg-gray-900 rounded-xl p-5 text-gray-100">
-      <h2 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+    <div className="bg-graphite rounded-lg p-5 text-instrument-white">
+      <h2 className="text-sm font-semibold text-graphite/30 mb-3 flex items-center gap-2">
         <span>📝</span> Show your work
-        <span className="text-xs font-normal text-gray-500">(updates live)</span>
+        <span className="text-xs font-normal text-graphite/60">(updates live)</span>
       </h2>
       <div className="flex flex-col gap-4 font-mono text-xs sm:text-sm">
-        <WorkLine label="Nominal result" expr={computed.nominalExpr} accent="text-green-300" />
-        <WorkLine label="Worst-case tolerance" expr={computed.wcExpr} accent="text-red-300" />
-        <WorkLine label="RSS tolerance" expr={computed.rssExpr} accent="text-blue-300" />
+        <WorkLine label="Nominal result" expr={computed.nominalExpr} accent="text-phosphor-green-line" />
+        <WorkLine label="Worst-case tolerance" expr={computed.wcExpr} accent="text-signal-red-line" />
+        <WorkLine label="RSS tolerance" expr={computed.rssExpr} accent="text-steel-blue-tint" />
       </div>
     </div>
   );
@@ -494,7 +494,7 @@ function ShowYourWork({ computed }: { computed: Computed }) {
 function WorkLine({ label, expr, accent }: { label: string; expr: string; accent: string }) {
   return (
     <div>
-      <p className="text-gray-500 text-xs mb-1">{label}</p>
+      <p className="text-graphite/60 text-xs mb-1">{label}</p>
       <p className={`${accent} break-words leading-relaxed`}>{expr}</p>
     </div>
   );
@@ -504,47 +504,47 @@ function WorkLine({ label, expr, accent }: { label: string; expr: string; accent
 function OutputCard({ computed, interference }: { computed: Computed; interference: boolean }) {
   return (
     <div
-      className={`rounded-xl border p-5 ${
-        interference ? "bg-red-50 border-red-300" : "bg-blue-50 border-blue-200"
-      }`}
+      className={`rounded-lg border p-5 ${
+ interference ? "bg-signal-red-tint border-signal-red-line" : "bg-steel-blue-tint border-steel-blue-line"
+ }`}
     >
-      <h2 className="text-base font-semibold text-gray-800 mb-4">Result</h2>
+      <h2 className="text-base font-semibold text-graphite mb-4">Result</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Nominal */}
-        <div className="bg-white rounded-lg border border-gray-200 px-4 py-3 text-center">
-          <p className="text-xs text-gray-500 font-medium mb-1">Nominal</p>
-          <p className="text-2xl font-bold text-gray-800">{computed.nominal.toFixed(2)}</p>
-          <p className="text-xs text-gray-400">mm</p>
+        <div className="bg-white rounded-lg border border-panel-gray px-4 py-3 text-center">
+          <p className="text-xs text-graphite/60 font-medium mb-1">Nominal</p>
+          <p className="text-2xl font-bold text-graphite">{computed.nominal.toFixed(2)}</p>
+          <p className="text-xs text-graphite/50">mm</p>
         </div>
 
         {/* Worst-case range */}
-        <div className="bg-white rounded-lg border border-red-100 px-4 py-3 text-center">
-          <p className="text-xs text-red-500 font-medium mb-1">Worst-case ± {computed.wcTol.toFixed(2)}</p>
-          <p className="text-lg font-bold text-gray-800">
+        <div className="bg-white rounded-lg border border-signal-red-line px-4 py-3 text-center">
+          <p className="text-xs text-signal-red font-medium mb-1">Worst-case ± {computed.wcTol.toFixed(2)}</p>
+          <p className="text-lg font-bold text-graphite">
             {computed.wcMin.toFixed(2)} – {computed.wcMax.toFixed(2)}
           </p>
-          <p className="text-xs text-gray-400">mm (arithmetic)</p>
+          <p className="text-xs text-graphite/50">mm (arithmetic)</p>
         </div>
 
         {/* RSS range */}
-        <div className="bg-white rounded-lg border border-blue-100 px-4 py-3 text-center">
-          <p className="text-xs text-blue-500 font-medium mb-1">RSS ± {computed.rssTol.toFixed(3)}</p>
-          <p className="text-lg font-bold text-gray-800">
+        <div className="bg-white rounded-lg border border-steel-blue-line px-4 py-3 text-center">
+          <p className="text-xs text-steel-blue font-medium mb-1">RSS ± {computed.rssTol.toFixed(3)}</p>
+          <p className="text-lg font-bold text-graphite">
             {computed.rssMin.toFixed(2)} – {computed.rssMax.toFixed(2)}
           </p>
-          <p className="text-xs text-gray-400">mm (statistical)</p>
+          <p className="text-xs text-graphite/50">mm (statistical)</p>
         </div>
       </div>
 
       {/* Interference flag */}
       {interference ? (
-        <p className="mt-4 text-sm text-red-700 bg-red-100 rounded-lg px-3 py-2 font-medium">
+        <p className="mt-4 text-sm text-signal-red-deep bg-signal-red-tint rounded-lg px-3 py-2 font-medium">
           ⚠ Worst-case minimum is {computed.wcMin.toFixed(2)} mm (negative) — possible interference.
           The parts may not assemble in the extreme case. Tighten tolerances or increase the nominal gap.
         </p>
       ) : (
-        <p className="mt-4 text-sm text-green-700 bg-green-100 rounded-lg px-3 py-2">
+        <p className="mt-4 text-sm text-phosphor-green-deep bg-phosphor-green-tint rounded-lg px-3 py-2">
           ✓ Worst-case minimum is {computed.wcMin.toFixed(2)} mm (positive) — clearance is maintained even
           in the extreme case.
         </p>
@@ -569,7 +569,7 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
 
   if (rows.length === 0) {
     return (
-      <div className="min-h-[120px] flex items-center justify-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-lg">
+      <div className="min-h-[120px] flex items-center justify-center text-graphite/50 text-sm border border-dashed border-panel-gray rounded-lg">
         Add a dimension to see the chain
       </div>
     );
@@ -595,7 +595,7 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
   const H = resultY + rowH;
 
   const gapPositive = computed.nominal >= 0;
-  const gapColor = gapPositive ? "#16a34a" : "#dc2626";
+  const gapColor = gapPositive ? "#4B7B4E" : "#9B3B3E";
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
@@ -604,13 +604,13 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
         const y = top + i * rowH + rowH / 2;
         const barLen = Math.max(Math.abs(r.nominalNum) * scale, 3);
         const opens = r.direction === "opens";
-        const color = opens ? "#3b82f6" : "#d97706";
+        const color = opens ? "#2B4C7E" : "#A17D36";
         const x0 = labelW;
 
         return (
           <g key={i}>
             {/* Label (truncated by the fixed column width) */}
-            <text x={4} y={y + 4} fontSize={11} fill="#334155">
+            <text x={4} y={y + 4} fontSize={11} fill="#1A1D21">
               {truncate(r.label || `Dim ${i + 1}`, 24)}
             </text>
             {/* Bar */}
@@ -625,7 +625,7 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
               <polygon points={`${x0},${y} ${x0 + 7},${y - 5} ${x0 + 7},${y + 5}`} fill={color} />
             )}
             {/* Value + sign */}
-            <text x={x0 + barLen + 8} y={y + 4} fontSize={11} fill="#64748b" fontFamily="monospace">
+            <text x={x0 + barLen + 8} y={y + 4} fontSize={11} fill="#5F6164" fontFamily="monospace">
               {opens ? "+" : "−"}
               {Math.abs(r.nominalNum).toFixed(2)}
             </text>
@@ -634,10 +634,10 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
       })}
 
       {/* Divider before the resultant */}
-      <line x1={labelW} y1={resultY - 14} x2={W - 8} y2={resultY - 14} stroke="#e2e8f0" strokeWidth={1} />
+      <line x1={labelW} y1={resultY - 14} x2={W - 8} y2={resultY - 14} stroke="#E7EAEC" strokeWidth={1} />
 
       {/* Resultant gap bar (green if positive, red if negative) */}
-      <text x={4} y={resultY + rowH / 2 + 4} fontSize={11} fontWeight={700} fill="#0f172a">
+      <text x={4} y={resultY + rowH / 2 + 4} fontSize={11} fontWeight={700} fill="#1A1D21">
         Resultant gap
       </text>
       <rect
@@ -661,10 +661,10 @@ function StackupChainDiagram({ computed }: { computed: Computed }) {
       </text>
 
       {/* Legend */}
-      <g fontSize={9.5} fill="#94a3b8">
-        <rect x={labelW} y={0} width={10} height={7} fill="#3b82f6" fillOpacity={0.75} rx={1} />
+      <g fontSize={9.5} fill="#98999B">
+        <rect x={labelW} y={0} width={10} height={7} fill="#2B4C7E" fillOpacity={0.75} rx={1} />
         <text x={labelW + 14} y={7}>opens (+)</text>
-        <rect x={labelW + 78} y={0} width={10} height={7} fill="#d97706" fillOpacity={0.75} rx={1} />
+        <rect x={labelW + 78} y={0} width={10} height={7} fill="#A17D36" fillOpacity={0.75} rx={1} />
         <text x={labelW + 92} y={7}>closes (−)</text>
       </g>
     </svg>
@@ -695,9 +695,9 @@ function LearnTab({
   return (
     <div className="flex flex-col gap-6">
       {/* 1. Plain-language explainer (pancake analogy) */}
-      <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-3">🥞 The pancake analogy</h2>
-        <div className="text-sm text-gray-600 leading-relaxed space-y-3">
+      <section className="bg-white rounded-lg border border-panel-gray p-6">
+        <h2 className="text-lg font-semibold text-graphite mb-3">🥞 The pancake analogy</h2>
+        <div className="text-sm text-graphite/70 leading-relaxed space-y-3">
           <p>
             Imagine stacking pancakes, each meant to be the same thickness but each actually a little
             thicker or thinner than the target. You want to know how tall the finished stack will be.
@@ -705,14 +705,14 @@ function LearnTab({
           <p>
             If <strong>every</strong> pancake happened to come out at its <em>thickest</em> allowed
             value at the same time, the stack reaches its absolute maximum height. That is the{" "}
-            <strong className="text-red-600">worst case</strong> — you just add up every tolerance,
+            <strong className="text-signal-red">worst case</strong> — you just add up every tolerance,
             because they all push the same direction at once.
           </p>
           <p>
             But in reality, some pancakes are thick and some are thin, and they tend to partly cancel
             out. It is very unlikely that all of them hit their extreme in the same direction. So the
             <em> typical</em> spread of the finished stack is noticeably smaller. That smaller,
-            realistic spread is the <strong className="text-blue-600">RSS</strong> (root-sum-square)
+            realistic spread is the <strong className="text-steel-blue">RSS</strong> (root-sum-square)
             estimate — valid when each tolerance is an independent, roughly normally distributed
             variable.
           </p>
@@ -720,23 +720,23 @@ function LearnTab({
       </section>
 
       {/* 2. Method comparison + bar chart */}
-      <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Worst-case vs. RSS</h2>
+      <section className="bg-white rounded-lg border border-panel-gray p-6">
+        <h2 className="text-lg font-semibold text-graphite mb-4">Worst-case vs. RSS</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-            <p className="text-sm font-semibold text-red-700 mb-1">Worst-Case (Arithmetic)</p>
-            <p className="font-mono text-sm text-red-800 mb-2">T = Σ |Tᵢ|</p>
-            <p className="text-xs text-red-700/80 leading-relaxed">
+          <div className="rounded-lg border border-signal-red-line bg-signal-red-tint p-4">
+            <p className="text-sm font-semibold text-signal-red-deep mb-1">Worst-Case (Arithmetic)</p>
+            <p className="font-mono text-sm text-signal-red-deep mb-2">T = Σ |Tᵢ|</p>
+            <p className="text-xs text-signal-red-deep/80 leading-relaxed">
               Guarantees the bound no matter which direction each dimension lands. Simple and safe —
               but gets <strong>overly conservative</strong> as the chain grows longer, since it
               assumes every part hits its extreme simultaneously.
             </p>
           </div>
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <p className="text-sm font-semibold text-blue-700 mb-1">RSS (Statistical)</p>
-            <p className="font-mono text-sm text-blue-800 mb-2">T = √(Σ Tᵢ²)</p>
-            <p className="text-xs text-blue-700/80 leading-relaxed">
+          <div className="rounded-lg border border-steel-blue-line bg-steel-blue-tint p-4">
+            <p className="text-sm font-semibold text-steel-blue-deep mb-1">RSS (Statistical)</p>
+            <p className="font-mono text-sm text-steel-blue-deep mb-2">T = √(Σ Tᵢ²)</p>
+            <p className="text-xs text-steel-blue-deep/80 leading-relaxed">
               Assumes independent, normally distributed tolerances (the standard ASME Y14.5
               statistical tolerancing assumption). <strong>Less conservative</strong> and standard for
               longer, high-part-count chains where extremes rarely align.
@@ -749,14 +749,14 @@ function LearnTab({
       </section>
 
       {/* 3. Worked examples */}
-      <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+      <section className="bg-white rounded-lg border border-panel-gray p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-semibold text-gray-800">Worked examples</h2>
+          <h2 className="text-lg font-semibold text-graphite">Worked examples</h2>
           {/* Dropdown selects which solution to show */}
           <select
             value={selectedKey}
             onChange={(e) => setSelectedKey(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-graphite/20 rounded-lg px-3 py-1.5 text-sm bg-white"
           >
             {EXAMPLES.map((ex) => (
               <option key={ex.key} value={ex.key}>
@@ -770,9 +770,9 @@ function LearnTab({
       </section>
 
       {/* 4. Try-it-yourself callout */}
-      <section className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
-        <h2 className="text-base font-semibold text-blue-900 mb-1">Try it yourself</h2>
-        <p className="text-sm text-blue-700 mb-4 max-w-lg mx-auto">
+      <section className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6 text-center">
+        <h2 className="text-base font-semibold text-steel-blue-deep mb-1">Try it yourself</h2>
+        <p className="text-sm text-steel-blue-deep mb-4 max-w-lg mx-auto">
           Load Example A into the builder, then change any nominal, tolerance, or direction and watch
           the worst-case and RSS results update live.
         </p>
@@ -781,7 +781,7 @@ function LearnTab({
             onLoadExample(EXAMPLES[0]);
             onGoToBuilder();
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm py-2.5 px-5 rounded-lg transition-colors"
+          className="bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold text-sm py-2.5 px-5 rounded-lg transition-colors"
         >
           Open Example A in the builder →
         </button>
@@ -801,34 +801,34 @@ function BandComparison({ computed }: { computed: Computed }) {
 
   return (
     <div>
-      <p className="text-xs text-gray-500 mb-3">
+      <p className="text-xs text-graphite/60 mb-3">
         Total tolerance band width for the currently-loaded chain (smaller is tighter):
       </p>
       <div className="space-y-3">
         {/* Worst-case bar */}
         <div>
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-red-600 font-medium">Worst-case band</span>
-            <span className="text-gray-500 font-mono">±{computed.wcTol.toFixed(3)} → {wcWidth.toFixed(3)} mm wide</span>
+            <span className="text-signal-red font-medium">Worst-case band</span>
+            <span className="text-graphite/60 font-mono">±{computed.wcTol.toFixed(3)} → {wcWidth.toFixed(3)} mm wide</span>
           </div>
-          <div className="h-5 bg-gray-100 rounded-md overflow-hidden">
-            <div className="h-full bg-red-400 rounded-md transition-all" style={{ width: `${wcPct}%` }} />
+          <div className="h-5 bg-panel-gray rounded-md overflow-hidden">
+            <div className="h-full bg-signal-red rounded-md transition-all" style={{ width: `${wcPct}%` }} />
           </div>
         </div>
         {/* RSS bar */}
         <div>
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-blue-600 font-medium">RSS band</span>
-            <span className="text-gray-500 font-mono">±{computed.rssTol.toFixed(3)} → {rssWidth.toFixed(3)} mm wide</span>
+            <span className="text-steel-blue font-medium">RSS band</span>
+            <span className="text-graphite/60 font-mono">±{computed.rssTol.toFixed(3)} → {rssWidth.toFixed(3)} mm wide</span>
           </div>
-          <div className="h-5 bg-gray-100 rounded-md overflow-hidden">
-            <div className="h-full bg-blue-400 rounded-md transition-all" style={{ width: `${rssPct}%` }} />
+          <div className="h-5 bg-panel-gray rounded-md overflow-hidden">
+            <div className="h-full bg-steel-blue rounded-md transition-all" style={{ width: `${rssPct}%` }} />
           </div>
         </div>
       </div>
-      <p className="mt-3 text-xs text-gray-500">
+      <p className="mt-3 text-xs text-graphite/60">
         For this chain, RSS is{" "}
-        <strong className="text-blue-600">{reduction.toFixed(0)}% narrower</strong> than worst-case.
+        <strong className="text-steel-blue">{reduction.toFixed(0)}% narrower</strong> than worst-case.
       </p>
     </div>
   );
@@ -848,12 +848,12 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-gray-500">{example.subtitle}</p>
+      <p className="text-sm text-graphite/60">{example.subtitle}</p>
 
       {/* Loop equation */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-        <p className="text-xs text-gray-400 mb-1">Loop equation</p>
-        <p className="text-sm font-mono text-gray-700 leading-relaxed">{example.loopEquation}</p>
+      <div className="bg-instrument-white border border-panel-gray rounded-lg px-4 py-3">
+        <p className="text-xs text-graphite/50 mb-1">Loop equation</p>
+        <p className="text-sm font-mono text-graphite/80 leading-relaxed">{example.loopEquation}</p>
       </div>
 
       {/*
@@ -863,8 +863,8 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
         straight from the shared engine, so the picture can never drift out of
         step with the arithmetic shown below it.
       */}
-      <div className="border border-gray-200 rounded-lg px-4 pt-3 pb-4">
-        <p className="text-xs text-gray-400 mb-2">Dimension chain (to scale)</p>
+      <div className="border border-panel-gray rounded-lg px-4 pt-3 pb-4">
+        <p className="text-xs text-graphite/50 mb-2">Dimension chain (to scale)</p>
         <ExampleChainDiagram
           opener={(() => {
             const o = example.rows.find((r) => r.direction === "opens")!;
@@ -881,7 +881,7 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
       <div className="overflow-x-auto">
         <table className="w-full text-sm min-w-[520px]">
           <thead>
-            <tr className="text-xs text-gray-400 border-b border-gray-100 text-left">
+            <tr className="text-xs text-graphite/50 border-b border-panel-gray text-left">
               <th className="pb-2 pr-3">Dimension</th>
               <th className="pb-2 pr-3 w-20">Nominal</th>
               <th className="pb-2 pr-3 w-16">± Tol</th>
@@ -889,24 +889,24 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
               <th className="pb-2">Why</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-panel-gray">
             {example.rows.map((r, i) => (
               <tr key={i}>
-                <td className="py-2 pr-3 text-gray-700">{r.label}</td>
-                <td className="py-2 pr-3 font-mono text-xs text-gray-600">{r.nominal}</td>
-                <td className="py-2 pr-3 font-mono text-xs text-gray-600">±{r.tol}</td>
+                <td className="py-2 pr-3 text-graphite/80">{r.label}</td>
+                <td className="py-2 pr-3 font-mono text-xs text-graphite/70">{r.nominal}</td>
+                <td className="py-2 pr-3 font-mono text-xs text-graphite/70">±{r.tol}</td>
                 <td className="py-2 pr-3">
                   <span
                     className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      r.direction === "opens"
-                        ? "bg-blue-50 text-blue-700"
-                        : "bg-amber-50 text-amber-700"
-                    }`}
+ r.direction === "opens"
+ ? "bg-steel-blue-tint text-steel-blue-deep"
+ : "bg-signal-amber-tint text-signal-amber-deep"
+ }`}
                   >
                     {r.direction === "opens" ? "Opens (+)" : "Closes (−)"}
                   </span>
                 </td>
-                <td className="py-2 text-xs text-gray-500 leading-relaxed">{r.reason}</td>
+                <td className="py-2 text-xs text-graphite/60 leading-relaxed">{r.reason}</td>
               </tr>
             ))}
           </tbody>
@@ -914,57 +914,57 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
       </div>
 
       {/* Full substitution steps (same engine as the builder) */}
-      <div className="bg-gray-900 rounded-lg p-4 text-gray-100 font-mono text-xs sm:text-sm flex flex-col gap-3">
+      <div className="bg-graphite rounded-lg p-4 text-instrument-white font-mono text-xs sm:text-sm flex flex-col gap-3">
         <div>
-          <p className="text-gray-500 text-xs mb-1">Nominal</p>
-          <p className="text-green-300 break-words">{c.nominalExpr}</p>
+          <p className="text-graphite/60 text-xs mb-1">Nominal</p>
+          <p className="text-phosphor-green-line break-words">{c.nominalExpr}</p>
         </div>
         <div>
-          <p className="text-gray-500 text-xs mb-1">Worst-case tolerance</p>
-          <p className="text-red-300 break-words">{c.wcExpr}</p>
+          <p className="text-graphite/60 text-xs mb-1">Worst-case tolerance</p>
+          <p className="text-signal-red-line break-words">{c.wcExpr}</p>
         </div>
         <div>
-          <p className="text-gray-500 text-xs mb-1">RSS tolerance</p>
-          <p className="text-blue-300 break-words">{c.rssExpr}</p>
+          <p className="text-graphite/60 text-xs mb-1">RSS tolerance</p>
+          <p className="text-steel-blue-tint break-words">{c.rssExpr}</p>
         </div>
       </div>
 
       {/* Ranges */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="rounded-lg border border-red-100 bg-red-50 px-4 py-3">
-          <p className="text-xs text-red-500 font-medium mb-0.5">Worst-case range</p>
-          <p className="text-sm font-bold text-gray-800">
+        <div className="rounded-lg border border-signal-red-line bg-signal-red-tint px-4 py-3">
+          <p className="text-xs text-signal-red font-medium mb-0.5">Worst-case range</p>
+          <p className="text-sm font-bold text-graphite">
             {c.nominal.toFixed(2)} ± {c.wcTol.toFixed(2)} mm
           </p>
-          <p className="text-xs text-gray-500 font-mono">
+          <p className="text-xs text-graphite/60 font-mono">
             {c.wcMin.toFixed(2)} to {c.wcMax.toFixed(2)} mm
           </p>
         </div>
-        <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3">
-          <p className="text-xs text-blue-500 font-medium mb-0.5">RSS range</p>
-          <p className="text-sm font-bold text-gray-800">
+        <div className="rounded-lg border border-steel-blue-line bg-steel-blue-tint px-4 py-3">
+          <p className="text-xs text-steel-blue font-medium mb-0.5">RSS range</p>
+          <p className="text-sm font-bold text-graphite">
             {c.nominal.toFixed(2)} ± {c.rssTol.toFixed(3)} mm
           </p>
-          <p className="text-xs text-gray-500 font-mono">
+          <p className="text-xs text-graphite/60 font-mono">
             {c.rssMin.toFixed(2)} to {c.rssMax.toFixed(2)} mm
           </p>
         </div>
       </div>
 
       {/* Interpretation */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+      <div className="bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-sm text-signal-amber-deep">
         <strong>Interpretation:</strong> {example.interpretation}
       </div>
 
       {/* Cross-links for Example B */}
       {example.key === "B" && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-graphite/50">
           Related tools:{" "}
-          <Link href="/calculators/bolt-torque" className="text-blue-600 hover:underline">
+          <Link href="/calculators/bolt-torque" className="text-steel-blue hover:underline">
             Bolt Torque
           </Link>{" "}
           ·{" "}
-          <Link href="/calculators/base-plate" className="text-blue-600 hover:underline">
+          <Link href="/calculators/base-plate" className="text-steel-blue hover:underline">
             Base Plate Bolts
           </Link>
         </p>
@@ -973,7 +973,7 @@ function WorkedExample({ example, onLoad }: { example: Example; onLoad: () => vo
       <div>
         <button
           onClick={onLoad}
-          className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+          className="text-sm text-steel-blue hover:text-steel-blue-deep font-medium transition-colors"
         >
           Load this example into the builder →
         </button>
@@ -999,10 +999,10 @@ function TabButton({
     <button
       onClick={onClick}
       className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
-        active
-          ? "border-blue-600 text-blue-600"
-          : "border-transparent text-gray-500 hover:text-gray-700"
-      }`}
+ active
+ ? "border-steel-blue-deep text-steel-blue"
+ : "border-transparent text-graphite/60 hover:text-graphite/80"
+ }`}
     >
       {children}
     </button>

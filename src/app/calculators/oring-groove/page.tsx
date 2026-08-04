@@ -94,16 +94,16 @@ export default function OringGrooveSizingPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Link href="/" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6">
+      <Link href="/" className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6">
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">O-Ring Groove Sizing Calculator</h1>
-      <p className="text-sm text-gray-500 mb-1">
+      <h1 className="text-2xl font-bold text-graphite mb-1">O-Ring Groove Sizing Calculator</h1>
+      <p className="text-sm text-graphite/60 mb-1">
         Works backwards from a target squeeze to give you the required groove depth and width.
       </p>
-      <p className="text-xs text-gray-400 mb-6">
-        Formula: <span className="font-mono bg-gray-100 px-1 rounded">G = W × (1 − squeeze / 100)</span>
+      <p className="text-xs text-graphite/50 mb-6">
+        Formula: <span className="font-mono bg-panel-gray px-1 rounded">G = W × (1 − squeeze / 100)</span>
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -112,8 +112,8 @@ export default function OringGrooveSizingPage() {
         <div className="flex flex-col gap-4">
 
           {/* Seal type */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-700 mb-3">Seal Type</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <p className="text-sm font-semibold text-graphite/80 mb-3">Seal Type</p>
             <div className="flex gap-5">
               {(["static", "dynamic"] as SealType[]).map(t => (
                 <label key={t} className="flex items-center gap-2 cursor-pointer select-none">
@@ -121,21 +121,21 @@ export default function OringGrooveSizingPage() {
                     type="radio"
                     checked={sealType === t}
                     onChange={() => handleSealTypeChange(t)}
-                    className="accent-blue-600"
+                    className="accent-steel-blue"
                   />
-                  <span className="text-sm capitalize text-gray-700">{t}</span>
+                  <span className="text-sm capitalize text-graphite/80">{t}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* O-ring cross-section W */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
-            <p className="text-sm font-semibold text-gray-700">O-Ring Cross-Section Diameter (W)</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5 flex flex-col gap-3">
+            <p className="text-sm font-semibold text-graphite/80">O-Ring Cross-Section Diameter (W)</p>
             <select
               value={wSelection}
               onChange={e => { setWSelection(e.target.value); setErrors({}); setResult(null); }}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+              className="w-full border border-graphite/20 rounded-lg px-3 py-2 text-sm bg-white"
             >
               {AS568_CROSS_SECTIONS.map(s => (
                 <option key={s.w} value={String(s.w)}>{s.label}</option>
@@ -149,67 +149,67 @@ export default function OringGrooveSizingPage() {
                   value={wCustom}
                   onChange={e => { setWCustom(e.target.value); setErrors({}); setResult(null); }}
                   placeholder="e.g. 4.0"
-                  className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
-                    [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                    ${errors.w ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                  className={`flex-1 border rounded-lg px-3 py-2 text-sm
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.w ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
                 />
-                <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">mm</span>
+                <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
               </div>
             )}
-            {errors.w && <p className="text-xs text-red-600">{errors.w}</p>}
+            {errors.w && <p className="text-xs text-signal-red">{errors.w}</p>}
           </div>
 
           {/* Target squeeze % */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-700 mb-2">Target Squeeze</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <p className="text-sm font-semibold text-graphite/80 mb-2">Target Squeeze</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
                 value={targetSqueeze}
                 onChange={e => { setTargetSqueeze(e.target.value); setResult(null); }}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.sq ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.sq ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">%</span>
+              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">%</span>
             </div>
-            {errors.sq && <p className="text-xs text-red-600">{errors.sq}</p>}
-            <p className="mt-1 text-xs text-gray-400">
+            {errors.sq && <p className="text-xs text-signal-red">{errors.sq}</p>}
+            <p className="mt-1 text-xs text-graphite/50">
               Recommended: 15–30% (static) · 10–20% (dynamic)
             </p>
           </div>
 
           {/* Width multiplier */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-700 mb-2">Groove Width Multiplier</p>
+          <div className="bg-white rounded-lg border border-panel-gray p-5">
+            <p className="text-sm font-semibold text-graphite/80 mb-2">Groove Width Multiplier</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
                 value={widthMultiplier}
                 onChange={e => { setWidthMultiplier(e.target.value); setResult(null); }}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400
-                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                  ${errors.mult ? "border-red-400 bg-red-50" : "border-gray-300"}`}
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+ [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+ ${errors.mult ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-md px-3 py-2">× W</span>
+              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">× W</span>
             </div>
-            {errors.mult && <p className="text-xs text-red-600">{errors.mult}</p>}
-            <p className="mt-1 text-xs text-gray-400">
+            {errors.mult && <p className="text-xs text-signal-red">{errors.mult}</p>}
+            <p className="mt-1 text-xs text-graphite/50">
               Standard range: 1.3 × W (tight) to 1.6 × W (relaxed). Default 1.5.
             </p>
           </div>
 
           <button
             onClick={handleCalculate}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
           >
             Calculate Groove Dimensions
           </button>
 
           {/* Result card */}
           {result && (
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
-              <h2 className="text-sm font-semibold text-blue-900 mb-4">Required Groove Dimensions</h2>
+            <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5">
+              <h2 className="text-sm font-semibold text-steel-blue-deep mb-4">Required Groove Dimensions</h2>
               <div className="flex flex-col gap-3">
                 <DimResult
                   label="Groove depth (G)"
@@ -224,7 +224,7 @@ export default function OringGrooveSizingPage() {
                   unit="mm"
                   formula={`${widthMultiplier} × ${W_num}`}
                 />
-                <div className="text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2">
+                <div className="text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2">
                   Width range: {result.widthMin.toFixed(2)} mm (1.3×W) — {result.widthMax.toFixed(2)} mm (1.6×W)
                 </div>
               </div>
@@ -233,10 +233,10 @@ export default function OringGrooveSizingPage() {
         </div>
 
         {/* ── RIGHT: SVG diagram ── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">Cross-Section Preview</h2>
+        <div className="bg-white rounded-lg border border-panel-gray p-4 flex flex-col">
+          <h2 className="text-sm font-semibold text-graphite/80 mb-3">Cross-Section Preview</h2>
           <OringCrossSectionDiagram W={svgW} G={svgG} status={result ? "green" : null} />
-          <p className="mt-2 text-xs text-gray-400 text-center">
+          <p className="mt-2 text-xs text-graphite/50 text-center">
             Updates with current W and target squeeze — calculate to confirm.
           </p>
         </div>
@@ -250,11 +250,11 @@ export default function OringGrooveSizingPage() {
         (falling back to the target-squeeze estimate before Calculate is
         pressed), and target squeeze so both panels track the current inputs.
       */}
-      <div className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-1">
+      <div className="mt-6 bg-white rounded-lg border border-panel-gray p-4">
+        <h2 className="text-sm font-semibold text-graphite/80 mb-1">
           Why groove depth matters
         </h2>
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-graphite/60 mb-3">
           The same O-ring in a groove that&#39;s too deep, and in one sized to your target squeeze.
         </p>
         <OringGrooveComparisonDiagram
@@ -265,7 +265,7 @@ export default function OringGrooveSizingPage() {
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+      <div className="mt-6 bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3 text-xs text-signal-amber-deep">
         <strong>Straight-run estimate only.</strong> This formula applies to a straight seal run
         (face seal or bore seal on a flat surface). Rectangular groove corners cannot be filled the
         same way — verify corner geometry and O-ring stretch/compression separately. Final groove
@@ -284,13 +284,13 @@ function DimResult({
   label: string; value: string; unit: string; formula: string; primary?: boolean;
 }) {
   return (
-    <div className={`rounded-lg border px-4 py-3 ${primary ? "bg-white border-blue-200" : "bg-blue-50/50 border-blue-100"}`}>
-      <p className="text-xs text-blue-600 font-medium mb-0.5">{label}</p>
+    <div className={`rounded-lg border px-4 py-3 ${primary ? "bg-white border-steel-blue-line" : "bg-steel-blue-tint/50 border-steel-blue-line"}`}>
+      <p className="text-xs text-steel-blue font-medium mb-0.5">{label}</p>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-xl font-bold text-gray-800">{value}</span>
-        <span className="text-sm text-gray-500">{unit}</span>
+        <span className="text-xl font-bold text-graphite">{value}</span>
+        <span className="text-sm text-graphite/60">{unit}</span>
       </div>
-      <p className="text-xs text-gray-400 font-mono mt-0.5">{formula}</p>
+      <p className="text-xs text-graphite/50 font-mono mt-0.5">{formula}</p>
     </div>
   );
 }

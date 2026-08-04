@@ -74,7 +74,7 @@ function num(s: string): number | null {
 
 /** Shared input styling, matching the calculators elsewhere in the app. */
 const INPUT_CLASS =
-  "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400";
+  "w-full border border-graphite/20 rounded-lg px-3 py-2 text-sm  ";
 
 function Field({
   label,
@@ -87,9 +87,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-xs font-medium text-gray-600 mb-1">{label}</span>
+      <span className="block text-xs font-medium text-graphite/70 mb-1">{label}</span>
       {children}
-      {hint && <span className="block text-xs text-gray-400 mt-1">{hint}</span>}
+      {hint && <span className="block text-xs text-graphite/50 mt-1">{hint}</span>}
     </label>
   );
 }
@@ -97,9 +97,9 @@ function Field({
 /** Amber "this is a rule of thumb" strip, used under several panels. */
 function Caveat({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-2.5 items-start bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+    <div className="flex gap-2.5 items-start bg-signal-amber-tint border border-signal-amber-line rounded-lg px-4 py-3">
       <span className="text-base leading-none mt-0.5">⚠️</span>
-      <p className="text-xs text-amber-900 leading-relaxed">{children}</p>
+      <p className="text-xs text-signal-amber-deep leading-relaxed">{children}</p>
     </div>
   );
 }
@@ -115,18 +115,18 @@ export default function MechanismsReferencePage() {
     <div className="max-w-4xl mx-auto">
       <Link
         href="/"
-        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6"
+        className="inline-flex items-center text-sm text-steel-blue hover:text-steel-blue-deep mb-6"
       >
         ← Back to all calculators
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Mechanisms &amp; Design Reference</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <h1 className="text-2xl font-bold text-graphite mb-1">Mechanisms &amp; Design Reference</h1>
+      <p className="text-sm text-graphite/60 mb-6">
         Motion building blocks, thread and finish standards, and the design conventions
         that decide whether a part can actually be made and assembled.
       </p>
 
-      <div className="flex gap-1 mb-6 border-b border-gray-200 overflow-x-auto" role="tablist">
+      <div className="flex gap-1 mb-6 border-b border-panel-gray overflow-x-auto" role="tablist">
         {TABS.map(t => (
           <TabButton key={t.key} active={tab === t.key} onClick={() => setTab(t.key)}>
             <span className="mr-1.5">{t.icon}</span>
@@ -154,12 +154,12 @@ function OverviewPanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">📚</span>
-            <h2 className="text-lg font-semibold text-gray-800">Mechanisms Library</h2>
+            <h2 className="text-lg font-semibold text-graphite">Mechanisms Library</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">{MECHANISMS_INTRO}</p>
+          <p className="text-sm text-graphite/70 leading-relaxed">{MECHANISMS_INTRO}</p>
         </div>
       </section>
 
@@ -174,12 +174,12 @@ function OverviewPanel() {
           {TABS.filter(t => t.key !== "overview").map(t => (
             <div
               key={t.key}
-              className="bg-white rounded-lg border border-gray-200 px-4 py-3 flex items-start gap-2.5"
+              className="bg-white rounded-lg border border-panel-gray px-4 py-3 flex items-start gap-2.5"
             >
               <span className="text-base leading-none mt-0.5">{t.icon}</span>
               <div>
-                <div className="text-sm font-medium text-gray-800">{t.full}</div>
-                <div className="text-xs text-gray-500 leading-snug">{TAB_BLURBS[t.key]}</div>
+                <div className="text-sm font-medium text-graphite">{t.full}</div>
+                <div className="text-xs text-graphite/60 leading-snug">{TAB_BLURBS[t.key]}</div>
               </div>
             </div>
           ))}
@@ -244,12 +244,12 @@ function GearTrainPanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">⚙️</span>
-            <h2 className="text-lg font-semibold text-gray-800">Gear Train Ratio</h2>
+            <h2 className="text-lg font-semibold text-graphite">Gear Train Ratio</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             A gear pair trades speed for torque in exact proportion. Reduce the speed by
             3× and you multiply the torque by 3× — the power passing through is
             unchanged. Chaining stages multiplies their ratios, which is how a small
@@ -261,7 +261,7 @@ function GearTrainPanel() {
       {/* ── Inputs ── */}
       <section>
         <SectionHeading>Train</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-5 flex flex-col gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Input speed (RPM)">
               <input
@@ -280,7 +280,7 @@ function GearTrainPanel() {
           <div className="flex flex-col gap-3">
             {parsed.map((s, i) => (
               <div key={s.id} className="flex items-end gap-3 flex-wrap">
-                <span className="text-xs font-semibold text-gray-400 w-14 pb-2.5">
+                <span className="text-xs font-semibold text-graphite/50 w-14 pb-2.5">
                   Stage {i + 1}
                 </span>
                 <div className="w-28">
@@ -301,13 +301,13 @@ function GearTrainPanel() {
                     />
                   </Field>
                 </div>
-                <span className="text-sm font-mono text-gray-600 pb-2.5">
+                <span className="text-sm font-mono text-graphite/70 pb-2.5">
                   {s.ratio !== null ? `${s.ratio.toFixed(3)} : 1` : "—"}
                 </span>
                 {stages.length > 1 && (
                   <button
                     onClick={() => removeStage(s.id)}
-                    className="text-xs text-gray-400 hover:text-red-600 pb-2.5 transition-colors"
+                    className="text-xs text-graphite/50 hover:text-signal-red pb-2.5 transition-colors"
                     aria-label={`Remove stage ${i + 1}`}
                   >
                     remove
@@ -319,7 +319,7 @@ function GearTrainPanel() {
 
           <button
             onClick={addStage}
-            className="self-start text-xs bg-gray-50 border border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-gray-600 hover:text-blue-700 px-3 py-1.5 rounded-lg transition-colors"
+            className="self-start text-xs bg-instrument-white border border-panel-gray hover:border-steel-blue-line hover:bg-steel-blue-tint text-graphite/70 hover:text-steel-blue-deep px-3 py-1.5 rounded-lg transition-colors"
           >
             + Add Stage
           </button>
@@ -330,7 +330,7 @@ function GearTrainPanel() {
       {allOk && overall !== null && (
         <section>
           <SectionHeading>Result</SectionHeading>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+          <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
               <Stat label="Overall ratio" value={`${overall.toFixed(3)} : 1`} big />
               <Stat
@@ -344,7 +344,7 @@ function GearTrainPanel() {
             </div>
 
             {/* Show the working, the way the tolerance stackup page does */}
-            <div className="bg-white rounded-lg border border-blue-100 px-4 py-3 text-xs font-mono text-gray-600 leading-relaxed">
+            <div className="bg-white rounded-lg border border-steel-blue-line px-4 py-3 text-xs font-mono text-graphite/70 leading-relaxed">
               <div>
                 overall ratio ={" "}
                 {parsed.map(p => `(${p.n2v}/${p.n1v})`).join(" × ")} = {overall.toFixed(4)}
@@ -361,7 +361,7 @@ function GearTrainPanel() {
               )}
             </div>
 
-            <p className="text-xs text-blue-800 mt-3">
+            <p className="text-xs text-steel-blue-deep mt-3">
               {overall > 1
                 ? `Reduction — output turns ${overall.toFixed(2)}× slower and ${overall.toFixed(2)}× harder than the input.`
                 : overall < 1
@@ -375,12 +375,12 @@ function GearTrainPanel() {
       {/* ── Diagrams, one per stage ── */}
       <section>
         <SectionHeading>Train layout</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           <div className="flex flex-wrap items-center gap-2">
             {parsed.map((s, i) => (
               <div key={s.id} className="flex items-center gap-2">
                 {i > 0 && (
-                  <div className="flex flex-col items-center text-gray-400 shrink-0 px-1">
+                  <div className="flex flex-col items-center text-graphite/50 shrink-0 px-1">
                     <span className="text-lg leading-none">⇢</span>
                     <span className="text-[9px] leading-tight text-center">
                       shared
@@ -400,7 +400,7 @@ function GearTrainPanel() {
                       driverClockwise={i % 2 === 0}
                     />
                   ) : (
-                    <div className="h-32 flex items-center justify-center text-xs text-gray-400 border border-dashed border-gray-200 rounded-lg">
+                    <div className="h-32 flex items-center justify-center text-xs text-graphite/50 border border-dashed border-panel-gray rounded-lg">
                       Enter tooth counts
                     </div>
                   )}
@@ -408,7 +408,7 @@ function GearTrainPanel() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100 leading-relaxed">
+          <p className="text-xs text-graphite/60 mt-3 pt-3 border-t border-panel-gray leading-relaxed">
             Pitch radius is drawn proportional to tooth count. Each stage&apos;s driven gear
             shares a shaft with the next stage&apos;s driver, so its speed carries forward
             while the ratios multiply. Note the arrows: an external mesh reverses
@@ -429,9 +429,9 @@ function GearTrainPanel() {
 
 function Stat({ label, value, big }: { label: string; value: string; big?: boolean }) {
   return (
-    <div className="bg-white rounded-lg border border-blue-100 px-4 py-3 text-center">
-      <div className="text-xs text-gray-400 mb-0.5">{label}</div>
-      <div className={`font-bold text-blue-700 ${big ? "text-xl" : "text-base"}`}>{value}</div>
+    <div className="bg-white rounded-lg border border-steel-blue-line px-4 py-3 text-center">
+      <div className="text-xs text-graphite/50 mb-0.5">{label}</div>
+      <div className={`font-bold text-steel-blue-deep ${big ? "text-xl" : "text-base"}`}>{value}</div>
     </div>
   );
 }
@@ -530,12 +530,12 @@ function FourBarPanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">🔗</span>
-            <h2 className="text-lg font-semibold text-gray-800">Four-Bar Grashof Condition</h2>
+            <h2 className="text-lg font-semibold text-graphite">Four-Bar Grashof Condition</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             The Grashof condition answers one practical question before you build
             anything: can a motor spin this linkage continuously, or will it only rock?
             Add the shortest and longest links together. If that total is less than the
@@ -546,7 +546,7 @@ function FourBarPanel() {
 
       <section>
         <SectionHeading>Link lengths</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Field label="Link 1 — ground" hint="fixed to the frame">
               <input type="number" inputMode="decimal" value={l1}
@@ -565,7 +565,7 @@ function FourBarPanel() {
                      onChange={e => setL4(e.target.value)} className={INPUT_CLASS} />
             </Field>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="text-xs text-graphite/50 mt-3">
             Enter them in any order — S, L, P and Q are identified automatically. Units
             just have to be consistent; the test is a comparison, not a dimension.
           </p>
@@ -576,34 +576,34 @@ function FourBarPanel() {
         <section>
           <SectionHeading>Classification</SectionHeading>
           <div
-            className={`rounded-xl border p-5 ${
-              copy.driveable
-                ? "bg-emerald-50 border-emerald-200"
-                : result.cls === "change-point"
-                  ? "bg-amber-50 border-amber-200"
-                  : "bg-orange-50 border-orange-200"
-            }`}
+            className={`rounded-lg border p-5 ${
+ copy.driveable
+ ? "bg-phosphor-green-tint border-phosphor-green-line"
+ : result.cls === "change-point"
+ ? "bg-signal-amber-tint border-signal-amber-line"
+ : "bg-signal-amber-tint border-signal-amber-line"
+ }`}
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg leading-none">{copy.driveable ? "✓" : "⚠️"}</span>
               <h3
                 className={`text-base font-bold ${
-                  copy.driveable ? "text-emerald-800" : "text-orange-800"
-                }`}
+ copy.driveable ? "text-phosphor-green-deep" : "text-signal-amber-deep"
+ }`}
               >
                 {copy.title}
               </h3>
             </div>
             <p
               className={`text-sm leading-relaxed mb-3 ${
-                copy.driveable ? "text-emerald-900" : "text-orange-900"
-              }`}
+ copy.driveable ? "text-phosphor-green-deep" : "text-signal-amber-deep"
+ }`}
             >
               {copy.plain}
             </p>
 
             {/* The test itself, spelled out */}
-            <div className="bg-white/70 rounded-lg border border-white px-4 py-3 text-xs font-mono text-gray-700 leading-relaxed">
+            <div className="bg-white/70 rounded-lg border border-white px-4 py-3 text-xs font-mono text-graphite/80 leading-relaxed">
               <div>S = {result.S} (shortest, the {result.shortestRole} link)</div>
               <div>L = {result.L} (longest)</div>
               <div>P = {result.P}, Q = {result.Q} (the remaining two)</div>
@@ -614,7 +614,7 @@ function FourBarPanel() {
             </div>
 
             {result.S === result.P && (
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-graphite/60 mt-2">
                 Note: two links tie for shortest. The sub-classification uses the first of
                 them, but a tie means the mechanism is close to a change-point — treat the
                 result as borderline.
@@ -626,11 +626,11 @@ function FourBarPanel() {
 
       <section>
         <SectionHeading>Linkage</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           {ok ? (
             <FourBarDiagram l1={g} l2={a} l3={b} l4={c} />
           ) : (
-            <div className="h-40 flex items-center justify-center text-sm text-gray-400">
+            <div className="h-40 flex items-center justify-center text-sm text-graphite/50">
               Enter four positive link lengths.
             </div>
           )}
@@ -680,12 +680,12 @@ function ThreadsPanel() {
     <div className="flex flex-col gap-8">
       {/* ── Metric thread table ── */}
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-5 mb-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">🔩</span>
-            <h2 className="text-lg font-semibold text-gray-800">Metric Thread Quick Reference</h2>
+            <h2 className="text-lg font-semibold text-graphite">Metric Thread Quick Reference</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             ISO metric coarse series — the sizes you'll specify most of the time. Proof
             load is the axial load a bolt of that class can carry without taking any
             permanent set; design working loads sit well below it.
@@ -694,14 +694,14 @@ function ThreadsPanel() {
 
         <DataTable
           columns={[
-            { header: "Size", className: "font-semibold text-gray-800" },
-            { header: "Major ⌀ (mm)", className: "font-mono text-gray-700" },
-            { header: "Coarse pitch (mm)", className: "font-mono text-gray-700" },
-            { header: "Tap drill (mm)", className: "font-mono text-blue-700 font-medium" },
-            { header: "Stress area (mm²)", className: "font-mono text-gray-500" },
-            { header: "8.8 (kN)", className: "font-mono text-gray-700" },
-            { header: "10.9 (kN)", className: "font-mono text-gray-700" },
-            { header: "12.9 (kN)", className: "font-mono text-gray-700" },
+            { header: "Size", className: "font-semibold text-graphite" },
+            { header: "Major ⌀ (mm)", className: "font-mono text-graphite/80" },
+            { header: "Coarse pitch (mm)", className: "font-mono text-graphite/80" },
+            { header: "Tap drill (mm)", className: "font-mono text-steel-blue-deep font-medium" },
+            { header: "Stress area (mm²)", className: "font-mono text-graphite/60" },
+            { header: "8.8 (kN)", className: "font-mono text-graphite/80" },
+            { header: "10.9 (kN)", className: "font-mono text-graphite/80" },
+            { header: "12.9 (kN)", className: "font-mono text-graphite/80" },
           ]}
           rows={METRIC_THREADS.map(t => ({
             key: t.size,
@@ -717,13 +717,13 @@ function ThreadsPanel() {
             ],
           }))}
         />
-        <p className="text-xs text-gray-500 mt-2 leading-relaxed">{THREAD_TABLE_NOTE}</p>
+        <p className="text-xs text-graphite/60 mt-2 leading-relaxed">{THREAD_TABLE_NOTE}</p>
       </section>
 
       {/* ── Engagement calculator ── */}
       <section>
         <SectionHeading>Minimum Thread Engagement</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Field label="Bolt diameter (mm)">
               <input type="number" inputMode="decimal" value={dia}
@@ -754,7 +754,7 @@ function ThreadsPanel() {
 
       {le !== null && (
         <section>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+          <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               <Stat label="Recommended minimum engagement" value={`${le.toFixed(1)} mm`} big />
               <Stat
@@ -762,21 +762,21 @@ function ThreadsPanel() {
                 value={`${(d! * rule.min).toFixed(1)} – ${(d! * rule.max).toFixed(1)} mm`}
               />
             </div>
-            <div className="bg-white rounded-lg border border-blue-100 px-4 py-3 text-xs font-mono text-gray-600">
+            <div className="bg-white rounded-lg border border-steel-blue-line px-4 py-3 text-xs font-mono text-graphite/70">
               Lₑ = {d} mm × {mult.toFixed(2)} = {le.toFixed(2)} mm
-              <span className="text-gray-400">
+              <span className="text-graphite/50">
                 {"  "}({rule.min}–{rule.max}× d for {rule.short}
                 {cls === "8.8" ? ", low end for class 8.8" : cls === "10.9" ? ", mid for class 10.9" : ", top end for class 12.9"})
               </span>
             </div>
-            <p className="text-xs text-blue-900 mt-3 leading-relaxed">{rule.reasoning}</p>
+            <p className="text-xs text-steel-blue-deep mt-3 leading-relaxed">{rule.reasoning}</p>
           </div>
         </section>
       )}
 
       <section>
         <SectionHeading>Why the material matters</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           {d !== null && d > 0 ? (
             <ThreadEngagementDiagram
               diameter={d}
@@ -786,7 +786,7 @@ function ThreadsPanel() {
               highlight={material === "steel" ? "steel" : "weak"}
             />
           ) : (
-            <div className="h-40 flex items-center justify-center text-sm text-gray-400">
+            <div className="h-40 flex items-center justify-center text-sm text-graphite/50">
               Enter a bolt diameter.
             </div>
           )}
@@ -813,12 +813,12 @@ function SurfacePanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">🪞</span>
-            <h2 className="text-lg font-semibold text-gray-800">Surface Finish (Ra)</h2>
+            <h2 className="text-lg font-semibold text-graphite">Surface Finish (Ra)</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             Ra is the arithmetic mean deviation of the surface from its mean line — one
             number summarising how rough it is. Specifying a finer finish than the
             function needs is one of the easiest ways to make a part expensive, since each
@@ -831,15 +831,15 @@ function SurfacePanel() {
         <SectionHeading>Reference</SectionHeading>
         <DataTable
           columns={[
-            { header: "Ra (µm)", className: "font-mono font-semibold text-gray-800" },
-            { header: "Ra (µin)", className: "font-mono text-gray-500" },
-            { header: "Typical process", className: "text-gray-700" },
-            { header: "Typical application", className: "text-gray-600 text-xs leading-relaxed" },
+            { header: "Ra (µm)", className: "font-mono font-semibold text-graphite" },
+            { header: "Ra (µin)", className: "font-mono text-graphite/60" },
+            { header: "Typical process", className: "text-graphite/80" },
+            { header: "Typical application", className: "text-graphite/70 text-xs leading-relaxed" },
           ]}
           rows={SURFACE_FINISHES.map(f => ({
             key: f.raUm,
             cells: [
-              <span key="ra" className={f.sealRelevant ? "text-emerald-700" : undefined}>
+              <span key="ra" className={f.sealRelevant ? "text-phosphor-green-deep" : undefined}>
                 {f.raUm}
               </span>,
               f.raUin,
@@ -852,17 +852,17 @@ function SurfacePanel() {
 
       {/* Tie back to the O-ring calculators, which is where this actually bites */}
       <section>
-        <div className="flex gap-2.5 items-start bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
+        <div className="flex gap-2.5 items-start bg-phosphor-green-tint border border-phosphor-green-line rounded-lg px-4 py-3">
           <span className="text-base leading-none mt-0.5">💧</span>
           <div>
-            <p className="text-xs text-emerald-900 leading-relaxed">{SURFACE_SEAL_CALLOUT}</p>
+            <p className="text-xs text-phosphor-green-deep leading-relaxed">{SURFACE_SEAL_CALLOUT}</p>
             <div className="flex gap-3 mt-2">
               <Link href="/calculators/oring-squeeze"
-                    className="text-xs font-medium text-emerald-700 hover:text-emerald-900 underline">
+                    className="text-xs font-medium text-phosphor-green-deep hover:text-phosphor-green-deep underline">
                 O-Ring Squeeze →
               </Link>
               <Link href="/calculators/oring-groove"
-                    className="text-xs font-medium text-emerald-700 hover:text-emerald-900 underline">
+                    className="text-xs font-medium text-phosphor-green-deep hover:text-phosphor-green-deep underline">
                 O-Ring Groove Sizing →
               </Link>
             </div>
@@ -872,7 +872,7 @@ function SurfacePanel() {
 
       <section>
         <SectionHeading>What the numbers look like</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           <SurfaceProfileDiagram />
         </div>
       </section>
@@ -888,12 +888,12 @@ function WeldPanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">🔥</span>
-            <h2 className="text-lg font-semibold text-gray-800">Reading Weld Symbols</h2>
+            <h2 className="text-lg font-semibold text-graphite">Reading Weld Symbols</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             A weld symbol packs the joint type, which side it goes on, and how big it is
             into one mark on a drawing. This covers the handful you&apos;ll actually meet
             on a fabrication drawing — not the full AWS A2.4 library, which runs to
@@ -904,9 +904,9 @@ function WeldPanel() {
 
       <section>
         <SectionHeading>Anatomy of a weld symbol</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           <WeldSymbolDiagram />
-          <p className="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100 leading-relaxed">
+          <p className="text-xs text-graphite/60 mt-3 pt-3 border-t border-panel-gray leading-relaxed">
             The side convention is the part people get backwards: a symbol drawn{" "}
             <strong>below</strong> the reference line means the weld goes on the side the
             arrow touches. Above the line means the far side. Symbols on both sides, as
@@ -919,9 +919,9 @@ function WeldPanel() {
         <SectionHeading>Symbol reference</SectionHeading>
         <DataTable
           columns={[
-            { header: "Element", className: "font-medium text-gray-800", headerClassName: "w-40" },
-            { header: "What it looks like", className: "text-gray-600 text-xs" },
-            { header: "What it means", className: "text-gray-600 text-xs leading-relaxed" },
+            { header: "Element", className: "font-medium text-graphite", headerClassName: "w-40" },
+            { header: "What it looks like", className: "text-graphite/70 text-xs" },
+            { header: "What it means", className: "text-graphite/70 text-xs leading-relaxed" },
           ]}
           rows={WELD_SYMBOLS.map(w => ({
             key: w.name,
@@ -948,12 +948,12 @@ function AssemblyPanel() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-lg border border-panel-gray p-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl leading-none">🧰</span>
-            <h2 className="text-lg font-semibold text-gray-800">Assembly DFM Checklist</h2>
+            <h2 className="text-lg font-semibold text-graphite">Assembly DFM Checklist</h2>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-graphite/70 leading-relaxed">
             Design for assembly is mostly about removing chances to get it wrong. Run this
             before releasing an assembly — most of the findings cost nothing to fix at
             design stage and a great deal to fix once tooling exists.
@@ -963,7 +963,7 @@ function AssemblyPanel() {
 
       <section>
         <SectionHeading>Designing out the wrong orientation</SectionHeading>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-lg border border-panel-gray p-4">
           <OrientationDiagram />
         </div>
       </section>
@@ -972,22 +972,22 @@ function AssemblyPanel() {
         <SectionHeading>Checklist</SectionHeading>
         <div className="flex flex-col gap-4">
           {ASSEMBLY_CHECKLIST.map(group => (
-            <div key={group.title} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+            <div key={group.title} className="bg-white rounded-lg border border-panel-gray p-5">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-base leading-none">{group.icon}</span>
-                <h3 className="text-sm font-semibold text-gray-800">{group.title}</h3>
+                <h3 className="text-sm font-semibold text-graphite">{group.title}</h3>
               </div>
-              <p className="text-xs text-gray-500 leading-relaxed mb-3">{group.rationale}</p>
+              <p className="text-xs text-graphite/60 leading-relaxed mb-3">{group.rationale}</p>
               <ul className="flex flex-col gap-2">
                 {group.items.map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     {/* Decorative box — this is a printed checklist, not a
                         stateful form, so it isn't an interactive checkbox. */}
                     <span
-                      className="mt-0.5 shrink-0 w-3.5 h-3.5 rounded border border-gray-300 bg-gray-50"
+                      className="mt-0.5 shrink-0 w-3.5 h-3.5 rounded border border-graphite/20 bg-instrument-white"
                       aria-hidden="true"
                     />
-                    <span className="text-xs text-gray-700 leading-relaxed">{item}</span>
+                    <span className="text-xs text-graphite/80 leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
