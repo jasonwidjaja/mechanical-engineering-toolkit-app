@@ -30,6 +30,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Gauge from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -52,6 +53,9 @@ export default function BasePlatePage() {
   const [N,   setN]   = useState("4");     // number of bolts (integer)
   const [R,   setR]   = useState("");      // bolt circle radius, mm
   const [P,   setP]   = useState("0");     // axial/compressive load, N
+  // Optional. Without a proof load there is no denominator for a utilisation
+  // figure, so the dial below stays hidden until this is filled in.
+  const [Fproof, setFproof] = useState(""); // bolt proof load, N
 
   // ---- results / error ----
   const [result,    setResult]    = useState<CalcResult | null>(null);
@@ -88,6 +92,18 @@ export default function BasePlatePage() {
 
   // Number of bolts integer options 2–24
   const boltOptions = Array.from({ length: 23 }, (_, i) => i + 2);
+
+  /**
+   * Net tension as a percentage of bolt proof load, or null when no proof load
+   * has been given. A bolt already in net compression reads 0% rather than a
+   * negative utilisation, which would put the needle below the end stop and
+   * mean nothing.
+   */
+  const proofNum = parseFloat(Fproof);
+  const utilisation =
+    result && Number.isFinite(proofNum) && proofNum > 0
+      ? (Math.max(result.net_max, 0) / proofNum) * 100
+      : null;
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -147,6 +163,16 @@ export default function BasePlatePage() {
             onChange={v => { setP(v); setResult(null); }}
             placeholder="0"
           />
+
+          {/* F_proof — optional reference for the utilisation dial */}
+          <InputRow
+            label="F_proof — Bolt proof load (optional)"
+            unit="N"
+            hint="From the fastener spec. Enter it to see bolt utilisation on a dial. M12 property class 8.8 is roughly 43 500 N."
+            value={Fproof}
+            onChange={v => { setFproof(v); setResult(null); }}
+            placeholder="—"
+          />
         </div>
       </div>
 
@@ -173,11 +199,11 @@ export default function BasePlatePage() {
 
       {/* ---- Results card ---- */}
       {result && (
-        <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5 mb-4">
-          <h2 className="text-base font-semibold text-steel-blue-deep mb-3">Results</h2>
+        <div className="panel mb-4 p-5">
+          <h2 className="label-caps mb-4">Results</h2>
 
           {/* Formula recap */}
-          <p className="text-xs text-steel-blue-deep mb-3 font-mono">
+          <p className="subpanel mb-4 px-3 py-2 font-mono text-xs text-graphite/70">
             F_moment_max = 2M / (N × R) = 2 × {result.M.toFixed(0)} / ({result.N} × {result.R_m.toFixed(4)})
           </p>
 
@@ -194,46 +220,87 @@ export default function BasePlatePage() {
               color="text-phosphor-green-deep"
             />
 
-            <div className="border-t border-steel-blue-line my-1" />
+            <div className="my-1 border-t border-panel-gray" />
 
-            {result.net_max > 0 ? (
-              <div className="flex items-start justify-between">
-                <span className="text-sm text-signal-red-deep font-semibold flex-1">
-                  Net max bolt tension
+            <div className="flex items-start justify-between">
+              <span
+                className={`flex-1 text-sm font-semibold ${
+                  result.net_max > 0 ? "text-signal-red-deep" : "text-phosphor-green-deep"
+                }`}
+              >
+                Net max bolt tension
+              </span>
+              <div className="text-right">
+                <span
+                  className={`readout text-lg ${
+                    result.net_max > 0 ? "text-signal-red-deep" : "text-phosphor-green-deep"
+                  }`}
+                >
+                  {result.net_max.toFixed(1)} N
                 </span>
-                <div className="text-right">
-                  <span className="text-lg font-bold text-signal-red-deep">
-                    {result.net_max.toFixed(1)} N
-                  </span>
-                  <span className="block text-xs text-signal-red">
-                    ({(result.net_max / 1000).toFixed(3)} kN) — bolt in TENSION
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-start justify-between">
-                <span className="text-sm text-phosphor-green-deep font-semibold flex-1">
-                  Net max bolt tension
+                <span
+                  className={`block text-xs ${
+                    result.net_max > 0 ? "text-signal-red" : "text-phosphor-green"
+                  }`}
+                >
+                  {result.net_max > 0
+                    ? `(${(result.net_max / 1000).toFixed(3)} kN) — bolt in tension`
+                    : "Weight dominates. All bolts in compression, no net tensile demand."}
                 </span>
-                <div className="text-right">
-                  <span className="text-lg font-bold text-phosphor-green-deep">
-                    {result.net_max.toFixed(1)} N
-                  </span>
-                  <span className="block text-xs text-phosphor-green">
-                    Weight dominates — all bolts in compression. No net tensile demand.
-                  </span>
-                </div>
               </div>
-            )}
+            </div>
           </div>
 
-          <p className="text-xs text-steel-blue-deep">
-            Compare against bolt proof load from the{" "}
-            <Link href="/calculators/bolt-torque" className="underline hover:text-steel-blue-deep">
-              Bolt Torque Calculator
-            </Link>
-            .
-          </p>
+          {/*
+            Utilisation dial — only when a proof load has been entered.
+
+            The page had no proof-load reference at all before; it just pointed
+            the user at the bolt torque calculator. Without a denominator a
+            tension figure in newtons can't be graded, so the dial is gated on
+            F_proof rather than inventing a threshold.
+
+            Zones follow normal fastener practice: design to roughly 65% of
+            proof, treat 65–90% as tight, and anything above 90% as unusable
+            margin once preload scatter and prying are accounted for.
+          */}
+          {utilisation !== null ? (
+            <div className="border-t border-panel-gray pt-5">
+              <Gauge
+                value={utilisation}
+                min={0}
+                max={120}
+                zones={[
+                  { from: 0, to: 65, tone: "good" },
+                  { from: 65, to: 90, tone: "warn" },
+                  { from: 90, to: 120, tone: "bad" },
+                ]}
+                label="Bolt utilisation vs. proof load"
+                unit="%"
+                decimals={1}
+                statusText={
+                  utilisation > 90
+                    ? `Net tension is ${utilisation.toFixed(1)}% of proof load. Increase bolt size, bolt count, or bolt circle radius.`
+                    : utilisation > 65
+                    ? `Net tension is ${utilisation.toFixed(1)}% of proof load. Little margin left for preload scatter or prying.`
+                    : `Net tension is ${utilisation.toFixed(1)}% of proof load.`
+                }
+              />
+              <p className="mt-3 text-center font-mono text-xs text-graphite/50">
+                {Math.max(result.net_max, 0).toFixed(1)} N / {parseFloat(Fproof).toFixed(0)} N
+              </p>
+            </div>
+          ) : (
+            <p className="border-t border-panel-gray pt-4 text-xs text-graphite/60">
+              Enter a bolt proof load above to see utilisation on a dial. Proof loads are in the{" "}
+              <Link
+                href="/calculators/bolt-torque"
+                className="text-steel-blue underline hover:text-steel-blue-deep"
+              >
+                Bolt Torque Calculator
+              </Link>
+              .
+            </p>
+          )}
         </div>
       )}
 

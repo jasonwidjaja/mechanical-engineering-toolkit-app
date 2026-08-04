@@ -24,6 +24,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import HeatSinkDiagram from "@/components/HeatSinkDiagram";
+import Gauge, { type GaugeZone } from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -43,8 +44,8 @@ type Result = {
 type GuidanceBand = {
   min: number;           // lower bound (inclusive)
   max: number;           // upper bound (exclusive); Infinity for the last band
-  badge: string;         // short label inside the colored badge
-  color: "red" | "orange" | "yellow" | "green";
+  /** Range label, e.g. "1-2 C/W". Kept for the reference copy, not for styling. */
+  badge: string;
   explanation: string;   // human-readable guidance shown below the badge
 };
 
@@ -53,53 +54,57 @@ const GUIDANCE_BANDS: GuidanceBand[] = [
     min: 0,
     max: 1,
     badge: "< 1 °C/W",
-    color: "red",
     explanation: "< 1°C/W — liquid cooling or large forced-air system likely required",
   },
   {
     min: 1,
     max: 2,
     badge: "1–2 °C/W",
-    color: "orange",
     explanation: "1–2°C/W — forced-air with a medium to large heat sink",
   },
   {
     min: 2,
     max: 5,
     badge: "2–5 °C/W",
-    color: "yellow",
     explanation: "2–5°C/W — forced-air convection or a large natural convection sink",
   },
   {
     min: 5,
     max: 10,
     badge: "5–10 °C/W",
-    color: "green",
     explanation: "5–10°C/W — natural convection with a moderate-sized heat sink",
   },
   {
     min: 10,
     max: Infinity,
     badge: "≥ 10 °C/W",
-    color: "green",
     explanation: "≥ 10°C/W — natural convection likely sufficient; small sink or PCB spreading may work",
   },
 ];
 
-// Tailwind class sets for each badge color.
-// We keep them as full strings (not dynamic fragments) so Tailwind's
-// class-scanner can find them at build time and include them in the CSS.
-// Each value is a complete set of Tailwind classes as full strings.
-// IMPORTANT: never build class names with template-literal fragments like
-// `border-${color}-200` — Tailwind's static scanner won't see them and they
-// will be purged from the production CSS bundle. All classes must appear as
-// complete, literal strings somewhere in the source.
-const BADGE_CLASSES: Record<GuidanceBand["color"], { badge: string; text: string; bg: string; border: string }> = {
-  red:    { badge: "bg-signal-red-tint border-signal-red-line text-signal-red-deep",         text: "text-signal-red-deep",    bg: "bg-signal-red-tint",    border: "border-signal-red-line"    },
-  orange: { badge: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep", text: "text-signal-amber-deep", bg: "bg-signal-amber-tint", border: "border-signal-amber-line" },
-  yellow: { badge: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep", text: "text-signal-amber-deep", bg: "bg-signal-amber-tint", border: "border-signal-amber-line" },
-  green:  { badge: "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",    text: "text-phosphor-green-deep",  bg: "bg-phosphor-green-tint",  border: "border-phosphor-green-line"  },
-};
+/**
+ * The same GUIDANCE_BANDS above, expressed as dial zones.
+ *
+ * This dial reads backwards compared with the rest of the app: a LOW
+ * R_required is the *hard* case, because it means the design has almost no
+ * thermal budget left and needs liquid cooling or heavy forced air. So the bad
+ * zone is on the left and good on the right.
+ *
+ * The final band runs to Infinity, which a dial cannot draw, so the scale stops
+ * at 15 C/W — well past the 10 C/W "natural convection is fine" threshold,
+ * by which point the exact figure has stopped driving any decision.
+ *
+ * GUIDANCE_BANDS distinguishes orange from yellow; both collapse to
+ * signal-amber here. A six-colour palette has exactly one warning hue, and the
+ * two bands only ever differed in degree — which needle position already shows.
+ */
+const GAUGE_MAX_R = 15;
+
+const GAUGE_ZONES: GaugeZone[] = [
+  { from: 0, to: 1, tone: "bad" },
+  { from: 1, to: 5, tone: "warn" },
+  { from: 5, to: GAUGE_MAX_R, tone: "good" },
+];
 
 // ---------------------------------------------------------------------------
 // Reference table data
@@ -260,38 +265,28 @@ export default function HeatsinkSizingPage() {
 
       {/* ── Results card — only rendered when we have a valid result ── */}
       {result && guidance && (
-        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
-
-          {/* Big R_required number */}
-          <div className="bg-steel-blue border border-steel-blue-deep rounded-lg px-4 py-4 text-center mb-4">
-            <p className="text-xs font-semibold text-steel-blue-tint mb-1">R_required</p>
-            <p className="text-3xl font-bold text-white leading-tight">
-              {result.rRequired.toFixed(2)}
-            </p>
-            <p className="text-xs text-steel-blue-tint mt-1">°C/W</p>
-          </div>
+        <div className="panel mt-6 p-6">
+          <h2 className="label-caps mb-5">Result</h2>
 
           {/*
-            Color-coded guidance badge.
-            The badge color communicates feasibility at a glance:
-            green = easy to achieve, red = challenging / expensive.
+            The dial reads *backwards* to most in this app: a LOW R_required is
+            the hard case, because it means the design has almost no thermal
+            budget and needs liquid or heavy forced air. So the zones run bad on
+            the left and good on the right, matching GUIDANCE_BANDS.
           */}
-          <div className={`rounded-lg border px-4 py-3 ${BADGE_CLASSES[guidance.color].bg} ${BADGE_CLASSES[guidance.color].border}`}>
-            {/* Colored pill badge */}
-            <span
-              className={`inline-block text-xs font-bold px-2 py-0.5 rounded-full border mr-2 ${BADGE_CLASSES[guidance.color].badge}`}
-            >
-              {guidance.badge}
-            </span>
-            {/* Explanation text */}
-            <span className={`text-sm font-medium ${BADGE_CLASSES[guidance.color].text}`}>
-              {guidance.explanation}
-            </span>
-          </div>
+          <Gauge
+            value={result.rRequired}
+            min={0}
+            max={GAUGE_MAX_R}
+            zones={GAUGE_ZONES}
+            label="R_required"
+            unit="°C/W"
+            decimals={2}
+            statusText={guidance.explanation}
+          />
 
           {/* Formula line — shows the exact values substituted in */}
-          <p className="mt-4 text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
+          <p className="subpanel mt-6 px-3 py-2 font-mono text-xs text-graphite/70">
             {formulaLine}
           </p>
 
@@ -299,10 +294,11 @@ export default function HeatsinkSizingPage() {
             Small note reminding the engineer that this is the total R,
             not just the heatsink R — they need to subtract θ_jc and θ_cs.
           */}
-          <p className="mt-3 text-xs text-steel-blue">
-            <strong>Note:</strong> R_required is the total junction-to-ambient budget. To find the required
-            heat-sink R_sa, subtract the junction-to-case (θ_jc) and case-to-sink (θ_cs) resistances
-            from the component datasheet:&nbsp;
+          <p className="mt-3 text-xs leading-relaxed text-graphite/70">
+            <strong className="font-semibold text-graphite">Note:</strong> R_required is the total
+            junction-to-ambient budget. To find the required heat-sink R_sa, subtract the
+            junction-to-case (θ_jc) and case-to-sink (θ_cs) resistances from the component
+            datasheet:&nbsp;
             <span className="font-mono">R_sa = R_required − θ_jc − θ_cs</span>
           </p>
         </div>

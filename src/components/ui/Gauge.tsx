@@ -136,7 +136,12 @@ export default function Gauge({
   // at the left end stop, +90° at the right.
   const needleDeg = -90 + t * 180;
 
+  // The readout scales with the dial — at `sm` a text-3xl figure under a 180px
+  // dial reads as a number with a small picture above it rather than as an
+  // instrument.
   const width = size === "sm" ? "max-w-[180px]" : "max-w-[260px]";
+  const valueSize = size === "sm" ? "text-2xl" : "text-3xl";
+  const unitSize = size === "sm" ? "text-xs" : "text-sm";
 
   return (
     <div className="flex flex-col items-center">
@@ -253,11 +258,11 @@ export default function Gauge({
 
       {/* ── Digital readout ── */}
       <div className="-mt-1 flex items-baseline gap-1">
-        <span className={`readout text-3xl ${tone ? TONE_TEXT[tone] : "text-graphite"}`}>
+        <span className={`readout ${valueSize} ${tone ? TONE_TEXT[tone] : "text-graphite"}`}>
           {value.toFixed(decimals)}
         </span>
         {unit && (
-          <span className={`font-mono text-sm ${tone ? TONE_TEXT[tone] : "text-graphite/60"}`}>
+          <span className={`font-mono ${unitSize} ${tone ? TONE_TEXT[tone] : "text-graphite/60"}`}>
             {unit}
           </span>
         )}

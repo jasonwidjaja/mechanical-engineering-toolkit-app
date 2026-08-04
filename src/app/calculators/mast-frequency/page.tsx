@@ -28,6 +28,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Gauge from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Material data — same set as mast-deflection
@@ -138,6 +139,15 @@ export default function MastFrequencyPage() {
     const mantissa = I / Math.pow(10, exp);
     return `${mantissa.toFixed(3)} × 10^${exp} m⁴`;
   }
+
+  // ---- Resonance dial bounds ----
+  // The band of f_n values that would resonate with the specified wind range;
+  // derived from the same ±20% test used for `result.resonance` above.
+  const dangerLo = result ? result.f_shed_min / 1.2 : 0;
+  const dangerHi = result ? result.f_shed_max / 0.8 : 0;
+  // Headroom past whichever of f_n / danger band is higher, so a passing design
+  // doesn't sit pinned against the end stop with no visible margin.
+  const gaugeMax = result ? Math.max(result.f_n, dangerHi) * 1.3 : 1;
 
   return (
     <div className="max-w-xl mx-auto">
@@ -311,30 +321,42 @@ export default function MastFrequencyPage() {
             </div>
           </div>
 
-          {/* Resonance flag */}
-          <div className="border-t border-steel-blue-line pt-3">
-            {result.resonance ? (
-              <div className="bg-signal-red-tint border border-signal-red-line rounded-lg px-4 py-3">
-                <p className="text-sm font-semibold text-signal-red-deep">
-                  Resonance risk — shedding frequency overlaps natural frequency at{" "}
-                  {result.V_resonance.toFixed(1)} m/s.
-                </p>
-                <p className="text-xs text-signal-red mt-1">
-                  Consider helical strakes, a tuned mass damper, or a design change to shift f_n
-                  outside the shedding range.
-                </p>
-              </div>
-            ) : (
-              <div className="bg-phosphor-green-tint border border-phosphor-green-line rounded-lg px-4 py-3">
-                <p className="text-sm font-semibold text-phosphor-green-deep">
-                  No resonance overlap in the specified wind range.
-                </p>
-                <p className="text-xs text-phosphor-green mt-1">
-                  Resonance would occur at {result.V_resonance.toFixed(1)} m/s, which is outside
-                  your V_min–V_max window.
-                </p>
-              </div>
-            )}
+          {/*
+            Resonance dial.
+
+            The check itself is a boolean, but a pass/fail badge hides the thing
+            an engineer actually wants to know: how much clearance there is. So
+            f_n is plotted against the band of natural frequencies that *would*
+            resonate with the specified wind range.
+
+            The resonance test is  f_n·0.8 <= f_shed_max  AND  f_shed_min <= f_n·1.2,
+            which rearranges to f_n lying inside
+              [ f_shed_min / 1.2 , f_shed_max / 0.8 ]
+            so that interval is the red zone, and the needle position relative
+            to its edges is the margin.
+          */}
+          <div className="border-t border-panel-gray pt-4">
+            <Gauge
+              value={result.f_n}
+              min={0}
+              max={gaugeMax}
+              zones={[
+                { from: 0, to: dangerLo, tone: "good" },
+                { from: dangerLo, to: dangerHi, tone: "bad" },
+                { from: dangerHi, to: gaugeMax, tone: "good" },
+              ]}
+              label="Natural frequency f_n"
+              unit="Hz"
+              decimals={3}
+              statusText={
+                result.resonance
+                  ? `Resonance risk. Shedding meets f_n at ${result.V_resonance.toFixed(1)} m/s, inside the design wind range. Consider helical strakes, a tuned mass damper, or a section change to shift f_n clear.`
+                  : `Clear. Resonance would need ${result.V_resonance.toFixed(1)} m/s, outside the V_min–V_max window.`
+              }
+            />
+            <p className="mt-3 text-center font-mono text-xs text-graphite/50">
+              Resonance band {dangerLo.toFixed(2)} – {dangerHi.toFixed(2)} Hz
+            </p>
           </div>
         </div>
       )}

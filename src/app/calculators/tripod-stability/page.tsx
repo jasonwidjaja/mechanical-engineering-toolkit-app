@@ -8,15 +8,16 @@
  *
  * First-pass TIA-222 style estimate — not a substitute for full structural analysis.
  *
- * Color-coded FS badge:
- *   FS >= 2.0         → green  — Stable
- *   1.5 <= FS < 2.0   → yellow — Marginal
- *   FS < 1.5          → red    — Unstable risk
+ * FS reads on a zoned dial:
+ *   FS >= 2.0         → in spec  — Stable
+ *   1.5 <= FS < 2.0   → marginal — review loading assumptions
+ *   FS < 1.5          → out      — Unstable
  */
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
+import Gauge, { type GaugeZone } from "@/components/ui/Gauge";
 
 // --- Constants ---
 const G = 9.81; // gravitational acceleration [m/s²]
@@ -81,25 +82,25 @@ export default function TripodStabilityPage() {
     setResult({ restoringMoment, overturningMoment, fs });
   }
 
-  // --- FS badge config ---
-  const fsBadge = result
+  /**
+   * Dial zones. The scale tops out at 4.0 — above that the structure is so
+   * over-stable that the exact figure stops being a design driver, and a wider
+   * scale would squash the 1.5/2.0 thresholds that actually matter into a
+   * sliver of arc.
+   */
+  const FS_GAUGE_MAX = 4;
+  const FS_ZONES: GaugeZone[] = [
+    { from: 0, to: 1.5, tone: "bad" },
+    { from: 1.5, to: 2.0, tone: "warn" },
+    { from: 2.0, to: FS_GAUGE_MAX, tone: "good" },
+  ];
+
+  const fsMessage = result
     ? result.fs >= 2.0
-      ? {
-          color: "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",
-          labelColor: "text-phosphor-green",
-          message: "Stable. FS ≥ 2.0 — meets typical structural safety factor.",
-        }
+      ? "Stable. FS ≥ 2.0 meets the typical structural safety factor."
       : result.fs >= 1.5
-      ? {
-          color: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep",
-          labelColor: "text-signal-amber",
-          message: "Marginal. FS between 1.5 and 2.0 — review loading assumptions.",
-        }
-      : {
-          color: "bg-signal-red-tint border-signal-red-line text-signal-red-deep",
-          labelColor: "text-signal-red",
-          message: "Unstable risk. FS < 1.5 — redesign base or reduce wind exposure.",
-        }
+      ? "Marginal. FS between 1.5 and 2.0 — review loading assumptions."
+      : "Unstable. FS < 1.5 — redesign the base or reduce wind exposure."
     : null;
 
   return (
@@ -175,33 +176,31 @@ export default function TripodStabilityPage() {
       </div>
 
       {/* Results */}
-      {result && fsBadge && (
-        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
+      {result && (
+        <div className="panel mt-6 p-6">
+          <h2 className="label-caps mb-5">Result</h2>
 
-          {/* FS primary value */}
-          <div className="flex flex-col items-center gap-2 mb-5">
-            <p className="text-xs font-semibold text-steel-blue uppercase tracking-wide">
-              Factor of Safety
-            </p>
-            <p className="text-5xl font-bold text-steel-blue-deep">{result.fs.toFixed(2)}</p>
-          </div>
+          {/* The dial carries both the number and the verdict. */}
+          <Gauge
+            value={result.fs}
+            min={0}
+            max={FS_GAUGE_MAX}
+            zones={FS_ZONES}
+            label="Factor of safety"
+            decimals={2}
+            statusText={fsMessage ?? undefined}
+          />
 
-          {/* Color-coded status badge */}
-          <div className={`rounded-lg border px-4 py-3 text-sm font-medium mb-5 ${fsBadge.color}`}>
-            {fsBadge.message}
-          </div>
-
-          {/* Moment breakdown */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          {/* Moment breakdown — the two quantities the ratio came from. */}
+          <div className="mt-6 grid grid-cols-2 gap-3">
             <MomentCard
-              label="Restoring Moment"
+              label="Restoring moment"
               value={`${result.restoringMoment.toFixed(1)} N·m`}
               sub="W × g × d"
               color="text-phosphor-green-deep bg-phosphor-green-tint border-phosphor-green-line"
             />
             <MomentCard
-              label="Overturning Moment"
+              label="Overturning moment"
               value={`${result.overturningMoment.toFixed(1)} N·m`}
               sub="F_wind × h_wind"
               color="text-signal-red-deep bg-signal-red-tint border-signal-red-line"
@@ -209,7 +208,7 @@ export default function TripodStabilityPage() {
           </div>
 
           {/* Formula recap */}
-          <p className="text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono">
+          <p className="subpanel mt-4 px-3 py-2 font-mono text-xs text-graphite/70">
             FS = ({W} kg × 9.81 × {d} m) / ({fWind} N × {hWind} m) = {result.fs.toFixed(3)}
           </p>
         </div>

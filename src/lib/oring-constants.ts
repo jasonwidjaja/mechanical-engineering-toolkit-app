@@ -7,6 +7,8 @@
 
 // AS568 is the most common O-ring standard in North America.
 // It defines five cross-section (wire) diameters, each used across a range of IDs.
+import type { GaugeZone } from "@/components/ui/Gauge";
+
 export const AS568_CROSS_SECTIONS = [
   { label: '1.78 mm (0.070") — AS568 series -001', w: 1.78 },
   { label: '2.62 mm (0.103") — AS568 series -100', w: 2.62 },
@@ -23,6 +25,31 @@ export const SQUEEZE_RANGES = {
   static:  { green: [15, 30] as [number, number], yellow: [10, 35] as [number, number] },
   dynamic: { green: [10, 20] as [number, number], yellow: [7,  25] as [number, number] },
 } as const;
+
+/**
+ * Upper end of the squeeze dial. 40% is past the point where any handbook
+ * recommends going, so it puts every realistic value comfortably on scale.
+ */
+export const SQUEEZE_GAUGE_MAX = 40;
+
+/**
+ * The same ranges above, expressed as coloured bands for <Gauge />.
+ *
+ * `import type` is erased at compile time, so pulling the type out of a
+ * "use client" component doesn't drag the component into this module.
+ */
+export function getSqueezeZones(sealType: SealType): GaugeZone[] {
+  const r = SQUEEZE_RANGES[sealType];
+  const [gLo, gHi] = r.green;
+  const [yLo, yHi] = r.yellow;
+  return [
+    { from: 0, to: yLo, tone: "bad" },
+    { from: yLo, to: gLo, tone: "warn" },
+    { from: gLo, to: gHi, tone: "good" },
+    { from: gHi, to: yHi, tone: "warn" },
+    { from: yHi, to: SQUEEZE_GAUGE_MAX, tone: "bad" },
+  ];
+}
 
 export function getSqueezeStatus(
   squeeze: number,

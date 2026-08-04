@@ -21,7 +21,14 @@ import { useState } from "react";
 import Link from "next/link";
 import OringCrossSectionDiagram from "@/components/OringCrossSectionDiagram";
 import OringGrooveComparisonDiagram from "@/components/OringGrooveComparisonDiagram";
-import { AS568_CROSS_SECTIONS, SealType } from "@/lib/oring-constants";
+import Gauge from "@/components/ui/Gauge";
+import {
+  AS568_CROSS_SECTIONS,
+  SealType,
+  getSqueezeStatus,
+  getSqueezeZones,
+  SQUEEZE_GAUGE_MAX,
+} from "@/lib/oring-constants";
 
 // Default target squeeze by seal type (per Parker recommendations)
 const DEFAULT_SQUEEZE: Record<SealType, string> = {
@@ -208,8 +215,29 @@ export default function OringGrooveSizingPage() {
 
           {/* Result card */}
           {result && (
-            <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-5">
-              <h2 className="text-sm font-semibold text-steel-blue-deep mb-4">Required Groove Dimensions</h2>
+            <div className="panel p-5">
+              <h2 className="label-caps mb-4">Required Groove Dimensions</h2>
+
+              {/*
+                Squeeze is an *input* on this page rather than an output, so the
+                dial is checking the target the user chose against the same
+                handbook bands the squeeze calculator grades against. Sizing a
+                groove perfectly to a bad target is still a bad groove.
+              */}
+              <div className="mb-5 border-b border-panel-gray pb-5">
+                <Gauge
+                  value={parseFloat(targetSqueeze)}
+                  min={0}
+                  max={SQUEEZE_GAUGE_MAX}
+                  zones={getSqueezeZones(sealType)}
+                  label={`Target squeeze — ${sealType}`}
+                  unit="%"
+                  decimals={1}
+                  size="sm"
+                  statusText={getSqueezeStatus(parseFloat(targetSqueeze), sealType).message}
+                />
+              </div>
+
               <div className="flex flex-col gap-3">
                 <DimResult
                   label="Groove depth (G)"
@@ -224,7 +252,7 @@ export default function OringGrooveSizingPage() {
                   unit="mm"
                   formula={`${widthMultiplier} × ${W_num}`}
                 />
-                <div className="text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2">
+                <div className="subpanel px-3 py-2 font-mono text-xs text-graphite/70">
                   Width range: {result.widthMin.toFixed(2)} mm (1.3×W) — {result.widthMax.toFixed(2)} mm (1.6×W)
                 </div>
               </div>

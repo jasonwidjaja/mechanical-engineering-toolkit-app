@@ -20,6 +20,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Gauge from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Excitation frequency reference table
@@ -48,6 +49,36 @@ function isResonanceOverlap(fn: number, fLow: number, fHigh: number): boolean {
   const expandedLow  = fLow  * 0.8;
   const expandedHigh = fHigh * 1.2;
   return fn >= expandedLow && fn <= expandedHigh;
+}
+
+/**
+ * Governing resonance margin — the scalar behind the dial.
+ *
+ * The table can only say "this row overlaps"; it can't say whether f_n cleared
+ * the nearest source by 3% or by 300%. This collapses all six sources into one
+ * number: how many times clear f_n is of the closest ±20% guard band.
+ *
+ *   f_n above a band  → fn / (fHigh × 1.2)
+ *   f_n below a band  → (fLow × 0.8) / fn
+ *   f_n inside a band → both terms <= 1
+ *
+ * Taking max() of the two picks whichever side applies, and taking min() across
+ * sources gives the worst — i.e. governing — case. So margin < 1 means an
+ * overlap exists, and margin = 2 means twice clear of the nearest source.
+ */
+function resonanceMargin(fn: number): { margin: number; nearest: string } {
+  let margin = Infinity;
+  let nearest = "";
+  for (const s of EXCITATION_SOURCES) {
+    const lo = s.fLow * 0.8;
+    const hi = s.fHigh * 1.2;
+    const m = Math.max(fn / hi, lo / fn);
+    if (m < margin) {
+      margin = m;
+      nearest = s.source;
+    }
+  }
+  return { margin, nearest };
 }
 
 // ---------------------------------------------------------------------------
@@ -192,39 +223,67 @@ export default function VibrationPage() {
       {/* ------------------------------------------------------------------ */}
       {/* RESULTS — shown after a successful calculation                       */}
       {/* ------------------------------------------------------------------ */}
-      {result && (
+      {result && (() => {
+        // Computed here rather than in the body above so it only runs when
+        // there is a result to describe.
+        const margin = resonanceMargin(result.fn);
+        return (
         <>
-          {/* Primary result tile: f_n */}
-          <div className="bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6 mb-4">
-            <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Result</h2>
+          {/* Primary result panel */}
+          <div className="panel mb-4 p-6">
+            <h2 className="label-caps mb-5">Result</h2>
 
-            {/* f_n — the main answer, shown large */}
-            <div className="bg-steel-blue border border-steel-blue-deep rounded-lg px-4 py-4 text-white text-center mb-3">
-              <p className="text-xs font-semibold text-steel-blue-tint mb-1 uppercase tracking-wide">
-                Natural Frequency (f<sub>n</sub>)
+            {/* f_n — the main answer */}
+            <div className="mb-5 text-center">
+              <p className="readout text-4xl">{result.fn.toFixed(3)}</p>
+              <p className="mt-0.5 font-mono text-sm text-graphite/60">Hz</p>
+              <p className="label-caps mt-1">
+                Natural frequency f<sub>n</sub>
               </p>
-              <p className="text-3xl font-bold">{result.fn.toFixed(3)}</p>
-              <p className="text-sm text-steel-blue-tint mt-0.5">Hz</p>
+            </div>
+
+            {/* Resonance margin dial — see resonanceMargin() above. */}
+            <div className="border-t border-panel-gray pt-5">
+              <Gauge
+                value={Math.min(margin.margin, 3)}
+                min={0}
+                max={3}
+                zones={[
+                  { from: 0, to: 1, tone: "bad" },
+                  { from: 1, to: 1.5, tone: "warn" },
+                  { from: 1.5, to: 3, tone: "good" },
+                ]}
+                label="Resonance margin"
+                unit="×"
+                decimals={2}
+                statusText={
+                  margin.margin < 1
+                    ? `f_n falls inside the ±20% band around ${margin.nearest}. Shift stiffness or mass to move it clear.`
+                    : margin.margin < 1.5
+                    ? `Closest source is ${margin.nearest}, only ${margin.margin.toFixed(2)}× clear. Tight — verify with modal FEA.`
+                    : `Clear of all six reference sources. Closest is ${margin.nearest} at ${margin.margin.toFixed(2)}× separation.`
+                }
+              />
             </div>
 
             {/* Secondary results: ω_n and T side-by-side */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white border border-steel-blue-line rounded-lg px-3 py-3 text-center">
-                <p className="text-xs font-semibold text-steel-blue mb-1">
-                  Angular freq. (ω<sub>n</sub>)
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="subpanel px-3 py-3 text-center">
+                <p className="label-caps mb-1">
+                  Angular freq. ω<sub>n</sub>
                 </p>
-                <p className="text-xl font-bold text-graphite">{result.wn.toFixed(3)}</p>
-                <p className="text-xs text-graphite/50 mt-0.5">rad/s</p>
+                <p className="readout text-xl">{result.wn.toFixed(3)}</p>
+                <p className="mt-0.5 font-mono text-xs text-graphite/50">rad/s</p>
               </div>
-              <div className="bg-white border border-steel-blue-line rounded-lg px-3 py-3 text-center">
-                <p className="text-xs font-semibold text-steel-blue mb-1">Period (T)</p>
-                <p className="text-xl font-bold text-graphite">{result.T.toFixed(3)}</p>
-                <p className="text-xs text-graphite/50 mt-0.5">ms</p>
+              <div className="subpanel px-3 py-3 text-center">
+                <p className="label-caps mb-1">Period T</p>
+                <p className="readout text-xl">{result.T.toFixed(3)}</p>
+                <p className="mt-0.5 font-mono text-xs text-graphite/50">ms</p>
               </div>
             </div>
 
             {/* Formula with substituted values */}
-            <div className="mt-4 bg-steel-blue-tint rounded-lg px-3 py-2 text-xs font-mono text-steel-blue-deep space-y-0.5">
+            <div className="subpanel mt-4 space-y-0.5 px-3 py-2 font-mono text-xs text-graphite/70">
               <p>ω_n = √(k / m) = √({parseFloat(stiffness).toLocaleString()} / {parseFloat(mass)}) = {result.wn.toFixed(4)} rad/s</p>
               <p>f_n = ω_n / (2π) = {result.fn.toFixed(4)} Hz</p>
               <p>T   = 1 / f_n = {(result.T / 1000).toFixed(6)} s = {result.T.toFixed(3)} ms</p>
@@ -235,8 +294,8 @@ export default function VibrationPage() {
           <div className="bg-white rounded-lg border border-panel-gray p-5 mb-4">
             <h3 className="text-sm font-semibold text-graphite/80 mb-1">Excitation Frequency Reference</h3>
             <p className="text-xs text-graphite/50 mb-3">
-              Rows highlighted in yellow are within ±20% of your calculated f<sub>n</sub> — possible
-              resonance overlap.
+              Highlighted rows sit within ±20% of your calculated f<sub>n</sub>. The dial above
+              shows the margin to the closest of them.
             </p>
             <table className="w-full text-sm">
               <thead>
@@ -277,7 +336,8 @@ export default function VibrationPage() {
             </table>
           </div>
         </>
-      )}
+        );
+      })()}
 
       {/* ------------------------------------------------------------------ */}
       {/* DISCLAIMER                                                           */}

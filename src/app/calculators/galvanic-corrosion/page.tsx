@@ -22,86 +22,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
-// ---------------------------------------------------------------------------
-// Galvanic series data — ordered anodic (index 0) to noble (index 14).
-// Lower index = more active/anodic = more likely to corrode.
-// Higher index = more noble/cathodic = tends to be protected.
-//
-// Source: representative ordering per MIL-STD-889C and common references.
-// Passive vs. active stainless depends on surface oxide condition.
-// ---------------------------------------------------------------------------
-const GALVANIC_SERIES = [
-  { name: "Magnesium alloys",              index: 0  },
-  { name: "Zinc (hot-dip galvanized)",     index: 1  },
-  { name: "Aluminum alloys (2xxx)",        index: 2  },
-  { name: "Aluminum alloys (6061, 7075)",  index: 3  },
-  { name: "Mild/carbon steel",             index: 4  },
-  { name: "Zinc-plated steel",             index: 5  },
-  { name: "Cast iron",                     index: 6  },
-  { name: "Stainless 304/316 (active)",   index: 7  },
-  { name: "Lead",                          index: 8  },
-  { name: "Tin",                           index: 9  },
-  { name: "Copper alloys (brass, bronze)", index: 10 },
-  { name: "Copper",                        index: 11 },
-  { name: "Titanium",                      index: 12 },
-  { name: "Stainless 304/316 (passive)",  index: 13 },
-  { name: "Gold / Platinum",              index: 14 },
-] as const;
-
-// ---------------------------------------------------------------------------
-// Risk classification based on galvanic series index separation.
-//
-// separation = |index_A − index_B|
-//   0:    Same material, no galvanic risk
-//   1–2:  Low risk
-//   3–5:  Moderate risk
-//   6+:   High risk
-// ---------------------------------------------------------------------------
-function getRisk(indexA: number, indexB: number) {
-  const sep = Math.abs(indexA - indexB);
-
-  if (sep === 0) return {
-    level: "none" as const,
-    label: "Same material — no galvanic risk",
-    color: "green" as const,
-    mitigation: "No special action required. Ensure good drainage to prevent water pooling.",
-  };
-  if (sep <= 2) return {
-    level: "low" as const,
-    label: "Low risk — generally acceptable in most environments",
-    color: "green" as const,
-    mitigation: "No special action required. Ensure good drainage to prevent water pooling.",
-  };
-  if (sep <= 5) return {
-    level: "moderate" as const,
-    label: "Moderate risk — consider isolation in wet/outdoor environments",
-    color: "yellow" as const,
-    mitigation:
-      "Apply compatible primer or coating at the interface. Use aluminum or stainless hardware where possible. Ensure good drainage.",
-  };
-  return {
-    level: "high" as const,
-    label: "High risk — isolation required (anodizing, isolating washers, compatible coating)",
-    color: "red" as const,
-    mitigation:
-      "Isolate with anodized aluminum, PTFE/nylon washers, isolating bushings, or a compatible sealant. Avoid using in salt/marine environments without isolation.",
-  };
-}
-
-// Tailwind color classes for each risk color
-const riskBadgeClasses: Record<string, string> = {
-  green:  "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",
-  yellow: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep",
-  red:    "bg-signal-red-tint border-signal-red-line text-signal-red-deep",
-};
-
-// Section header dot color for the mitigation box
-const riskDotClasses: Record<string, string> = {
-  green:  "bg-phosphor-green",
-  yellow: "bg-signal-amber",
-  red:    "bg-signal-red",
-};
+import Gauge from "@/components/ui/Gauge";
+import {
+  GALVANIC_SERIES,
+  GALVANIC_ZONES,
+  GALVANIC_MAX_SEPARATION,
+  getRisk,
+} from "@/lib/galvanic";
 
 export default function GalvanicCorrosionPage() {
   // Default to Al 6061 (index 3) vs. Stainless passive (index 13)
@@ -183,21 +110,26 @@ export default function GalvanicCorrosionPage() {
       {/* ------------------------------------------------------------------ */}
       {/* Risk result card                                                    */}
       {/* ------------------------------------------------------------------ */}
-      <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
-        <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Compatibility Result</h2>
+      <div className="panel mt-6 p-6">
+        <h2 className="label-caps mb-5">Compatibility Result</h2>
 
-        {/* Risk badge */}
-        <div className={`rounded-lg border px-4 py-3 mb-4 text-sm font-medium ${riskBadgeClasses[risk.color]}`}>
-          {risk.label}
-        </div>
+        {/* Separation dial. Zones come from src/lib/galvanic.ts, the same
+            module the Materials Database comparison reads, so the two views
+            can never disagree about what counts as high risk. */}
+        <Gauge
+          value={Math.abs(metalA.index - metalB.index)}
+          min={0}
+          max={GALVANIC_MAX_SEPARATION}
+          zones={GALVANIC_ZONES}
+          label="Galvanic series separation"
+          decimals={0}
+          statusText={risk.label}
+        />
 
         {/* Recommended mitigations */}
-        <div className="bg-white rounded-lg border border-steel-blue-line p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${riskDotClasses[risk.color]}`} />
-            <p className="text-xs font-semibold text-graphite/80">Recommended Mitigations</p>
-          </div>
-          <p className="text-sm text-graphite/70 leading-relaxed">{risk.mitigation}</p>
+        <div className="subpanel mt-6 p-4">
+          <p className="label-caps mb-2">Recommended mitigations</p>
+          <p className="text-sm leading-relaxed text-graphite/70">{risk.mitigation}</p>
         </div>
       </div>
 

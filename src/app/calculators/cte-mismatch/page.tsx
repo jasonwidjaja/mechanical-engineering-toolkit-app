@@ -20,6 +20,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Gauge, { type GaugeZone } from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Material data — CTE values are midpoints of typical published ranges.
@@ -150,12 +151,17 @@ export default function CTEMismatchPage() {
 
   const risk = result ? getRisk(result.alphaDiff) : null;
 
-  // Color classes for risk badge
-  const riskClasses: Record<string, string> = {
-    red:    "bg-signal-red-tint border-signal-red-line text-signal-red-deep",
-    yellow: "bg-signal-amber-tint border-signal-amber-line text-signal-amber-deep",
-    green:  "bg-phosphor-green-tint border-phosphor-green-line text-phosphor-green-deep",
-  };
+  /**
+   * Δα dial. 40 ppm/°C tops the scale — that is already far past the 20 ppm/°C
+   * "high mismatch" threshold, and covers everything short of bonding PTFE
+   * (125) straight to quartz (0.55), which pins the needle and says so.
+   */
+  const ALPHA_GAUGE_MAX = 40;
+  const ALPHA_ZONES: GaugeZone[] = [
+    { from: 0, to: 10, tone: "good" },
+    { from: 10, to: 20, tone: "warn" },
+    { from: 20, to: ALPHA_GAUGE_MAX, tone: "bad" },
+  ];
 
   // Material names for labels in the diagram
   const matAName = MATERIALS[matAIndex].label;
@@ -517,47 +523,56 @@ export default function CTEMismatchPage() {
       {/* Results card                                                        */}
       {/* ------------------------------------------------------------------ */}
       {result && (
-        <div className="mt-6 bg-steel-blue-tint border border-steel-blue-line rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-steel-blue-deep mb-4">Results</h2>
+        <div className="panel mt-6 p-6">
+          <h2 className="label-caps mb-5">Results</h2>
 
-          {/* Side-by-side ΔL_A and ΔL_B */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="rounded-lg border bg-white border-steel-blue-line px-3 py-3 text-center">
-              <p className="text-xs font-semibold mb-1 text-steel-blue">ΔL_A (mm)</p>
-              <p className="text-xl font-bold leading-tight text-graphite">
-                {result.dLa.toFixed(5)}
-              </p>
-              <p className="text-xs text-graphite/50 mt-1">{matAName}</p>
+          {/* Side-by-side ΔL_A and ΔL_B.
+              A is marked steel-blue and B muted graphite — matching the bar
+              colours in the diagram above, which is what the old blue/violet
+              pair was doing before violet left the palette. */}
+          <div className="mb-5 grid grid-cols-2 gap-3">
+            <div className="subpanel border-l-2 border-l-steel-blue px-3 py-3 text-center">
+              <p className="label-caps mb-1">ΔL_A (mm)</p>
+              <p className="readout text-xl">{result.dLa.toFixed(5)}</p>
+              <p className="mt-1 text-xs text-graphite/50">{matAName}</p>
             </div>
-            <div className="rounded-lg border bg-white border-steel-blue-line px-3 py-3 text-center">
-              <p className="text-xs font-semibold mb-1 text-steel-blue">ΔL_B (mm)</p>
-              <p className="text-xl font-bold leading-tight text-graphite">
-                {result.dLb.toFixed(5)}
-              </p>
-              <p className="text-xs text-graphite/50 mt-1">{matBName}</p>
+            <div className="subpanel border-l-2 border-l-graphite/40 px-3 py-3 text-center">
+              <p className="label-caps mb-1">ΔL_B (mm)</p>
+              <p className="readout text-xl">{result.dLb.toFixed(5)}</p>
+              <p className="mt-1 text-xs text-graphite/50">{matBName}</p>
             </div>
           </div>
 
-          {/* Differential expansion — the primary result, shown larger */}
-          <div className="rounded-lg border bg-steel-blue border-steel-blue-deep px-4 py-4 text-center mb-4">
-            <p className="text-xs font-semibold mb-1 text-steel-blue-tint">
-              Differential Expansion |ΔL_A − ΔL_B|
-            </p>
-            <p className="text-3xl font-bold text-white">
-              {result.dLdiff.toFixed(5)}
-            </p>
-            <p className="text-sm text-steel-blue-tint mt-1">mm</p>
+          {/* Differential expansion — the primary result. */}
+          <div className="mb-5 border-y border-panel-gray py-4 text-center">
+            <p className="readout text-3xl">{result.dLdiff.toFixed(5)}</p>
+            <p className="mt-0.5 font-mono text-sm text-graphite/60">mm</p>
+            <p className="label-caps mt-1">Differential expansion |ΔL_A − ΔL_B|</p>
           </div>
 
-          {/* Risk badge */}
+          {/*
+            The dial grades |Δα| rather than ΔL_diff: mismatch risk is a property
+            of the material pair, so it doesn't change when the user edits the
+            bond length. ΔL_diff above is what that mismatch costs on *this*
+            geometry.
+          */}
           {risk && (
-            <div className={`rounded-lg border px-4 py-3 mb-4 text-sm font-medium ${riskClasses[risk.color]}`}>
-              {risk.message}
+            <div className="mb-5">
+              <Gauge
+                value={result.alphaDiff}
+                min={0}
+                max={ALPHA_GAUGE_MAX}
+                zones={ALPHA_ZONES}
+                label="CTE mismatch |Δα|"
+                unit="ppm/°C"
+                decimals={1}
+                statusText={risk.message}
+              />
             </div>
           )}
 
           {/* Formula with substituted values — helps beginners see what was computed */}
-          <p className="text-xs text-steel-blue-deep bg-steel-blue-tint rounded-lg px-3 py-2 font-mono leading-5">
+          <p className="subpanel px-3 py-2 font-mono text-xs leading-5 text-graphite/70">
             ΔL_A = {l0Str} × ({alphaAStr} / 1 000 000) × {dtStr} = {result.dLa.toFixed(5)} mm
             <br />
             ΔL_B = {l0Str} × ({alphaBStr} / 1 000 000) × {dtStr} = {result.dLb.toFixed(5)} mm

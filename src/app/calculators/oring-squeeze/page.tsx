@@ -5,9 +5,10 @@
  *   W = O-ring free cross-section (wire) diameter (mm)
  *   G = groove depth (mm), measured from groove floor to mating surface face
  *
- * The result is color-coded against Parker O-Ring Handbook target ranges:
- *   Static:  15–30% = green | 10–15% or 30–35% = yellow | outside = red
- *   Dynamic: 10–20% = green |  7–10% or 20–25% = yellow | outside = red
+ * The result reads on a dial whose zones come from the Parker O-Ring Handbook
+ * target ranges:
+ *   Static:  15–30% in spec | 10–15% or 30–35% marginal | outside is out of spec
+ *   Dynamic: 10–20% in spec |  7–10% or 20–25% marginal | outside is out of spec
  *
  * The SVG cross-section diagram (imported from src/components/) updates live
  * as the user types, even before hitting Calculate.
@@ -17,7 +18,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import OringCrossSectionDiagram from "@/components/OringCrossSectionDiagram";
-import { AS568_CROSS_SECTIONS, SealType, getSqueezeStatus } from "@/lib/oring-constants";
+import Gauge from "@/components/ui/Gauge";
+import {
+  AS568_CROSS_SECTIONS,
+  SealType,
+  getSqueezeStatus,
+  getSqueezeZones,
+  SQUEEZE_GAUGE_MAX,
+} from "@/lib/oring-constants";
 
 export default function OringSqueezeCalculatorPage() {
   // --- State ---
@@ -173,36 +181,21 @@ export default function OringSqueezeCalculatorPage() {
             Calculate Squeeze
           </button>
 
-          {/* Result card */}
+          {/* Result — the dial replaces the old colour-coded text badge, so the
+              margin to each threshold is visible rather than just the verdict. */}
           {result && (
-            <div className={`rounded-lg border p-5 ${
- result.status === "green" ? "bg-phosphor-green-tint border-phosphor-green-line" :
- result.status === "yellow" ? "bg-signal-amber-tint border-signal-amber-line" :
- "bg-signal-red-tint border-signal-red-line"
- }`}>
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className={`text-3xl font-bold ${
- result.status === "green" ? "text-phosphor-green-deep" :
- result.status === "yellow" ? "text-signal-amber-deep" :
- "text-signal-red-deep"
- }`}>
-                  {result.squeeze.toFixed(1)}%
-                </span>
-                <span className={`text-sm ${
- result.status === "green" ? "text-phosphor-green" :
- result.status === "yellow" ? "text-signal-amber" :
- "text-signal-red"
- }`}>squeeze</span>
-              </div>
-              <p className={`text-sm font-medium ${
- result.status === "green" ? "text-phosphor-green-deep" :
- result.status === "yellow" ? "text-signal-amber-deep" :
- "text-signal-red-deep"
- }`}>
-                {result.status === "green" ? "✓" : result.status === "yellow" ? "⚠" : "✗"}{" "}
-                {result.message}
-              </p>
-              <p className="mt-2 text-xs text-graphite/50 font-mono">
+            <div className="panel p-5">
+              <Gauge
+                value={result.squeeze}
+                min={0}
+                max={SQUEEZE_GAUGE_MAX}
+                zones={getSqueezeZones(sealType)}
+                label="Squeeze"
+                unit="%"
+                decimals={1}
+                statusText={result.message}
+              />
+              <p className="mt-4 border-t border-panel-gray pt-3 text-center font-mono text-xs text-graphite/50">
                 ({W_num} − {G_num.toFixed(2)}) / {W_num} × 100
               </p>
             </div>
