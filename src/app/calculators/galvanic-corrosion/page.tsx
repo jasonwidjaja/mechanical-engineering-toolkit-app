@@ -23,6 +23,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Gauge from "@/components/ui/Gauge";
+import MaterialsDbLink from "@/components/ui/MaterialsDbLink";
 import {
   GALVANIC_SERIES,
   GALVANIC_ZONES,
@@ -100,6 +101,16 @@ export default function GalvanicCorrosionPage() {
             </p>
           </div>
         </div>
+
+        {/*
+          The dropdowns stay on GALVANIC_SERIES rather than the materials
+          database. The series is the MIL-STD-889C reference and covers metal
+          *classes* the database doesn't carry as stock entries — cast iron,
+          lead, tin, gold. Narrowing this to the 17 database materials would
+          lose that coverage, and the shared galvanic indices already keep the
+          two views consistent where they overlap.
+        */}
+        <MaterialsDbLink />
 
         {/* Index separation — shown inline so the user sees the math */}
         <p className="text-xs text-graphite/60 font-mono bg-instrument-white border border-panel-gray rounded-lg px-3 py-2">

@@ -28,17 +28,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { MATERIALS as MATERIAL_DB } from "@/lib/materials";
+import MaterialsDbLink from "@/components/ui/MaterialsDbLink";
 import Gauge from "@/components/ui/Gauge";
 
 // ---------------------------------------------------------------------------
 // Material data — same set as mast-deflection
 // ---------------------------------------------------------------------------
 const MATERIALS = [
-  { label: "Aluminum 6061-T6",      E_GPa: 69   },
-  { label: "Steel (structural)",     E_GPa: 200  },
-  { label: "Carbon fiber (approx)", E_GPa: 70   },
-  { label: "Custom",                 E_GPa: null },
-] as const;
+  // Sourced from src/lib/materials.ts so this dropdown, the CTE Mismatch page
+  // and the Materials Database all name the same alloy the same way. Only
+  // entries with a published modulus are offered, since E is what this page
+  // needs. "Custom" stays as a UI affordance for anything not in the database.
+  ...MATERIAL_DB.filter(m => m.elasticModulus !== null).map(m => ({
+    label: m.name,
+    E_GPa: m.elasticModulus as number | null,
+  })),
+  { label: "Custom", E_GPa: null },
+];
 
 // ---------------------------------------------------------------------------
 // Types
@@ -62,7 +69,7 @@ export default function MastFrequencyPage() {
   const [L,        setL]        = useState("");      // mast length, m
   const [Do,       setDo]       = useState("");      // outer diameter, mm
   const [t,        setT]        = useState("");      // wall thickness, mm
-  const [E,        setE]        = useState("69");    // Young's modulus, GPa
+  const [E,        setE]        = useState(String(MATERIALS[0].E_GPa)); // Young's modulus, GPa — tracks MATERIALS[0]
   const [mLinear,  setMLinear]  = useState("");      // mass per unit length, kg/m
   const [Vmin,     setVmin]     = useState("");      // min design wind speed, m/s
   const [Vmax,     setVmax]     = useState("");      // max design wind speed, m/s
@@ -206,6 +213,7 @@ export default function MastFrequencyPage() {
                 ))}
               </select>
             </div>
+            <MaterialsDbLink />
             <div className="flex items-center gap-3">
               <label className="text-xs text-graphite/70 flex-1">
                 E — Young&#39;s modulus{MATERIALS[matIdx].E_GPa === null ? " (enter value)" : ""}

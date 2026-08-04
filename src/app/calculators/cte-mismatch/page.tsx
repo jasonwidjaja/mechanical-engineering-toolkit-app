@@ -21,23 +21,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import Gauge, { type GaugeZone } from "@/components/ui/Gauge";
+import { MATERIALS as MATERIAL_DB } from "@/lib/materials";
+import MaterialsDbLink from "@/components/ui/MaterialsDbLink";
 
 // ---------------------------------------------------------------------------
-// Material data — CTE values are midpoints of typical published ranges.
-// "Custom" lets the user type any value.
+// Material data now comes from src/lib/materials.ts — the single source of
+// truth shared with the Materials Database and the other calculators. This page
+// used to carry its own eight-entry list, which is how "Aluminum 6061" here and
+// "Aluminum 6061-T6" there ended up as two different things.
+//
+// "Custom" is appended as a UI affordance, not a material: it lets the user
+// type any α without needing an entry in the database.
 // ---------------------------------------------------------------------------
 const MATERIALS = [
-  { label: "Aluminum 6061",          cte: 23.6  },
-  { label: "Stainless Steel 304",    cte: 17.3  },
-  { label: "Titanium Grade 5",       cte: 8.6   },
-  { label: "PTFE (rough estimate)",  cte: 125.0 }, // midpoint of 100–150 ppm/°C range
-  { label: "Fiberglass/Epoxy",       cte: 13.0  },
-  { label: "FR4 PCB (in-plane)",     cte: 15.5  },
-  { label: "Quartz / Fused Silica",  cte: 0.55  },
-  { label: "Custom",                 cte: null  }, // null = user must type a value
-] as const;
+  ...MATERIAL_DB.map(m => ({ label: m.name, cte: m.cte as number | null })),
+  { label: "Custom", cte: null },
+];
 
 type MaterialEntry = (typeof MATERIALS)[number];
+
+/**
+ * Default pair: aluminium against stainless, a common dissimilar-metal joint.
+ *
+ * These are looked up by name rather than hardcoded as indices. When the list
+ * was a local array, "index 1" happened to be Stainless 304; pointing the same
+ * page at the shared database silently made index 1 Aluminium 7075, so the
+ * dropdown said one thing and the pre-filled α said another.
+ */
+const DEFAULT_A_INDEX = Math.max(0, MATERIALS.findIndex(m => m.label === "Aluminum 6061-T6"));
+const DEFAULT_B_INDEX = Math.max(0, MATERIALS.findIndex(m => m.label === "Stainless Steel 304"));
 
 // Shape of the calculated result — null means "not yet calculated"
 type Result = {
@@ -49,12 +61,12 @@ type Result = {
 
 export default function CTEMismatchPage() {
   // --- Material A state ---
-  const [matAIndex, setMatAIndex] = useState(0);            // index into MATERIALS
-  const [alphaAStr, setAlphaAStr] = useState("23.6");       // editable CTE string
+  const [matAIndex, setMatAIndex] = useState(DEFAULT_A_INDEX);
+  const [alphaAStr, setAlphaAStr] = useState(String(MATERIALS[DEFAULT_A_INDEX].cte));
 
   // --- Material B state ---
-  const [matBIndex, setMatBIndex] = useState(1);
-  const [alphaBStr, setAlphaBStr] = useState("17.3");
+  const [matBIndex, setMatBIndex] = useState(DEFAULT_B_INDEX);
+  const [alphaBStr, setAlphaBStr] = useState(String(MATERIALS[DEFAULT_B_INDEX].cte));
 
   // --- Shared inputs ---
   const [l0Str, setL0Str]   = useState("");    // reference length, mm
@@ -184,9 +196,11 @@ export default function CTEMismatchPage() {
     ? SVG_BASE_W * (result.dLb / Math.max(result.dLa, result.dLb, 0.001))
     : SVG_BASE_W;
 
-  // Bar colors: gray before calculation, material colors after
-  const colorA = result ? "#2B4C7E" : "#98999B"; // blue-500 or gray-400
-  const colorB = result ? "#5F6164" : "#98999B"; // violet-500 or gray-400
+  // Bar colours: neutral grey before calculation, then A in steel-blue and B in
+  // muted graphite. Two series need two separable colours, and those are the
+  // two the palette gives without spending oxide-rust on ordinary data.
+  const colorA = result ? "#2B4C7E" : "#98999B"; // steel-blue / neutral
+  const colorB = result ? "#5F6164" : "#98999B"; // graphite 70% / neutral
 
   // SVG geometry constants
   const ORIGIN_X = 40;  // left edge (bonded interface)
@@ -297,6 +311,7 @@ export default function CTEMismatchPage() {
               />
               {errors.alphaB && <p className="text-xs text-signal-red">{errors.alphaB}</p>}
               <p className="text-xs text-graphite/50">CTE in ppm/°C (= µm/m·°C)</p>
+              <MaterialsDbLink className="mt-1" />
             </div>
           </div>
         </div>

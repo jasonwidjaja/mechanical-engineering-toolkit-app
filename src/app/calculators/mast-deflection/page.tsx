@@ -33,17 +33,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { MATERIALS as MATERIAL_DB } from "@/lib/materials";
+import MaterialsDbLink from "@/components/ui/MaterialsDbLink";
 
 // ---------------------------------------------------------------------------
 // Material data — E values are approximate and intended for first-pass sizing.
 // "Custom" leaves E blank so the user can enter their own modulus.
 // ---------------------------------------------------------------------------
 const MATERIALS = [
-  { label: "Aluminum 6061-T6",      E_GPa: 69   },
-  { label: "Steel (structural)",     E_GPa: 200  },
-  { label: "Carbon fiber (approx)", E_GPa: 70   },  // axial / longitudinal direction
-  { label: "Custom",                 E_GPa: null },
-] as const;
+  // Sourced from src/lib/materials.ts so this dropdown, the CTE Mismatch page
+  // and the Materials Database all name the same alloy the same way. Only
+  // entries with a published modulus are offered, since E is what this page
+  // needs. "Custom" stays as a UI affordance for anything not in the database.
+  ...MATERIAL_DB.filter(m => m.elasticModulus !== null).map(m => ({
+    label: m.name,
+    E_GPa: m.elasticModulus as number | null,
+  })),
+  { label: "Custom", E_GPa: null },
+];
 
 // ---------------------------------------------------------------------------
 // Result type — stores every intermediate quantity so the formula recap
@@ -65,7 +72,7 @@ export default function MastDeflectionPage() {
   const [L,    setL]    = useState("");       // mast length, m
   const [Do,   setDo]   = useState("");       // outer diameter, mm
   const [t,    setT]    = useState("");       // wall thickness, mm
-  const [E,    setE]    = useState("69");     // Young's modulus, GPa  (default: Al 6061)
+  const [E,    setE]    = useState(String(MATERIALS[0].E_GPa)); // Young's modulus, GPa — tracks MATERIALS[0]
   const [F,    setF]    = useState("");       // tip point load, N
   const [w,    setW]    = useState("0");      // distributed load, N/m
   const [R,    setR]    = useState("");       // target range, m (optional)
@@ -240,6 +247,7 @@ export default function MastDeflectionPage() {
               <option key={m.label} value={i}>{m.label}</option>
             ))}
           </select>
+          <MaterialsDbLink className="mt-1.5" />
           {/* Editable E field — always shown so user can fine-tune */}
           <div className="flex items-center gap-2">
             <span className="text-xs text-graphite/60 w-36">Young&apos;s modulus E (GPa)</span>

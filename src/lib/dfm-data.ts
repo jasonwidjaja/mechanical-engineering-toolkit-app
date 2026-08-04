@@ -512,6 +512,18 @@ export const TOLERANCE_ROWS: ToleranceRow[] = [
     notes: "No heat-affected zone; best for thick / heat-sensitive material",
     spectrum: { tight: 0.05, loose: 0.25 },
   },
+  {
+    // Filed under Cutting because the blank is laser/punch cut before forming,
+    // and it belongs beside the other sheet processes. The loose figure is
+    // driven by bend tolerance, not by the cut.
+    process: "Sheet Metal Fabrication",
+    category: "Cutting",
+    materials: "Aluminum, steel, stainless sheet",
+    standard: "±0.5 mm on formed features, ±0.13 mm on cut features",
+    precision: "±0.13 mm on bends with controlled tooling and grain direction",
+    notes: "Bend angle and springback dominate; cumulative across multiple bends",
+    spectrum: { tight: 0.13, loose: 0.5 },
+  },
 
   // ═══ CASTING ═══
   {
@@ -562,6 +574,17 @@ export const TOLERANCE_ROWS: ToleranceRow[] = [
     precision: "±0.025 mm for tight / medical-grade parts",
     notes: "Larger parts harder to hold tight tolerance (shrinkage)",
     spectrum: { tight: 0.025, loose: 0.1 },
+  },
+  {
+    // Formative, tooling-driven, so it sits with Molding rather than Casting.
+    // Used by the radome-grade dielectrics in the materials database.
+    process: "Composite Layup",
+    category: "Molding",
+    materials: "Fiberglass/epoxy, carbon/epoxy, aramid laminates",
+    standard: "±0.75 mm",
+    precision: "±0.25 mm on the tooled face with matched-die or autoclave cure",
+    notes: "Tooled face holds; the bag side is much looser. Thickness varies with ply count and resin content",
+    spectrum: { tight: 0.25, loose: 0.75 },
   },
 
   // ═══ ADDITIVE ═══
