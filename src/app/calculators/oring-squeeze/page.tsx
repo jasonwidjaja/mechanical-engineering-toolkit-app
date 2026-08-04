@@ -143,11 +143,11 @@ export default function OringSqueezeCalculatorPage() {
                   value={wCustom}
                   onChange={e => { setWCustom(e.target.value); setErrors({}); setResult(null); }}
                   placeholder="e.g. 4.0"
-                  className={`flex-1 border rounded-lg px-3 py-2 text-sm
+                  className={`flex-1 border rounded-lg px-3 py-2 text-sm font-mono tabular-nums
  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
  ${errors.w ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
                 />
-                <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
+                <span className="unit-chip">mm</span>
               </div>
             )}
             {errors.w && <p className="text-xs text-signal-red">{errors.w}</p>}
@@ -162,11 +162,11 @@ export default function OringSqueezeCalculatorPage() {
                 value={G}
                 onChange={e => { setG(e.target.value); setResult(null); }}
                 placeholder={`e.g. ${(svgW * 0.80).toFixed(2)}`}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm font-mono tabular-nums
  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
  ${errors.g ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
+              <span className="unit-chip">mm</span>
             </div>
             {errors.g && <p className="text-xs text-signal-red">{errors.g}</p>}
             <p className="mt-1 text-xs text-graphite/50">
@@ -176,7 +176,7 @@ export default function OringSqueezeCalculatorPage() {
 
           <button
             onClick={handleCalculate}
-            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="btn-primary"
           >
             Calculate Squeeze
           </button>

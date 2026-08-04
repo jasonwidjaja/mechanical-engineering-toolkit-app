@@ -179,7 +179,7 @@ export default function BasePlatePage() {
       {/* ---- Calculate button ---- */}
       <button
         onClick={calculate}
-        className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-4"
+        className="btn-primary mb-4"
       >
         Calculate Bolt Tension
       </button>
@@ -570,9 +570,9 @@ function InputRow({
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder={placeholder ?? ""}
-          className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right font-mono tabular-nums [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-xs text-graphite/50 w-8">{unit}</span>
+        <span className="font-mono text-xs text-graphite/50 w-8">{unit}</span>
       </div>
     </div>
   );

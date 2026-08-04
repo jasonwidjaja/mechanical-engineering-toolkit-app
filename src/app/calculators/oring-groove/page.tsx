@@ -156,11 +156,11 @@ export default function OringGrooveSizingPage() {
                   value={wCustom}
                   onChange={e => { setWCustom(e.target.value); setErrors({}); setResult(null); }}
                   placeholder="e.g. 4.0"
-                  className={`flex-1 border rounded-lg px-3 py-2 text-sm
+                  className={`flex-1 border rounded-lg px-3 py-2 text-sm font-mono tabular-nums
  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
  ${errors.w ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
                 />
-                <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">mm</span>
+                <span className="unit-chip">mm</span>
               </div>
             )}
             {errors.w && <p className="text-xs text-signal-red">{errors.w}</p>}
@@ -174,11 +174,11 @@ export default function OringGrooveSizingPage() {
                 type="number"
                 value={targetSqueeze}
                 onChange={e => { setTargetSqueeze(e.target.value); setResult(null); }}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm font-mono tabular-nums
  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
  ${errors.sq ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">%</span>
+              <span className="unit-chip">%</span>
             </div>
             {errors.sq && <p className="text-xs text-signal-red">{errors.sq}</p>}
             <p className="mt-1 text-xs text-graphite/50">
@@ -194,11 +194,11 @@ export default function OringGrooveSizingPage() {
                 type="number"
                 value={widthMultiplier}
                 onChange={e => { setWidthMultiplier(e.target.value); setResult(null); }}
-                className={`flex-1 border rounded-lg px-3 py-2 text-sm
+                className={`flex-1 border rounded-lg px-3 py-2 text-sm font-mono tabular-nums
  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
  ${errors.mult ? "border-signal-red-line bg-signal-red-tint" : "border-graphite/20"}`}
               />
-              <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-3 py-2">× W</span>
+              <span className="unit-chip">× W</span>
             </div>
             {errors.mult && <p className="text-xs text-signal-red">{errors.mult}</p>}
             <p className="mt-1 text-xs text-graphite/50">
@@ -208,7 +208,7 @@ export default function OringGrooveSizingPage() {
 
           <button
             onClick={handleCalculate}
-            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="btn-primary"
           >
             Calculate Groove Dimensions
           </button>
@@ -315,8 +315,8 @@ function DimResult({
     <div className={`rounded-lg border px-4 py-3 ${primary ? "bg-white border-steel-blue-line" : "bg-steel-blue-tint/50 border-steel-blue-line"}`}>
       <p className="text-xs text-steel-blue font-medium mb-0.5">{label}</p>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-xl font-bold text-graphite">{value}</span>
-        <span className="text-sm text-graphite/60">{unit}</span>
+        <span className="readout text-xl">{value}</span>
+        <span className="font-mono text-sm text-graphite/60">{unit}</span>
       </div>
       <p className="text-xs text-graphite/50 font-mono mt-0.5">{formula}</p>
     </div>

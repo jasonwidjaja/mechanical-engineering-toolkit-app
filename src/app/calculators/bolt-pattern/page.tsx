@@ -321,7 +321,7 @@ export default function BoltPatternPage() {
 
           <button
             onClick={calculate}
-            className="w-full bg-steel-blue hover:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+            className="btn-primary"
           >
             Calculate Load Distribution
           </button>
@@ -611,7 +611,7 @@ function LoadInput({
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder="0"
-        className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className="w-28 border border-panel-gray rounded px-2 py-1 text-sm text-right font-mono tabular-nums [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       />
     </div>
   );

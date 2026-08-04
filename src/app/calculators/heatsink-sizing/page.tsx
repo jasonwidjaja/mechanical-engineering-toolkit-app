@@ -242,7 +242,7 @@ export default function HeatsinkSizingPage() {
         {/* Calculate button */}
         <button
           onClick={handleCalculate}
-          className="w-full bg-steel-blue hover:bg-steel-blue-deep active:bg-steel-blue-deep text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+          className="btn-primary"
         >
           Calculate
         </button>
@@ -377,7 +377,7 @@ function InputField({ label, unit, value, onChange, error, placeholder, hint }: 
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`
- flex-1 rounded-lg border px-3 py-2 text-sm
+ flex-1 rounded-lg border px-3 py-2 text-sm font-mono tabular-nums
  transition
  [appearance:textfield]
  [&::-webkit-outer-spin-button]:appearance-none
@@ -386,7 +386,7 @@ function InputField({ label, unit, value, onChange, error, placeholder, hint }: 
  `}
         />
         {unit && (
-          <span className="text-sm text-graphite/60 bg-panel-gray border border-panel-gray rounded-md px-2 py-2 min-w-[3.5rem] text-center">
+          <span className="unit-chip min-w-[3.5rem]">
             {unit}
           </span>
         )}
