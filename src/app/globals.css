@@ -2,3 +2,176 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /*
+    Every number in this app is set in IBM Plex Mono. Tabular figures keep
+    digits on a fixed advance width, so a value ticking from 9.9 to 10.0 in a
+    results panel doesn't shift the characters around it. This is why the
+    mono/sans split exists at all — it's for reading instruments, not decoration.
+  */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+
+  /*
+    One focus treatment for the whole app, in oxide-rust.
+    :focus-visible (not :focus) so a mouse click on a button doesn't leave a
+    ring behind, but tabbing to it always does.
+  */
+  *:focus-visible {
+    outline: 2px solid theme("colors.oxide-rust.DEFAULT");
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Native controls: match the accent so checkboxes/radios/range agree. */
+  input,
+  select,
+  textarea {
+    accent-color: theme("colors.steel-blue.DEFAULT");
+  }
+
+  /* Kill the number-input spinners globally instead of per-field. */
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer components {
+  /*
+    ── Shared surfaces ───────────────────────────────────────────────────────
+    Defined once here so "what a card looks like" is a single decision.
+    Cards are white on the instrument-white page with a 1px panel-gray border —
+    no drop shadows anywhere in the app; the border does the separating.
+  */
+  .panel {
+    @apply bg-white rounded-lg border border-panel-gray;
+  }
+
+  /* Recessed sub-surface inside a panel: formula strips, diagram backplates. */
+  .subpanel {
+    @apply bg-instrument-white rounded-lg border border-panel-gray;
+  }
+
+  /* Small caps label above a value or section. */
+  .label-caps {
+    @apply text-xs font-semibold uppercase tracking-wider text-graphite/60;
+  }
+
+  /*
+    The standard numeric readout: mono, tight, graphite. Size is set by the
+    caller (text-2xl etc.) — this only fixes family, tracking and colour.
+  */
+  .readout {
+    @apply font-mono font-semibold text-graphite tabular-nums tracking-tight;
+  }
+
+  /* Text input / select shared shell. */
+  .field {
+    @apply w-full rounded-lg border border-graphite/20 bg-white px-3 py-2
+           text-sm text-graphite transition-colors
+           placeholder:text-graphite/35
+           hover:border-graphite/30;
+  }
+
+  /* Numeric input — same shell, mono contents, right aligned. */
+  .field-num {
+    @apply field font-mono tabular-nums text-right;
+  }
+
+  .field-error {
+    @apply border-signal-red bg-signal-red-tint;
+  }
+
+  /* Unit chip that sits to the right of a numeric field. */
+  .unit-chip {
+    @apply shrink-0 rounded-md border border-panel-gray bg-panel-gray
+           px-2.5 py-2 text-center font-mono text-sm text-graphite/70;
+  }
+
+  /* Primary action. */
+  .btn-primary {
+    @apply w-full rounded-lg bg-steel-blue px-4 py-2.5 text-sm font-semibold
+           text-white transition-colors
+           hover:bg-steel-blue-deep active:bg-steel-blue-deep;
+  }
+
+  /* Secondary / toggle action. */
+  .btn-quiet {
+    @apply rounded-lg border border-panel-gray bg-white px-3 py-1.5 text-sm
+           text-graphite/70 transition-colors
+           hover:border-steel-blue-line hover:text-steel-blue;
+  }
+}
+
+/*
+  ── Hero radar sweep ────────────────────────────────────────────────────────
+  Home page only. A thin bright band on an otherwise transparent conic
+  gradient — a sweep *line*, not a glowing wedge. The wedge version is just a
+  gradient hero wearing a costume, so the bright band is kept to ~3° with a
+  short falloff behind it, the way a real PPI display trails phosphor.
+
+  Masked to a soft-edged disc so it fades out rather than ending on a hard
+  square edge.
+*/
+.radar-sweep {
+  /*
+    The bright line sits at 0deg and the element rotates clockwise, so the decay
+    has to run *counter-clockwise* from it (332deg -> 360deg) to trail behind the
+    sweep the way phosphor actually does. Putting the falloff at 0deg -> 28deg
+    instead makes the glow lead the line, which reads backwards.
+  */
+  background: conic-gradient(
+    from 0deg,
+    rgba(181, 83, 44, 0.95) 0deg,
+    rgba(181, 83, 44, 0) 0.6deg,
+    rgba(181, 83, 44, 0) 330deg,
+    rgba(181, 83, 44, 0.04) 344deg,
+    rgba(181, 83, 44, 0.13) 354deg,
+    rgba(181, 83, 44, 0.5) 359deg,
+    rgba(181, 83, 44, 0.95) 360deg
+  );
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+}
+
+/*
+  Concentric range rings behind the sweep. Static — only the sweep moves.
+*/
+.radar-rings {
+  background-image: repeating-radial-gradient(
+    circle at 50% 50%,
+    theme("colors.steel-blue.DEFAULT") 0 1px,
+    transparent 1px 44px
+  );
+  -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 45%, transparent 100%);
+}
+
+/*
+  ── Reduced motion ──────────────────────────────────────────────────────────
+  Freeze the sweep at a fixed bearing rather than hiding it — the composition
+  should look identical, just static. Also flattens the gauge needle easing.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep {
+    animation: none !important;
+    transform: rotate(-35deg);
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -4,7 +4,35 @@
  * tags and anything you put here (nav, footer, etc.) appears on every page.
  */
 import type { Metadata } from "next";
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+
+/**
+ * Typography is loaded here and exposed to Tailwind as CSS variables — see the
+ * `fontFamily` block in tailwind.config.ts, which points `font-sans` and
+ * `font-mono` at these.
+ *
+ * The two families do different jobs and the split is functional, not
+ * decorative: Plex Sans carries all prose (headings, labels, hints), Plex Mono
+ * carries every number, unit and calculated output in the app. A result should
+ * never be mistakable for the sentence describing it.
+ *
+ * next/font self-hosts these at build time — no runtime request to Google, and
+ * no layout shift while a webfont loads.
+ */
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plex-sans",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
 
 // Metadata exported from layout.tsx automatically sets <title> and <meta> tags.
 export const metadata: Metadata = {
@@ -12,77 +40,72 @@ export const metadata: Metadata = {
   description: "A collection of calculators for mechanical engineers",
 };
 
+/** Top-level sections, in nav order. Add a route here and it appears sitewide. */
+const NAV_LINKS = [
+  { href: "/", label: "Calculators" },
+  { href: "/materials", label: "Materials" },
+  { href: "/tolerance-stackup", label: "Tolerance Stackup" },
+  { href: "/dfm-guide", label: "DFM Guide" },
+  { href: "/mechanisms-reference", label: "Mechanisms" },
+];
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode; // "children" is whatever page is currently being shown
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-gray-50 text-gray-900">
+    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+      <body className="min-h-screen bg-instrument-white font-sans text-graphite antialiased">
         {/* Site-wide top navigation bar */}
-        <header className="bg-white border-b border-gray-200 shadow-sm">
-          <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
-            {/* Wrench icon (pure SVG — no extra library needed) */}
+        <header className="border-b border-panel-gray bg-white">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-2 px-4 py-4">
+            {/*
+              Reticle mark. The old wrench glyph was generic clip-art; a
+              crosshair reads as an instrument and is 6 elements of SVG.
+            */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 text-blue-600"
-              fill="none"
+              className="h-6 w-6 shrink-0 text-oxide-rust"
               viewBox="0 0 24 24"
+              fill="none"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={1.5}
+              aria-hidden="true"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
+              <circle cx="12" cy="12" r="8.5" />
+              <circle cx="12" cy="12" r="3" strokeWidth={1} />
+              <path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5" strokeLinecap="round" />
             </svg>
-            <a href="/" className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+
+            <a
+              href="/"
+              className="text-lg font-semibold tracking-tight text-graphite transition-colors hover:text-steel-blue"
+            >
               Engineering Toolkit
             </a>
 
-            {/* Top-level sections. `ml-auto` pushes the nav to the right edge.
-                Plain <a> keeps this a server component — a client-side active-link
-                highlight would require usePathname and therefore "use client". */}
-            <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-sm">
-              <a
-                href="/"
-                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                Calculators
-              </a>
-              <a
-                href="/tolerance-stackup"
-                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                Tolerance Stackup
-              </a>
-              <a
-                href="/dfm-guide"
-                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                DFM Guide
-              </a>
-              <a
-                href="/mechanisms-reference"
-                className="px-2.5 py-1.5 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                Mechanisms
-              </a>
+            {/*
+              `ml-auto` pushes the nav to the right edge. Plain <a> keeps this a
+              server component — a client-side active-link highlight would
+              require usePathname and therefore "use client".
+            */}
+            <nav className="ml-auto flex flex-wrap items-center gap-x-1 gap-y-1 text-sm">
+              {NAV_LINKS.map(link => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-md px-2.5 py-1.5 text-graphite/70 transition-colors hover:bg-steel-blue-tint hover:text-steel-blue"
+                >
+                  {link.label}
+                </a>
+              ))}
             </nav>
           </div>
         </header>
 
         {/* Page content is injected here */}
-        <main className="max-w-5xl mx-auto px-4 py-8">
-          {children}
-        </main>
+        <main className="mx-auto max-w-5xl px-4 py-10">{children}</main>
       </body>
     </html>
   );
