@@ -2,7 +2,7 @@
 
 A collection of engineering calculators built with **Next.js**, **TypeScript**, and **Tailwind CSS**.
 
-**🔗 Live site: https://engineering-toolkit-alpha.vercel.app**
+**🔗 Live site: https://mech-toolkit.vercel.app**
 
 ---
 
@@ -268,11 +268,29 @@ picker. Keep the units consistent with the existing entries.
 ## Deploying & Updating the Live Site
 
 The site is hosted on **Vercel** at
-**https://engineering-toolkit-alpha.vercel.app**
+**https://mech-toolkit.vercel.app**
 
 - Vercel project: `engineering-toolkit` (owner: `jasonwidjaja's projects`)
 - Dashboard: https://vercel.com/jasonwidjajas-projects/engineering-toolkit
 - Source repo: https://github.com/jasonwidjaja/mechanical-engineering-toolkit-app
+
+**About the URLs.** Vercel gives a project several addresses that all point at the
+same live deployment, so more than one link will work:
+
+| URL | What it is |
+|-----|-----------|
+| `mech-toolkit.vercel.app` | The one to share. Added by hand. |
+| `engineering-toolkit-alpha.vercel.app` | Auto-assigned original. Still works — old links won't break. |
+| `engineering-toolkit-<hash>-...vercel.app` | A specific frozen build. Never changes, useful for comparing against an old version. |
+
+Vercel appended `-alpha` to the original name only because
+`engineering-toolkit.vercel.app` was already claimed by an unrelated account — it
+was never a pre-release marker. Note that plain `engineering-toolkit.vercel.app`
+loads a **stranger's site**, not yours, so don't share that one by mistake.
+
+To add or change a name later: **Settings → Domains** in the dashboard, or
+`npx vercel domains add <name>.vercel.app engineering-toolkit`. Adding a name
+never removes existing ones.
 
 ### The normal way to update: just push
 
